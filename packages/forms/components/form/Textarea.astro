@@ -1,0 +1,27 @@
+---
+import getContextProps from "@astro-metro/context";
+import { validateFormInput } from "../../dist/components/input-parse.js";
+import { validatePostRequest } from "../../dist/form-tools/post.js";
+import { ModifyDeep } from "../../dist/utils.js";
+
+interface ModifyInputProps {
+    minlength?: number
+    maxlength?: number
+}
+
+export interface Props extends Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttributes, ModifyInputProps>> {
+    name: string
+    errorMessage?: string
+    validate?: Function
+};
+
+const {bind, method} = getContextProps(Astro, "@astro-metro/forms");
+if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
+    await validateFormInput(Astro, bind);
+}
+
+const {value: defaultValue, ...props} = Astro.props;
+const value = bind[Astro.props.name] ?? await Astro.slots.render('default') ?? defaultValue;
+
+---
+<textarea {...props}>{value}</textarea>

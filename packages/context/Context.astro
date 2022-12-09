@@ -1,0 +1,14 @@
+---
+import { readerInContext } from "./dist/index.js";
+
+export interface Props {
+    [key: string]: any
+    contextName?: string
+}
+
+const contextName = Astro.props.contextName;
+delete Astro.props.contextName;
+
+const htmlSolt = readerInContext(() => Astro.slots.render('default'), Astro, contextName);
+---
+<Fragment set:html={htmlSolt} />    

@@ -1,0 +1,16 @@
+---
+import getContextProps from '@astro-metro/context';
+
+export interface Props extends astroHTML.JSX.HTMLAttributes {
+    title?: string
+};
+
+const { bind } = getContextProps(Astro,  "@astro-metro/forms");
+const {title, ...props} = Astro.props;
+---
+{bind.errors.length && <div {...props}>
+    {title && <h4>{title}</h4>}
+    <ol>
+        {bind.errors.map(x => <li>{x.message}</li>)}
+    </ol>
+</div> || ''}

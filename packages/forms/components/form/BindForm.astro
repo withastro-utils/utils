@@ -1,0 +1,24 @@
+---
+import { readerInContext } from "@astro-metro/context";
+
+export interface Props  {
+    bind?: any
+};
+
+Astro.props.executeAfter ??= [];
+Astro.props.method = Astro.request.method;
+const {bind} = Astro.props;
+
+let htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+bind?.finishFormValidation();
+for(const func of Astro.props.executeAfter){
+    await func();
+}
+
+
+if(Astro.props.method == "POST"){
+    Astro.props.method = "GET";
+    htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+}
+---
+<Fragment set:html={htmlSolt} />

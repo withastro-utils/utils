@@ -1,0 +1,31 @@
+---
+import getContextProps from "@astro-metro/context";
+import { caseTypes, inputReturnValueAttr, validateFormInput } from "../../dist/components/input-parse.js";
+import { validatePostRequest } from "../../dist/form-tools/post.js";
+import { ModifyDeep } from "../../dist/utils.js";
+
+type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | "int";
+
+interface ModifyInputProps {
+    type?: inputTypes
+    pattern?: RegExp
+    minlength?: number
+    maxlength?: number
+}
+
+export interface Props extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
+    name: string
+    errorMessage?: string
+    validate?: Function
+};
+
+const {bind, method} = getContextProps(Astro,  "@astro-metro/forms");
+if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
+    await validateFormInput(Astro, bind);
+}
+
+const {type = "text", pattern, ...props} = Astro.props;
+const castProps = caseTypes(type);
+const inputValue = inputReturnValueAttr(Astro, bind);
+---
+<input {...inputValue} {...props} pattern={pattern?.toString()} {...castProps}/>

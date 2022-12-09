@@ -1,0 +1,23 @@
+---
+import getContextProps from "@astro-metro/context";
+import { validatePostRequest } from "../../dist/form-tools/post.js";
+import { validateSelectOption } from "../../dist/components/select.js";
+
+export interface Props extends astroHTML.JSX.OptionHTMLAttributes {
+};
+
+const {bind, name, value: selectValue, allowSelected, method} = getContextProps(Astro,  "@astro-metro/forms");
+
+const htmlSolt = await Astro.slots.render('default');
+if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
+    validateSelectOption(Astro, bind, name, htmlSolt);
+}
+
+const optionValue = Astro.props.value ?? htmlSolt;
+const {selected, ...props} = Astro.props;
+
+const isSelectedByDefault = allowSelected && selectValue.length == 0;
+---
+<option selected={isSelectedByDefault ? selected: selectValue.includes(optionValue)} {...props}>
+    <Fragment set:html={htmlSolt} />    
+</option>
