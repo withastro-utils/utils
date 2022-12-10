@@ -38,7 +38,7 @@ importers:
       '@types/express-session': ^1.17.5
       '@types/formidable': ^2.0.5
       '@types/node': ^18.11.10
-      astro: ^1.6.12
+      astro: ^1.6.14
       csrf: ^3.1.0
       express-session: ^1.17.3
       formidable: ^3.2.5
@@ -49,7 +49,7 @@ importers:
     dependencies:
       '@astro-metro/context': link:../context
       '@astro-metro/formidable': link:../formidable
-      astro: 1.6.12_@types+node@18.11.10
+      astro: 1.6.14_@types+node@18.11.10
       csrf: 3.1.0
       express-session: 1.17.3
       formidable: 3.2.5
@@ -75,6 +75,10 @@ packages:
 
   /@astrojs/compiler/0.29.18:
     resolution: {integrity: sha512-45WhB74a/Eb/3iMJPjDXHs8r0S6NuPi3maVNLWnuW3CDmkUcJGMFPXP+qH1Xn0YDNkzk7Lt9Kw529heFPMMbZA==}
+    dev: false
+
+  /@astrojs/compiler/0.30.1:
+    resolution: {integrity: sha512-sH3hvGA9JR5eE2bHG3sr5QjaJl5ER9EmmZzSwBHkMPoBj0XU7XzQjSGoyCbIML6sSaelJEPnfsr9NsypvKOecg==}
     dev: false
 
   /@astrojs/language-server/0.28.3:
@@ -1141,12 +1145,12 @@ packages:
       - ts-node
     dev: false
 
-  /astro/1.6.12_@types+node@18.11.10:
-    resolution: {integrity: sha512-Pa1BfD/w2B/1bi6UXyvwbSnKnZqBglWgw8vjuEP+YJ8tb63g2yAn4mOy2Fh/Z5jn6fV1mkA2HS2TN2ZpTgagdg==}
+  /astro/1.6.14_@types+node@18.11.10:
+    resolution: {integrity: sha512-8ljrWPKEU5Hrrbupan48ba4gLWPY14Aqiv4u0U92wSl3wtsqPJUWWlHGGkXcgS/9dx8aiLkUm4RzCPFVnP7V2w==}
     engines: {node: ^14.18.0 || >=16.12.0, npm: '>=6.14.0'}
     hasBin: true
     dependencies:
-      '@astrojs/compiler': 0.29.18
+      '@astrojs/compiler': 0.30.1
       '@astrojs/language-server': 0.28.3
       '@astrojs/markdown-remark': 1.1.3
       '@astrojs/telemetry': 1.0.1
@@ -1170,7 +1174,6 @@ packages:
       deepmerge-ts: 4.2.2
       diff: 5.1.0
       es-module-lexer: 0.10.5
-      esbuild: 0.14.54
       execa: 6.1.0
       fast-glob: 3.2.12
       github-slugger: 1.5.0
@@ -1203,8 +1206,8 @@ packages:
       typescript: 4.9.3
       unist-util-visit: 4.1.1
       vfile: 5.3.6
-      vite: 3.2.4_@types+node@18.11.10
-      vitefu: 0.2.2_vite@3.2.4
+      vite: 3.2.5_@types+node@18.11.10
+      vitefu: 0.2.2_vite@3.2.5
       yargs-parser: 21.1.1
       zod: 3.19.1
     transitivePeerDependencies:
@@ -5035,8 +5038,8 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /vite/3.2.4_@types+node@18.11.10:
-    resolution: {integrity: sha512-Z2X6SRAffOUYTa+sLy3NQ7nlHFU100xwanq1WDwqaiFiCe+25zdxP1TfCS5ojPV2oDDcXudHIoPnI1Z/66B7Yw==}
+  /vite/3.2.5_@types+node@18.11.10:
+    resolution: {integrity: sha512-4mVEpXpSOgrssFZAOmGIr85wPHKvaDAcXqxVxVRZhljkJOMZi1ibLibzjLHzJvcok8BMguLc7g1W6W/GqZbLdQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -5061,7 +5064,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.11.10
-      esbuild: 0.15.16
+      esbuild: 0.15.17
       postcss: 8.4.19
       resolve: 1.22.1
       rollup: 2.79.1
@@ -5077,7 +5080,18 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 3.2.4_@types+node@18.11.10
+      vite: 3.2.4
+    dev: false
+
+  /vitefu/0.2.2_vite@3.2.5:
+    resolution: {integrity: sha512-8CKEIWPm4B4DUDN+h+hVJa9pyNi7rzc5MYmbxhs1wcMakueGFNWB5/DL30USm9qU3xUPnL4/rrLEAwwFiD1tag==}
+    peerDependencies:
+      vite: ^3.0.0
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      vite: 3.2.5_@types+node@18.11.10
     dev: false
 
   /vscode-css-languageservice/6.2.1:

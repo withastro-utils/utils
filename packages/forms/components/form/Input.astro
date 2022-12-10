@@ -19,7 +19,7 @@ export interface Props extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttribu
     validate?: Function
 };
 
-const {bind, method} = getContextProps(Astro,  "@astro-metro/forms");
+const {bind, method, webFormsSettings} = getContextProps(Astro,  "@astro-metro/forms");
 if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
     await validateFormInput(Astro, bind);
 }
@@ -27,5 +27,8 @@ if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro
 const {type = "text", pattern, ...props} = Astro.props;
 const castProps = caseTypes(type);
 const inputValue = inputReturnValueAttr(Astro, bind);
+
+const allProps = {...inputValue, ...props, pattern: pattern?.toString(), ...castProps};
+webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 ---
-<input {...inputValue} {...props} pattern={pattern?.toString()} {...castProps}/>
+<input {...allProps}/>

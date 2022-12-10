@@ -1,4 +1,5 @@
 ---
+import { readerInContext } from '@astro-metro/context';
 import { createFormToken } from '../dist/form-tools/csrf.js';
 import { saveSession } from '../dist/session/index.js';
 import { formsSettings } from '../dist/settings.js';
@@ -11,7 +12,8 @@ let formRequestToken = formsSettings.session && await createFormToken(Astro, for
 let htmlSolt: string;
 
 try {
-    htmlSolt = await Astro.slots.render('default');
+    Astro.props.webFormsSettings = {};
+    htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
 } finally {
     //@ts-ignore
     const deleteMethods = Astro.request.formData?.deleteFiles ?? [];
@@ -19,8 +21,12 @@ try {
     formsSettings.session && await saveSession(Astro);
 }
 
+const {webFormsSettings, ...props} = Astro.props;
+if(webFormsSettings.haveFileUpload){
+    props.enctype = 'multipart/form-data';
+}
 ---
-<form method="post" {...Astro.props}>
+<form method="post" {...props}>
     {formRequestToken && <input type="hidden" name={formRequestToken.filed} value={formRequestToken.token} />}
     <Fragment set:html={htmlSolt} />    
 </form>
