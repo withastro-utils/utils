@@ -41,7 +41,7 @@ export async function getInputValue(astro: AstroGlobal) {
         return value;
     }
 
-    return await getFormValue(astro, name);
+    return await getFormValue(astro.request, name);
 }
 
 export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>) {

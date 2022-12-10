@@ -11,7 +11,7 @@ type InputTypes = "number" | "date" | "text"
 export async function getSelectValue(astro: AstroGlobal){
     const {value: originalValue, name} = astro.props;
     if(originalValue) return [originalValue];
-    return await getFormMultiValue(astro, name);
+    return await getFormMultiValue(astro.request, name);
 }
 
 export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {

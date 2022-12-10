@@ -1,6 +1,7 @@
 import { AstroGlobal } from "astro";
 import type { RequestHandler } from "express";
 import { promisify } from "util";
+import { AstroLinkHTTP } from "../utils.js";
 
 export function fakeRequest(request: Request){
     const header = (key: string) => request.headers.get(key);
@@ -43,7 +44,7 @@ export function proxyGet(object: any, toProxy: any){
     })
 }
 
-export default async function expressSessionAPI(astro: AstroGlobal, sessionHandler: RequestHandler){
+export default async function expressSessionAPI(astro: AstroLinkHTTP, sessionHandler: RequestHandler){
     const req = proxyGet(fakeRequest(astro.request), astro.request);
     const res = fakeResponse(astro.response);
 

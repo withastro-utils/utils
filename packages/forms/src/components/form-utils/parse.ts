@@ -61,7 +61,7 @@ export function parseColor(about: AboutFormName){
 export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multiple: boolean, readonly: boolean){
     let values = [about.formValue];
     if(multiple && !readonly){
-        values = about.formValue = await getFormMultiValue(astro, about.originalName);
+        values = about.formValue = await getFormMultiValue(astro.request, about.originalName);
     }
 
     for(const value of values){

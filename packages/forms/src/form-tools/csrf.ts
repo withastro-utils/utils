@@ -1,7 +1,7 @@
-import { AstroGlobal } from 'astro';
 import Tokens from 'csrf';
-import {promisify} from 'node:util'
+import { promisify } from 'node:util';
 import { getSessionAndFormValidation } from '../session/index.js';
+import { AstroLinkHTTP } from '../utils.js';
 import { getFormValue, isPost } from './post.js';
 
 export type CSRFSettings = {
@@ -17,11 +17,11 @@ const DEFAULT_SETTINGS: CSRFSettings = {
 const tokens = new Tokens();
 const createSecret = () => promisify(tokens.secret.bind(tokens))();
 
-export async function validateFrom(astro: AstroGlobal, settings: CSRFSettings = DEFAULT_SETTINGS) {
+export async function validateFrom(astro: AstroLinkHTTP, settings: CSRFSettings = DEFAULT_SETTINGS) {
     if(!isPost(astro)) return;
     
     const currentSession = await getSessionAndFormValidation(astro);
-    const validateToken = await getFormValue(astro, settings.formFiled);
+    const validateToken = await getFormValue(astro.request, settings.formFiled);
     const validationSecret = currentSession[settings.sessionFiled] ??= await createSecret();
 
     const requestValid = validateToken && validationSecret && typeof validateToken == 'string' &&
@@ -31,7 +31,7 @@ export async function validateFrom(astro: AstroGlobal, settings: CSRFSettings = 
     astro.request.formData.requestFormValid = requestValid;
 }
 
-export async function createFormToken(astro: AstroGlobal, settings: CSRFSettings = DEFAULT_SETTINGS) {
+export async function createFormToken(astro: AstroLinkHTTP, settings: CSRFSettings = DEFAULT_SETTINGS) {
     const currentSession = await getSessionAndFormValidation(astro);
     currentSession[settings.sessionFiled] ??= await promisify(tokens.secret.bind(tokens))();
 
