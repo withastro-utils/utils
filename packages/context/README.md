@@ -43,7 +43,7 @@ import LayoutTitle from '../components/LayoutTitle.astro';
 </Layout>
 ```
 
-# Functions
+## Functions
 
 ```ts
 // if you are module/lib, change the name accordingly
