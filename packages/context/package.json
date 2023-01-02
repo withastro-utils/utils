@@ -17,6 +17,13 @@
   "homepage": "https://astro-metro.github.io/docs/",
   "author": "Ido S.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astro-metro/metro-forms.git"
+  },
+  "bugs": {
+    "url": "https://github.com/astro-metro/metro-forms/issues"
+  },
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
