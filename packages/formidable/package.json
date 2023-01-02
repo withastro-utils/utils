@@ -18,8 +18,9 @@
     "formidable",
     "request"
   ],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://astro-metro.github.io/docs/",
+  "author": "Ido S.",
+  "license": "MIT",
   "dependencies": {
     "formidable": "^3.2.5"
   },
