@@ -28,6 +28,9 @@
   "bugs": {
     "url": "https://github.com/astro-metro/metro-forms/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "formidable": "^3.2.5"
   },
