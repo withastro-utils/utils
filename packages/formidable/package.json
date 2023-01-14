@@ -1,13 +1,13 @@
 {
   "name": "@astro-metro/formidable",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "",
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js"
   },
-  "files": ["dist/*", "README.md"],
+  "files": ["dist/*", "README.md", "LICENSE"],
   "scripts": {
     "build": "rm -r dist; tsc",
     "prepack": "npm run build",

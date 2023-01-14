@@ -1,6 +1,6 @@
 {
   "name": "@astro-metro/forms",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ASPX like web forms for astro.js",
   "type": "module",
   "scripts": {
@@ -34,7 +34,7 @@
     "./forms.js": "./forms.js",
     "./dist/settings.js": "./dist/settings.js"
   },
-  "files": ["dist/*", "components/*", "README.md", "forms.ts"],
+  "files": ["dist/*", "components/*", "README.md", "forms.ts", "LICENSE"],
   "devDependencies": {
     "@types/express": "^4.17.14",
     "@types/express-session": "^1.17.5",
