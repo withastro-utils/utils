@@ -1,5 +1,5 @@
 ---
-import getContextProps from "@astro-metro/context";
+import getContext from "@astro-metro/context";
 import { createUniqueContinuanceName } from "../../dist/form-tools/connectId.js";
 import { isPost, validateAction } from "../../dist/form-tools/post.js";
 
@@ -10,11 +10,11 @@ export interface Props extends astroHTML.JSX.ButtonHTMLAttributes {
 }
 
 const {onClick, whenFormOK, connectId = createUniqueContinuanceName(onClick), ...props} = Astro.props;
-const {bind, executeAfter} = getContextProps(Astro, "@astro-metro/forms");
+const {bind, executeAfter} = getContext(Astro, "@astro-metro/forms");
 
 async function executeOnClickEvent(){
     const checkFormValidation = whenFormOK && !bind?.errors.length || !whenFormOK;
-    if(isPost(Astro) && await validateAction(Astro, 'button-callback', connectId) && checkFormValidation){
+    if(isPost(Astro) && await validateAction(Astro as any, 'button-callback', connectId) && checkFormValidation){
         await onClick();
     }
 }
@@ -24,7 +24,6 @@ if(executeAfter){
 } else {
     await executeOnClickEvent();
 }
-
 ---
 <button type="submit" name="button-callback" value={connectId} {...props}>
     <slot/>

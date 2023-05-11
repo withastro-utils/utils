@@ -2,7 +2,7 @@
 import { validatePostRequest } from '../../dist/form-tools/post.js';
 import { validateSelect } from '../../dist/components/select.js';
 import { getSelectValue } from '../../dist/components/select.js';
-import getContextProps from '@astro-metro/context';
+import getContext from '@astro-metro/context';
 import Context from '@astro-metro/context/Context.astro';
 
 export interface Props extends astroHTML.JSX.SelectHTMLAttributes {
@@ -11,12 +11,12 @@ export interface Props extends astroHTML.JSX.SelectHTMLAttributes {
     type?: 'string' | 'number' | 'date'
 };
 
-const {bind, method} = getContextProps(Astro, "@astro-metro/forms");
+const {bind, method} = getContext(Astro, "@astro-metro/forms");
 
 const {value: defaultValue, ...props} = Astro.props;
 let value = bind[Astro.props.name] ?? defaultValue;
 
-if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
+if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro as any)){
     await validateSelect(Astro, bind);
     value = await getSelectValue(Astro);
 }

@@ -1,24 +1,23 @@
 ---
-import { readerInContext } from "@astro-metro/context";
+import { asyncContext } from "@astro-metro/context";
 
 export interface Props  {
     bind?: any
 };
 
-Astro.props.executeAfter ??= [];
-Astro.props.method = Astro.request.method;
 const {bind} = Astro.props;
+const context = {executeAfter: [], method: Astro.request.method, bind};
 
-let htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-metro/forms", context});
 bind?.finishFormValidation();
-for(const func of Astro.props.executeAfter){
+for(const func of context.executeAfter){
     await func();
 }
 
 
-if(Astro.props.method == "POST"){
-    Astro.props.method = "GET";
-    htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+if(context.method == "POST"){
+    context.method = "GET";
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-metro/forms", context});
 }
 ---
 <Fragment set:html={htmlSolt} />

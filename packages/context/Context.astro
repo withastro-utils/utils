@@ -1,5 +1,5 @@
 ---
-import { readerInContext } from "./dist/index.js";
+import { asyncContext } from "./dist/index.js";
 
 export interface Props {
     [key: string]: any
@@ -9,6 +9,6 @@ export interface Props {
 const contextName = Astro.props.contextName;
 delete Astro.props.contextName;
 
-const htmlSolt = readerInContext(() => Astro.slots.render('default'), Astro, contextName);
+const htmlSolt = asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName});
 ---
 <Fragment set:html={htmlSolt} />    

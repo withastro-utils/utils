@@ -1,8 +1,8 @@
 import parseAstroForm, { isFormidableFile } from "@astro-metro/formidable";
 import ExtendedFormData from "@astro-metro/formidable/dist/ExtendedFormData.js";
-import { getSessionAndFormValidation } from "../session/index.js";
-import { formsSettings } from "../settings.js";
+import { FORM_OPTIONS } from "../settings.js";
 import { AstroLinkHTTP } from "../utils.js";
+import { validateFrom } from "./csrf.js";
 
 export function isPost(astro: {request: Request}){
     return astro.request.method === "POST";
@@ -21,7 +21,7 @@ export async function parseFormData(request: Request){
         return request.formData();
     }
 
-    const formData = await parseAstroForm(request, formsSettings.forms);
+    const formData = await parseAstroForm(request, FORM_OPTIONS.forms);
     //@ts-ignore
     request.formData.deleteFiles = extractDeleteMethods(formData);
     request.formData = () => <any>Promise.resolve(formData);
@@ -39,7 +39,7 @@ export async function getFormMultiValue(request: Request, key: string){
 }
 
 export async function validatePostRequest(astro: AstroLinkHTTP){
-    await getSessionAndFormValidation(astro); // load the session & validation, the session contains the secrets for the validation
+    await validateFrom(astro); // load the session & validation, the session contains the secrets for the validation
     //@ts-ignore
     return astro.request.formData.requestFormValid;
 }

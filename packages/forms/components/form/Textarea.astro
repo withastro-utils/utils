@@ -1,5 +1,5 @@
 ---
-import getContextProps from "@astro-metro/context";
+import getContext from "@astro-metro/context";
 import { validateFormInput } from "../../dist/components/input-parse.js";
 import { validatePostRequest } from "../../dist/form-tools/post.js";
 import { ModifyDeep } from "../../dist/utils.js";
@@ -15,8 +15,8 @@ export interface Props extends Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttr
     validate?: Function
 };
 
-const {bind, method} = getContextProps(Astro, "@astro-metro/forms");
-if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro)){
+const {bind, method} = getContext(Astro, "@astro-metro/forms");
+if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro as any)){
     await validateFormInput(Astro, bind);
 }
 

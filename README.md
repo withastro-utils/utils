@@ -1,6 +1,6 @@
 # Astro Metro
 
-![Astro metro icon](./assets/banner.jpeg)
+![Astro metro icon](./assets/banner.webp)
 
 Components to help with your astro app
 
@@ -15,6 +15,17 @@ Packages:
 Allow client side & server side validation and CSRF protection. Alow export a session the you can use in your pages
 
 ## Usage
+
+Add the middleware to your server
+
+
+`src/middleware.ts`
+```ts
+import astroMiddleware from "@astro-metro/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(astroMiddleware());
+```
 
 Add the `WebForms` component in the layout
 
@@ -31,10 +42,9 @@ import {WebForms} from '@astro-metro/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { activateWebForms,Bind } from "@astro-metro/forms";
-import { BindForm,Button,Input } from "@astro-metro/forms/forms.js";
+import { Bind } from "@astro-metro/forms";
+import { BindForm, Button, Input } from "@astro-metro/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
-await activateWebForms(Astro);
 
 const form = Bind();
 let showSubmitText: string;
@@ -56,4 +66,21 @@ function formSubmit(){
         <Button onClick={formSubmit} whenFormOK>Submit</Button>
     </BindForm>
 </Layout>
+```
+
+### Easy debugging
+When vite reloads the page, the browser will popup confirmation dialog. This is annoying when you are debugging. You can disable this by using the astro-metro integration
+
+`astro.config.mjs`
+```js
+import { defineConfig } from 'astro/config';
+import amDebugging from "@astro-metro/forms/dist/integration.js"
+
+export default defineConfig({
+	output: 'server',
+	integrations: [amDebugging],
+	experimental: {
+		middleware: true
+	}
+});
 ```

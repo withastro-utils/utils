@@ -1,16 +1,21 @@
 export default {
-    name: 'astro-site-session',
+    name: '@astro-metro/forms',
     hooks: {
-        'astro:config:setup': ({ injectScript }) => {
-            injectScript('page-ssr', `
-            const {initialize} = await import("@astro-metro/forms/dist/settings.js");
-            try {
-                const {default: webFormSettings} = await import("../forms.config.ts");
-                initialize(webFormSettings);
-            } catch(err) {
-                initialize();
-            }
-            `);
-        },
+        'astro:config:setup'({config, command}) {
+            if(!command) return;
+            config.vite ??= {};
+            config.vite.plugins ??= [];
+
+            config.vite.plugins.push({
+                name: 'astro-metro-dev',
+                apply: 'serve',
+                enforce: 'post',
+                transform(code, id) {
+                    if (id.endsWith('node_modules/vite/dist/client/client.mjs')) {
+                        return code.replaceAll(/\blocation\.reload\(\)(([\s;])|\b)/g, "window.open(location.href, '_self')$1")
+                    }
+                }
+            });
+        }
     }
 };

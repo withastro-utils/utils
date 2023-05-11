@@ -1,27 +1,28 @@
 ---
-import { readerInContext } from '@astro-metro/context';
+import { asyncContext } from '@astro-metro/context';
 import { createFormToken } from '../dist/form-tools/csrf.js';
-import { saveSession } from '../dist/session/index.js';
-import { formsSettings } from '../dist/settings.js';
+import { FORM_OPTIONS } from '../dist/settings.js';
 
 export interface Props extends astroHTML.JSX.FormHTMLAttributes {
-    
 }
 
-let formRequestToken = formsSettings.session && await createFormToken(Astro, formsSettings.csrf);
+let formRequestToken = FORM_OPTIONS.session?.cookieOptions?.maxAge && await createFormToken(Astro as any, FORM_OPTIONS.csrf);
 let htmlSolt: string;
 
+const context = {
+    ...Astro.props,
+    webFormsSettings: {haveFileUpload: false}
+};
+
 try {
-    Astro.props.webFormsSettings = {};
-    htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-metro/forms", context});
 } finally {
     //@ts-ignore
     const deleteMethods = Astro.request.formData?.deleteFiles ?? [];
     deleteMethods.forEach((func: Function) => func());
-    formsSettings.session && await saveSession(Astro);
 }
 
-const {webFormsSettings, ...props} = Astro.props;
+const {webFormsSettings, ...props} = context;
 if(webFormsSettings.haveFileUpload){
     props.enctype = 'multipart/form-data';
 }

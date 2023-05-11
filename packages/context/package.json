@@ -1,6 +1,6 @@
 {
   "name": "@astro-metro/context",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Context props for astro.js",
   "type": "module",
   "scripts": {
@@ -27,7 +27,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": ["dist/*", "README.md", "Context.astro", "LICENSE"],
+  "files": [
+    "dist/*",
+    "README.md",
+    "Context.astro",
+    "LICENSE"
+  ],
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
@@ -37,6 +42,6 @@
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
-    "astro": "^1.6.11"
+    "astro": "^2.4.4"
   }
 }
