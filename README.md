@@ -21,10 +21,10 @@ Add the middleware to your server
 
 `src/middleware.ts`
 ```ts
-import astroMiddleware from "@astro-metro/forms";
+import amMiddleware from "@astro-metro/forms";
 import {sequence} from "astro/middleware";
 
-export const onRequest = sequence(astroMiddleware());
+export const onRequest = sequence(amMiddleware());
 ```
 
 Add the `WebForms` component in the layout
