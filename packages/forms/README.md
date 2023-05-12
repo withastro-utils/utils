@@ -1,10 +1,25 @@
 # Astro Forms
 
-Full feature form control for Astro.js
+<img src ="https://raw.githubusercontent.com/astro-metro/metro-forms/main/assets/logo.webp" width="100px"/><br/>
 
-Allow client side & server side validation and CSRF protection. Alow export a session the you can use in your pages
+Full feature form control middleware for Astro.js
+
+- Allow client side & server side validation and CSRF protection.
+
+- Export JWT session that can be used in every page.
+
 
 ## Usage
+
+Add the middleware to your server
+
+`src/middleware.ts`
+```ts
+import amMiddleware from "@astro-metro/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(amMiddleware());
+```
 
 Add the `WebForms` component in the layout
 
@@ -21,10 +36,9 @@ import {WebForms} from '@astro-metro/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { activateWebForms,Bind } from "@astro-metro/forms";
-import { BindForm,Button,Input } from "@astro-metro/forms/forms.js";
+import { Bind } from "@astro-metro/forms";
+import { BindForm, Button, Input } from "@astro-metro/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
-await activateWebForms(Astro);
 
 const form = Bind();
 let showSubmitText: string;
@@ -54,9 +68,8 @@ function formSubmit(){
 ```astro
 ---
 import { BindForm, Button, FormErrors, Input, Option, Select, Textarea } from "@astro-metro/forms/forms.js";
-import {Bind, activateWebForms} from "@astro-metro/forms";
+import { Bind } from "@astro-metro/forms";
 import Layout from "../layouts/Layout.astro";
-await activateWebForms(Astro);
 
 type formType = {
     name: string,
@@ -117,20 +130,19 @@ You can also use this as a simple on click hook
 
 ```astro
 ---
-import { activateWebForms } from "@astro-metro/forms";
 import { Button } from "@astro-metro/forms/forms.js";
-const {session} = await activateWebForms(Astro);
+const { asSession } = Astro.locals
 
 function increaseCounter() {
-    session.counter ??= 0
-    session.counter++
+    asSession.counter ??= 0
+    asSession.counter++
 }
 ---
 <Layout>
     <Button onClick={increaseCounter}>++</Button>
 <Layout/>
 
-{session.counter}
+{asSession.counter}
 ```
 
 The changing data need to be after the button.

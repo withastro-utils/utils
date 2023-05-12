@@ -12,7 +12,9 @@ Packages:
 
 # Full feature form control for Astro.js
 
-Allow client side & server side validation and CSRF protection. Alow export a session the you can use in your pages
+Allow client side & server side validation and CSRF protection.
+
+Export JWT session that can be used in every page.
 
 ## Usage
 
