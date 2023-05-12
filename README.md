@@ -74,11 +74,11 @@ When vite reloads the page, the browser will popup confirmation dialog. This is 
 `astro.config.mjs`
 ```js
 import { defineConfig } from 'astro/config';
-import amDebugging from "@astro-metro/forms/dist/integration.js"
+import amDebug from "@astro-metro/forms/dist/integration.js";
 
 export default defineConfig({
 	output: 'server',
-	integrations: [amDebugging],
+	integrations: [amDebug],
 	experimental: {
 		middleware: true
 	}
