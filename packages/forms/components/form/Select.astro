@@ -2,8 +2,8 @@
 import { validatePostRequest } from '../../dist/form-tools/post.js';
 import { validateSelect } from '../../dist/components/select.js';
 import { getSelectValue } from '../../dist/components/select.js';
-import getContext from '@astro-metro/context';
-import Context from '@astro-metro/context/Context.astro';
+import getContext from '@astro-utils/context';
+import Context from '@astro-utils/context/Context.astro';
 
 export interface Props extends astroHTML.JSX.SelectHTMLAttributes {
     name: string
@@ -11,7 +11,7 @@ export interface Props extends astroHTML.JSX.SelectHTMLAttributes {
     type?: 'string' | 'number' | 'date'
 };
 
-const {bind, method} = getContext(Astro, "@astro-metro/forms");
+const {bind, method} = getContext(Astro, "@astro-utils/forms");
 
 const {value: defaultValue, ...props} = Astro.props;
 let value = bind[Astro.props.name] ?? defaultValue;
@@ -28,7 +28,7 @@ if(isValueNotArray){
 }
 
 ---
-<Context name={Astro.props.name} value={value} allowSelected={isValueNotArray} contextName="@astro-metro/forms">
+<Context name={Astro.props.name} value={value} allowSelected={isValueNotArray} contextName="@astro-utils/forms">
     <select {...props}>
         <slot/>
     </select>

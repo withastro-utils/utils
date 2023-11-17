@@ -1,5 +1,5 @@
 ---
-import getContext from "@astro-metro/context";
+import getContext from "@astro-utils/context";
 import { caseTypes, inputReturnValueAttr, validateFormInput } from "../../dist/components/input-parse.js";
 import { validatePostRequest } from "../../dist/form-tools/post.js";
 import { ModifyDeep } from "../../dist/utils.js";
@@ -19,7 +19,7 @@ export interface Props extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttribu
     validate?: Function
 };
 
-const {bind, method, webFormsSettings} = getContext(Astro,  "@astro-metro/forms");
+const {bind, method, webFormsSettings} = getContext(Astro,  "@astro-utils/forms");
 if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro as any)){
     await validateFormInput(Astro, bind);
 }

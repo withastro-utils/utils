@@ -1,13 +1,13 @@
-# Astro Metro
+# Astro Utils
 
 ![Astro metro icon](./assets/banner.webp)
 
 Components to help with your astro app
 
-Packages:
-- [Form binding & validation](./packages/forms/README.md) - feel native as regular HTML
-- [Astro formidable](./packages/formidable/README.md) - parse astro forms
-- [Astro component context](./packages/context/README.md) - extra props base on context
+### What that includes?
+- [Reactive Forms](./packages/forms/README.md) - feel native as regular HTML
+- [Formidable (for astro)](./packages/formidable/README.md) - parse astro formsData
+- [Component Context](./packages/context/README.md) - extra props base on context
 
 
 # Full feature form control for Astro.js
@@ -23,7 +23,7 @@ Add the middleware to your server
 
 `src/middleware.ts`
 ```ts
-import amMiddleware from "@astro-metro/forms";
+import amMiddleware from "@astro-utils/forms";
 import {sequence} from "astro/middleware";
 
 export const onRequest = sequence(amMiddleware());
@@ -34,7 +34,7 @@ Add the `WebForms` component in the layout
 `layouts/Layout.astro`
 ```astro
 ---
-import {WebForms} from '@astro-metro/forms/forms.js';
+import {WebForms} from '@astro-utils/forms/forms.js';
 ---
 <WebForms>
     <slot/>
@@ -44,8 +44,8 @@ import {WebForms} from '@astro-metro/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { Bind } from "@astro-metro/forms";
-import { BindForm, Button, Input } from "@astro-metro/forms/forms.js";
+import { Bind } from "@astro-utils/forms";
+import { BindForm, Button, Input } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 const form = Bind();
@@ -71,12 +71,12 @@ function formSubmit(){
 ```
 
 ### Easy debugging
-When vite reloads the page, the browser will popup confirmation dialog. This is annoying when you are debugging. You can disable this by using the astro-metro integration
+When vite reloads the page, the browser will popup confirmation dialog. This is annoying when you are debugging. You can disable this by using the astro-utils integration
 
 `astro.config.mjs`
 ```js
 import { defineConfig } from 'astro/config';
-import amDebug from "@astro-metro/forms/dist/integration.js";
+import amDebug from "@astro-utils/forms/dist/integration.js";
 
 export default defineConfig({
 	output: 'server',

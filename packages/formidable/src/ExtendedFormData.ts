@@ -1,12 +1,12 @@
-import PersistentFile from "formidable/src/PersistentFile.js";
+import {File} from 'formidable';
 
-type FormDataValue = string | PersistentFile;
+export type FormDataValue = string | File;
 
 export default class ExtendedFormData {
     #data = new Map<string, FormDataValue[]>();
 
     #validateFileType(value: FormDataValue) {
-        if (typeof value != 'string' && !(value instanceof PersistentFile)) {
+        if (typeof value != 'string' && !(value instanceof File)) {
             return String(value);
         }
         return value;
@@ -26,23 +26,41 @@ export default class ExtendedFormData {
         this.#data.delete(name);
     }
 
-    get(name: string): FormDataEntryValue | null | PersistentFile {
+    get(name: string): FormDataValue | null {
         return this.#data.get(name)?.[0];
     }
 
-    getAll(name: string): FormDataEntryValue[] | PersistentFile[] {
+    getAll(name: string): FormDataValue[] {
         return this.#data.get(name) ?? [];
+    }
+
+    getText(name: string): string | null {
+        const value = this.get(name);
+        return typeof value == 'string' ? value : null;
+    }
+
+    getAllText(name: string): string[] {
+        return this.getAll(name).filter(value => typeof value == 'string') as string[];
+    }
+
+    getFile(name: string): File | null {
+        const value = this.get(name);
+        return value instanceof File ? value as File : null;
+    }
+
+    getAllFiles(name: string): File[] {
+        return this.getAll(name).filter(value => value instanceof File) as File[];
     }
 
     has(name: string): boolean {
         return this.get(name) != null;
     }
 
-    set(name: string, value: string | Blob): void {
+    set(name: string, value: FormDataValue): void {
         this.#data.set(name, [this.#validateFileType(value)]);
     }
 
-    entries(): IterableIterator<[string, FormDataValue]> {
+    entries(): IterableIterator<[string, FormDataValue[]]> {
         return this.#data.entries();
     }
 
@@ -60,7 +78,7 @@ export default class ExtendedFormData {
         }
     }
 
-    [Symbol.iterator](): IterableIterator<[string, FormDataValue]> {
+    [Symbol.iterator](): IterableIterator<[string, FormDataValue[]]> {
         return this.#data[Symbol.iterator]();
     }
 }

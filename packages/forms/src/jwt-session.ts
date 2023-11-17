@@ -14,7 +14,7 @@ export class JWTSession {
     }
 
     private loadData() {
-        const cookieContent = this.cookies.get(FORM_OPTIONS.session.cookieName).value;
+        const cookieContent = this.cookies.get(FORM_OPTIONS.session.cookieName)?.value;
         if (!cookieContent) return;
 
         try {

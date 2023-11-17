@@ -1,6 +1,6 @@
 {
-  "name": "@astro-metro/formidable",
-  "version": "1.0.3",
+  "name": "@astro-utils/formidable",
+  "version": "0.0.0",
   "type": "module",
   "description": "",
   "main": "./dist/index.js",
@@ -19,15 +19,15 @@
     "formidable",
     "request"
   ],
-  "homepage": "https://astro-metro.github.io/docs/",
+  "homepage": "https://astro-utils.github.io/docs/",
   "author": "Ido S.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/astro-metro/metro-forms.git"
+    "url": "https://github.com/astro-utils/metro-forms.git"
   },
   "bugs": {
-    "url": "https://github.com/astro-metro/metro-forms/issues"
+    "url": "https://github.com/astro-utils/metro-forms/issues"
   },
   "publishConfig": {
     "access": "public"

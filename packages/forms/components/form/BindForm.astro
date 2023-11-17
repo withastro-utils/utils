@@ -1,5 +1,5 @@
 ---
-import { asyncContext } from "@astro-metro/context";
+import { asyncContext } from "@astro-utils/context";
 
 export interface Props  {
     bind?: any
@@ -8,7 +8,7 @@ export interface Props  {
 const {bind} = Astro.props;
 const context = {executeAfter: [], method: Astro.request.method, bind};
 
-let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-metro/forms", context});
+let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-utils/forms", context});
 bind?.finishFormValidation();
 for(const func of context.executeAfter){
     await func();
@@ -17,7 +17,7 @@ for(const func of context.executeAfter){
 
 if(context.method == "POST"){
     context.method = "GET";
-    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-metro/forms", context});
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-utils/forms", context});
 }
 ---
 <Fragment set:html={htmlSolt} />

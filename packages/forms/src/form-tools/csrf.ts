@@ -19,7 +19,7 @@ const createSecret = () => promisify(tokens.secret.bind(tokens))();
 export async function validateFrom(astro: AstroLinkHTTP, settings: CSRFSettings = DEFAULT_SETTINGS) {
     //@ts-ignore
     if(!isPost(astro) || typeof astro.request.formData.requestFormValid == 'boolean') return;
-    
+
     const currentSession = astro.locals.amSession;
     const validateToken = await getFormValue(astro.request, settings.formFiled);
     const validationSecret = currentSession[settings.sessionFiled] ??= await createSecret();

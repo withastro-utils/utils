@@ -6,7 +6,7 @@ Allow you to use formidable for request parse
 
 `pages/upload.json.ts`
 ```ts
-import {parseAstroForm, isFormidableFile} from '@astro-metro/formidable';
+import {parseAstroForm, isFormidableFile} from '@astro-utils/formidable';
 
 export const post: APIRoute = ({ request }) => {
     const formData: FormData = await parseAstroForm(Astro.request);
@@ -26,7 +26,7 @@ export const post: APIRoute = ({ request }) => {
 `pages/index.page`
 ```astro
 ---
-import {parseAstroForm, isFormidableFile} from '@astro-metro/formidable';
+import {parseAstroForm, isFormidableFile} from '@astro-utils/formidable';
 
 if(Astro.request.method === "POST"){
     const formData: FormData = await parseAstroForm(Astro.request);

@@ -1,7 +1,8 @@
 {
-    "name": "astro-metro",
+    "name": "astro-utils",
     "workspaces": [
-        "packages/*"
+        "packages/*",
+        "examples/*"
     ],
     "dependencies": {
         "@changesets/cli": "^2.25.2"

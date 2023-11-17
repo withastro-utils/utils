@@ -1,12 +1,12 @@
 ---
-import getContext from "@astro-metro/context";
+import getContext from "@astro-utils/context";
 import { validatePostRequest } from "../../dist/form-tools/post.js";
 import { validateSelectOption } from "../../dist/components/select.js";
 
 export interface Props extends astroHTML.JSX.OptionHTMLAttributes {
 };
 
-const {bind, name, value: selectValue, allowSelected, method} = getContext(Astro,  "@astro-metro/forms");
+const {bind, name, value: selectValue, allowSelected, method} = getContext(Astro,  "@astro-utils/forms");
 
 const htmlSolt = await Astro.slots.render('default');
 if(!Astro.props.disabled && method === "POST" && await validatePostRequest(Astro as any)){

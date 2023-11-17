@@ -9,7 +9,7 @@ Allow you to add extra props without the need to manually add them every time
 `layouts/Layout.astro`
 ```astro
 ---
-import Context from '@astro-metro/context/Context.astro';
+import Context from '@astro-utils/context/Context.astro';
 
 function consoleIt(){
     console.log('Hi');
@@ -23,7 +23,7 @@ function consoleIt(){
 `components/LayoutTitle.astro`
 ```astro
 ---
-import getContextProps from '@astro-metro';
+import getContextProps from '@astro-utils';
 
 const {title, consoleIt} = getContextProps(Astro);
 consoleIt();

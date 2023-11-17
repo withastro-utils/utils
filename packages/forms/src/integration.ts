@@ -1,5 +1,5 @@
 export default {
-    name: '@astro-metro/forms',
+    name: '@astro-utils/forms',
     hooks: {
         'astro:config:setup'({config, command}) {
             if(!command) return;
@@ -7,7 +7,7 @@ export default {
             config.vite.plugins ??= [];
 
             config.vite.plugins.push({
-                name: 'astro-metro-dev',
+                name: 'astro-utils-dev',
                 apply: 'serve',
                 enforce: 'post',
                 transform(code, id) {

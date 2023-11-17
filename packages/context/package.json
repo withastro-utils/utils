@@ -1,6 +1,6 @@
 {
-  "name": "@astro-metro/context",
-  "version": "1.0.3",
+  "name": "@astro-utils/context",
+  "version": "0.0.0",
   "description": "Context props for astro.js",
   "type": "module",
   "scripts": {
@@ -12,17 +12,18 @@
     "astro",
     "props",
     "react",
+    "context",
     "jsx"
   ],
-  "homepage": "https://astro-metro.github.io/docs/",
+  "homepage": "https://astro-utils.github.io/docs/",
   "author": "Ido S.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/astro-metro/metro-forms.git"
+    "url": "https://github.com/astro-utils/metro-forms.git"
   },
   "bugs": {
-    "url": "https://github.com/astro-metro/metro-forms/issues"
+    "url": "https://github.com/astro-utils/metro-forms/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -39,9 +40,9 @@
     "./Context.astro": "./Context.astro"
   },
   "devDependencies": {
-    "typescript": "^4.9.3"
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "astro": "^2.4.4"
+    "astro": "^3.5.5"
   }
 }

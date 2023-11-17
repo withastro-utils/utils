@@ -1,27 +1,28 @@
-import formidable from "formidable";
-import PersistentFile from "formidable/src/PersistentFile.js";
-import { EventEmitter } from "node:events";
-import ExtendedFormData from "./ExtendedFormData.js";
+import formidable, {File} from 'formidable';
+import {EventEmitter} from 'node:events';
+import ExtendedFormData, {FormDataValue} from './ExtendedFormData.js';
 
 class FormidableRequest extends EventEmitter {
-    headers: { [key: string]: string }
+    headers: { [key: string]: string };
 
     constructor(request: Request) {
         super();
         this.headers = Object.fromEntries(request.headers.entries());
     }
 
-    pause() { }
+    pause() {
+    }
 
-    resume() { }
+    resume() {
+    }
 }
 
 /**
  * Parse form data - urlencoded, multipart and all other plugins of formidable,
  * you can specify witch plugins to use in the options
- * @param request 
- * @param options 
- * @returns 
+ * @param request
+ * @param options
+ * @returns
  */
 export default async function parseAstroForm(request: Request, options?: formidable.Options) {
     const formData = new ExtendedFormData();
@@ -46,15 +47,15 @@ export default async function parseAstroForm(request: Request, options?: formida
 
             res();
         });
-    })
+    });
 
 
     const bodyData = await request.arrayBuffer();
     const sizeLimit = (options?.maxFieldsSize ?? 0) + (options?.maxTotalFileSize ?? 0);
-    if(!sizeLimit || sizeLimit >= bodyData.byteLength){
+    if (!sizeLimit || sizeLimit >= bodyData.byteLength) {
         formidableRequest.emit('data', new Uint8Array(bodyData));
     }
-    
+
     formidableRequest.emit('end');
     await dataFinish;
 
@@ -62,5 +63,8 @@ export default async function parseAstroForm(request: Request, options?: formida
 }
 
 export function isFormidableFile(object: any) {
-    return object instanceof PersistentFile;
+    return object instanceof File;
 }
+
+
+export {File, FormDataValue, ExtendedFormData};

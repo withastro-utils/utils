@@ -1,12 +1,15 @@
 # Astro Forms
 
-<img src ="https://raw.githubusercontent.com/astro-metro/metro-forms/main/assets/logo.webp" width="100px"/><br/>
+<img src ="https://raw.githubusercontent.com/astro-utils/metro-forms/main/assets/logo.webp" width="100px"/><br/>
 
-Full feature form control middleware for Astro.js
 
-- Allow client side & server side validation and CSRF protection.
+Reactive forms for Astro without any JavaScript!
 
+### Why use this?
+- Allow client side & server side validation & parsing (number, boolean...)
+- CSRF protection (with JWT)
 - Export JWT session that can be used in every page.
+- Use formidable to parse forms data
 
 
 ## Usage
@@ -15,10 +18,10 @@ Add the middleware to your server
 
 `src/middleware.ts`
 ```ts
-import amMiddleware from "@astro-metro/forms";
+import astroForms from "@astro-utils/forms";
 import {sequence} from "astro/middleware";
 
-export const onRequest = sequence(amMiddleware());
+export const onRequest = sequence(astroForms());
 ```
 
 Add the `WebForms` component in the layout
@@ -26,7 +29,7 @@ Add the `WebForms` component in the layout
 `layouts/Layout.astro`
 ```astro
 ---
-import {WebForms} from '@astro-metro/forms/forms.js';
+import {WebForms} from '@astro-utils/forms/forms.js';
 ---
 <WebForms>
     <slot/>
@@ -36,8 +39,8 @@ import {WebForms} from '@astro-metro/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { Bind } from "@astro-metro/forms";
-import { BindForm, Button, Input } from "@astro-metro/forms/forms.js";
+import { Bind } from "@astro-utils/forms";
+import { BindForm, Button, Input } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 const form = Bind();
@@ -48,9 +51,9 @@ function formSubmit(){
 }
 ---
 <Layout>
-    {showSubmitText}
-
     <BindForm bind={form}>
+        {showSubmitText}
+        
         <h4>What you name*</h4>
         <Input type={'text'} name="name" maxlength={20} required/>
     
@@ -67,8 +70,8 @@ function formSubmit(){
 `pages/index.astro`
 ```astro
 ---
-import { BindForm, Button, FormErrors, Input, Option, Select, Textarea } from "@astro-metro/forms/forms.js";
-import { Bind } from "@astro-metro/forms";
+import { BindForm, Button, FormErrors, Input, Option, Select, Textarea } from "@astro-utils/forms/forms.js";
+import { Bind } from "@astro-utils/forms";
 import Layout from "../layouts/Layout.astro";
 
 type formType = {
@@ -130,7 +133,7 @@ You can also use this as a simple on click hook
 
 ```astro
 ---
-import { Button } from "@astro-metro/forms/forms.js";
+import { Button } from "@astro-utils/forms/forms.js";
 const { asSession } = Astro.locals
 
 function increaseCounter() {
@@ -140,9 +143,8 @@ function increaseCounter() {
 ---
 <Layout>
     <Button onClick={increaseCounter}>++</Button>
+    {asSession.counter}
 <Layout/>
-
-{asSession.counter}
 ```
 
 The changing data need to be after the button.

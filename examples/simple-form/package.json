@@ -1,0 +1,16 @@
+{
+  "name": "simple-form",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astro-utils/forms": "^0.0.0",
+    "astro": "^3.5.5"
+  }
+}

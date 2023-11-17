@@ -1,10 +1,11 @@
-import { APIContext, MiddlewareNextResponse } from 'astro';
-import { validateFrom } from './form-tools/csrf.js';
-import { JWTSession } from './jwt-session.js';
-import { FORM_OPTIONS, FormsSettings } from './settings.js';
+import {APIContext, MiddlewareEndpointHandler, MiddlewareNextResponse} from 'astro';
+import {validateFrom} from './form-tools/csrf.js';
+import {JWTSession} from './jwt-session.js';
+import {FORM_OPTIONS, FormsSettings} from './settings.js';
 import {v4 as uuid} from 'uuid';
+import defaults from 'defaults';
 
-Object.assign(FORM_OPTIONS, {
+const DEFAULT_FORM_OPTIONS: FormsSettings = {
     csrf: {
         formFiled: 'request-validation-token',
         sessionFiled: 'request-validation-secret'
@@ -23,10 +24,10 @@ Object.assign(FORM_OPTIONS, {
         }
     },
     secret: uuid()
-} as FormsSettings);
+};
 
-export default function astroMetro(settings?: FormsSettings){
-    settings && Object.assign(FORM_OPTIONS, settings);
+export default function astroForms(settings: Partial<FormsSettings> = {}){
+    Object.assign(FORM_OPTIONS, defaults(settings, DEFAULT_FORM_OPTIONS));
 
     return async function onRequest ({ locals, request, cookies }: APIContext , next: MiddlewareNextResponse) {
         const session = new JWTSession(cookies);
@@ -37,5 +38,5 @@ export default function astroMetro(settings?: FormsSettings){
         session.setCookieHeader(response.headers);
 
         return response;
-    };
+    } as MiddlewareEndpointHandler;
 }
