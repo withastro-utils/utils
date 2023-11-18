@@ -7,14 +7,21 @@ import {execSync} from 'node:child_process';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PACKAGES_PATH = path.join(__dirname, '..', '..', 'packages');
 
-async function main() {
+async function updateAllPackages(callback) {
     const packagesPathByOrder = await new ScanPublishOrder(PACKAGES_PATH).getReleaseOrder();
 
     for (const packagePath of packagesPathByOrder) {
         const packageJsonPath = path.join(packagePath, 'package.json');
         await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
-        execSync('npm run release', {cwd: packagePath, stdio: 'inherit'});
+        callback?.(packagePath);
     }
+}
+
+async function main() {
+    await updateAllPackages();
+    await updateAllPackages(packagePath =>
+        execSync('npm run release', {cwd: packagePath, stdio: 'inherit'})
+    );
 }
 
 await main();
