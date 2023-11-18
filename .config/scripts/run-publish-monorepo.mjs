@@ -19,7 +19,7 @@ async function updateAllPackages(callback) {
 async function main() {
     await updateAllPackages();
     await updateAllPackages((packagePath, name) => {
-        // execSync('npm run release -- --tag-format=\'' + name + '@${version}\'', {cwd: packagePath, stdio: 'inherit'});
+        execSync('npm run release -- --tag-format=\'' + name + '@${version}\'', {cwd: packagePath, stdio: 'inherit'});
         }
     );
 }
