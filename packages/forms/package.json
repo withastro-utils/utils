@@ -1,6 +1,6 @@
 {
   "name": "@astro-utils/forms",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ASPX like web forms for astro.js",
   "type": "module",
   "scripts": {
@@ -52,8 +52,8 @@
     "vite": "^4.1.2"
   },
   "dependencies": {
-    "@astro-utils/context": "0.0.0",
-    "@astro-utils/formidable": "0.0.0",
+    "@astro-utils/context": "0.0.1",
+    "@astro-utils/formidable": "0.0.1",
     "await-lock": "^2.2.2",
     "cookie": "^0.5.0",
     "csrf": "^3.1.0",

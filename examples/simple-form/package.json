@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astro-utils/forms": "^0.0.0",
+    "@astro-utils/forms": "^0.0.1",
     "astro": "^3.5.5"
   }
 }

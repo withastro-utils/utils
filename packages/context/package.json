@@ -1,6 +1,6 @@
 {
   "name": "@astro-utils/context",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Context props for astro.js",
   "type": "module",
   "scripts": {
