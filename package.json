@@ -4,6 +4,9 @@
         "packages/*",
         "examples/*"
     ],
+    "scripts": {
+        "update-versions": "node .config/scripts/run-publish-monorepo.mjs"
+    },
     "devDependencies": {
         "@semantic-release/changelog": "^6.0.3",
         "@semantic-release/commit-analyzer": "^11.1.0",
