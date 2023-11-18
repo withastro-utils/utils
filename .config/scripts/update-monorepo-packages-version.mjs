@@ -49,6 +49,8 @@ export default class UpdateMonorepoPackagesVersion {
         if (this.#hadUpdate) {
             await this.#savePackageJson();
         }
+
+        return this.#packageContent;
     }
 
     /**

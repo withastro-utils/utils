@@ -12,15 +12,16 @@ async function updateAllPackages(callback) {
 
     for (const packagePath of packagesPathByOrder) {
         const packageJsonPath = path.join(packagePath, 'package.json');
-        await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
-        callback?.(packagePath);
+        const {name} = await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
+        callback?.(packagePath, name);
     }
 }
 
 async function main() {
     await updateAllPackages();
-    await updateAllPackages(packagePath =>
-        execSync('npm run release', {cwd: packagePath, stdio: 'inherit'})
+    await updateAllPackages((packagePath, name) => {
+            execSync('npm run release -- --tag-format=\'' + name + '@${version}\'', {cwd: packagePath, stdio: 'inherit'});
+        }
     );
 }
 
