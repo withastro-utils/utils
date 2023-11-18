@@ -1,8 +1,11 @@
+<center>
+
 # Astro Utils
 
-![Astro Utils](./assets/logo.rounded.png)
+<img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+</center>
 
-Components to help with your astro app
+> Components to help with your astro app
 
 ### What that includes?
 - [Reactive Forms](./packages/forms/README.md) - feel native as regular HTML
