@@ -13,7 +13,7 @@ async function main() {
     for (const packagePath of packagesPathByOrder) {
         const packageJsonPath = path.join(packagePath, 'package.json');
         await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
-        execSync('npm release', {cwd: packagePath, stdio: 'inherit'});
+        execSync('npm run release', {cwd: packagePath, stdio: 'inherit'});
     }
 }
 
