@@ -2,6 +2,7 @@ import ScanPublishOrder from './scan-publish-order.mjs';
 import {fileURLToPath} from 'node:url';
 import * as path from 'node:path';
 import UpdateMonorepoPackagesVersion from './update-monorepo-packages-version.mjs';
+import {execSync} from 'node:child_process';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PACKAGES_PATH = path.join(__dirname, '..', '..', 'packages');
