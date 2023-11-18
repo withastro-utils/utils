@@ -4,7 +4,11 @@
         "packages/*",
         "examples/*"
     ],
-    "dependencies": {
-        "@changesets/cli": "^2.25.2"
+    "devDependencies": {
+        "@semantic-release/commit-analyzer": "^11.1.0",
+        "@semantic-release/npm": "^11.0.1",
+        "@semantic-release/release-notes-generator": "^12.1.0",
+        "semantic-release": "^22.0.8",
+        "semantic-release-monorepo": "^7.0.5"
     }
 }

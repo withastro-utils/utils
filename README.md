@@ -1,6 +1,6 @@
 # Astro Utils
 
-![Astro metro icon](./assets/banner.webp)
+![Astro Utils](./assets/logo.rounded.png)
 
 Components to help with your astro app
 

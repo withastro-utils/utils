@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -r dist; tsc",
     "prepack": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "semantic-release --extends ../../.config/semantic-release.json"
   },
   "keywords": [
     "astro",
@@ -40,6 +40,8 @@
     "./Context.astro": "./Context.astro"
   },
   "devDependencies": {
+    "semantic-release": "^22.0.8",
+    "semantic-release-monorepo": "^7.0.5",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {

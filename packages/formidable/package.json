@@ -7,11 +7,15 @@
   "exports": {
     ".": "./dist/index.js"
   },
-  "files": ["dist/*", "README.md", "LICENSE"],
+  "files": [
+    "dist/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "rm -r dist; tsc",
     "prepack": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "semantic-release --extends ../../.config/semantic-release.json"
   },
   "keywords": [
     "astro",
@@ -38,6 +42,8 @@
   "devDependencies": {
     "@types/formidable": "^2.0.5",
     "@types/node": "^18.11.10",
+    "semantic-release": "^22.0.8",
+    "semantic-release-monorepo": "^7.0.5",
     "typescript": "^4.9.3"
   }
 }
