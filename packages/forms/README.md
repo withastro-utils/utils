@@ -1,9 +1,12 @@
+<div align="center">
+
 # Astro Forms
 
-<img src ="https://raw.githubusercontent.com/withastro-utils/forms/main/assets/logo.webp" width="100px"/><br/>
+<img src="../../assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+</div>
 
 
-Reactive forms for Astro without any JavaScript!
+> Reactive forms for Astro without any JavaScript!
 
 ### Why use this?
 - Allow client side & server side validation & parsing (number, boolean...)
@@ -134,16 +137,16 @@ You can also use this as a simple on click hook
 ```astro
 ---
 import { Button } from "@astro-utils/forms/forms.js";
-const { asSession } = Astro.locals
+const { session } = Astro.locals
 
 function increaseCounter() {
-    asSession.counter ??= 0
-    asSession.counter++
+    session.counter ??= 0
+    session.counter++
 }
 ---
 <Layout>
     <Button onClick={increaseCounter}>++</Button>
-    {asSession.counter}
+    {session.counter}
 <Layout/>
 ```
 

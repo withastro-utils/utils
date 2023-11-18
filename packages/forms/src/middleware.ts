@@ -31,7 +31,7 @@ export default function astroForms(settings: Partial<FormsSettings> = {}){
 
     return async function onRequest ({ locals, request, cookies }: APIContext , next: MiddlewareNextResponse) {
         const session = new JWTSession(cookies);
-        locals.amSession = session.sessionData;
+        locals.session = session.sessionData;
 
         await validateFrom({cookies, locals, request}, FORM_OPTIONS.csrf); 
         const response = await next();
