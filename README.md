@@ -1,9 +1,9 @@
-<center>
+<div align="center">
 
 # Astro Utils
 
 <img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
-</center>
+</div>
 
 > Components to help with your astro app
 
@@ -26,10 +26,10 @@ Add the middleware to your server
 
 `src/middleware.ts`
 ```ts
-import amMiddleware from "@astro-utils/forms";
+import astroForms from "@astro-utils/forms";
 import {sequence} from "astro/middleware";
 
-export const onRequest = sequence(amMiddleware());
+export const onRequest = sequence(astroForms());
 ```
 
 Add the `WebForms` component in the layout
@@ -59,9 +59,9 @@ function formSubmit(){
 }
 ---
 <Layout>
-    {showSubmitText}
-
     <BindForm bind={form}>
+        {showSubmitText}
+
         <h4>What you name*</h4>
         <Input type={'text'} name="name" maxlength={20} required/>
     
@@ -79,13 +79,10 @@ When vite reloads the page, the browser will popup confirmation dialog. This is 
 `astro.config.mjs`
 ```js
 import { defineConfig } from 'astro/config';
-import amDebug from "@astro-utils/forms/dist/integration.js";
+import astroFormsDebug from "@astro-utils/forms/dist/integration.js";
 
 export default defineConfig({
 	output: 'server',
-	integrations: [amDebug],
-	experimental: {
-		middleware: true
-	}
+    integrations: [astroFormsDebug]
 });
 ```

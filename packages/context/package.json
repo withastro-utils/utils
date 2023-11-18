@@ -15,15 +15,15 @@
     "context",
     "jsx"
   ],
-  "homepage": "https://astro-utils.github.io/docs/",
+  "homepage": "https://withastro-utils.github.io/docs/",
   "author": "Ido S.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/astro-utils/metro-forms.git"
+    "url": "https://github.com/withastro-utils/forms.git"
   },
   "bugs": {
-    "url": "https://github.com/astro-utils/metro-forms/issues"
+    "url": "https://github.com/withastro-utils/forms/issues"
   },
   "publishConfig": {
     "access": "public"

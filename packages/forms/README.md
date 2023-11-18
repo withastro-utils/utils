@@ -1,6 +1,6 @@
 # Astro Forms
 
-<img src ="https://raw.githubusercontent.com/astro-utils/metro-forms/main/assets/logo.webp" width="100px"/><br/>
+<img src ="https://raw.githubusercontent.com/withastro-utils/forms/main/assets/logo.webp" width="100px"/><br/>
 
 
 Reactive forms for Astro without any JavaScript!
