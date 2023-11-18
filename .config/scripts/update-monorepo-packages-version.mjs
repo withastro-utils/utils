@@ -1,7 +1,5 @@
 import fs from 'fs/promises';
 
-const DEFAULT_RELEASE_VERSION = '0.0.1';
-
 export default class UpdateMonorepoPackagesVersion {
     #packageContent;
     #hadUpdate = false;
@@ -10,9 +8,8 @@ export default class UpdateMonorepoPackagesVersion {
      * Update versions of organization packages in `dependencies` and `devDependencies` objects
      * @param packagePath {string}
      */
-    constructor(packagePath, changeToVersion = DEFAULT_RELEASE_VERSION) {
+    constructor(packagePath) {
         this.packagePath = packagePath;
-        this.changeToVersion = changeToVersion;
     }
 
     /**
@@ -49,11 +46,6 @@ export default class UpdateMonorepoPackagesVersion {
         await this.#readPackageJson();
         await this.#updateVersions(this.#packageContent.dependencies);
         await this.#updateVersions(this.#packageContent.devDependencies);
-
-        if (this.changeToVersion) {
-            this.#packageContent.version = this.changeToVersion;
-            this.#hadUpdate = true;
-        }
 
         if (this.#hadUpdate) {
             await this.#savePackageJson();

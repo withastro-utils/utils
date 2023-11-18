@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import * as path from 'node:path';
 
-const DEFAULT_ORGANIZATION_PACKAGE_VERSION = '0.0.0';
+const DEFAULT_ORGANIZATION_PACKAGE_VERSION = '0.0.1';
 
 export default class ScanPublishOrder {
     /**
