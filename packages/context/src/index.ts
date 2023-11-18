@@ -1,4 +1,4 @@
-import { AstroGlobal } from "astro";
+import {AstroGlobal} from 'astro';
 
 declare global {
     export namespace App {
