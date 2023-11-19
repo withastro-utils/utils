@@ -20,10 +20,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/withastro-utils/forms.git"
+    "url": "https://github.com/withastro-utils/utils.git"
   },
   "bugs": {
-    "url": "https://github.com/withastro-utils/forms/issues"
+    "url": "https://github.com/withastro-utils/utils/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -41,8 +41,6 @@
   },
   "devDependencies": {
     "astro": "^3.5.5",
-    "semantic-release": "^22.0.8",
-    "semantic-release-monorepo": "^7.0.5",
     "typescript": "^5.2.2"
   }
 }
