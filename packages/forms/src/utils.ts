@@ -1,8 +1,9 @@
-import { AstroGlobal } from "astro";
+import {AstroGlobal} from 'astro';
+
 export interface AstroLinkHTTP {
   request: AstroGlobal['request']
   cookies: AstroGlobal['cookies']
-  locals: AstroGlobal['locals'] & { amSession: { [key: string]: any } }
+  locals: AstroGlobal['locals'] & { session: { [key: string]: any } };
 }
 
 export type ModifyDeep<A, B extends DeepPartialAny<A>> = {

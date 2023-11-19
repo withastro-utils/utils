@@ -1,6 +1,6 @@
 // @ts-ignore
-import { Options as formidableOptions } from 'formidable';
-import { CSRFSettings } from "./form-tools/csrf.js";
+import {Options as formidableOptions} from 'formidable';
+import {CSRFSettings} from './form-tools/csrf.js';
 
 export type FormsSettings = {
     csrf?: CSRFSettings
@@ -19,7 +19,7 @@ export type FormsSettings = {
 declare global {
     export namespace App {
         export interface Locals {
-            amSession: any
+            session: any;
             [key: string]: any
         }
     }
