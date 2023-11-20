@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -r dist; tsc",
     "prepack": "npm run build",
-    "release": "semantic-release --extends ../../.config/semantic-release.cjs"
+    "release": "semantic-release"
   },
   "keywords": [
     "ASPX",

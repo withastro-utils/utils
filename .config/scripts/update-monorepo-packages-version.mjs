@@ -38,7 +38,7 @@ export default class UpdateMonorepoPackagesVersion {
         this.#packageContent = await fs.readFile(this.packagePath, 'utf-8').then(JSON.parse);
     }
 
-    async #savePackageJson() {
+    async savePackageJson() {
         await fs.writeFile(this.packagePath, JSON.stringify(this.#packageContent, null, 2));
     }
 
@@ -48,7 +48,7 @@ export default class UpdateMonorepoPackagesVersion {
         await this.#updateVersions(this.#packageContent.devDependencies);
 
         if (this.#hadUpdate) {
-            await this.#savePackageJson();
+            await this.savePackageJson();
         }
 
         return this.#packageContent;
