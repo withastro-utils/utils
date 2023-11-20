@@ -1,4 +1,4 @@
-import formidable, {File} from 'formidable';
+import formidable, {PersistentFile} from 'formidable';
 import {EventEmitter} from 'node:events';
 import ExtendedFormData, {FormDataValue} from './ExtendedFormData.js';
 
@@ -63,8 +63,8 @@ export default async function parseAstroForm(request: Request, options?: formida
 }
 
 export function isFormidableFile(object: any) {
-    return object instanceof File;
+    return object instanceof PersistentFile;
 }
 
 
-export {File, FormDataValue, ExtendedFormData};
+export {PersistentFile, FormDataValue, ExtendedFormData};

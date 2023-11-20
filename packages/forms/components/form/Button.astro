@@ -12,18 +12,16 @@ export interface Props extends astroHTML.JSX.ButtonHTMLAttributes {
 const {onClick, whenFormOK, connectId = createUniqueContinuanceName(onClick), ...props} = Astro.props;
 const {bind, executeAfter} = getContext(Astro, "@astro-utils/forms");
 
-async function executeOnClickEvent(){
-    const checkFormValidation = whenFormOK && !bind?.errors.length || !whenFormOK;
-    if(isPost(Astro) && await validateAction(Astro as any, 'button-callback', connectId) && checkFormValidation){
+const checkFormValidation = whenFormOK && !bind?.errors.length || !whenFormOK;
+
+if (isPost(Astro) && await validateAction(Astro, 'button-callback', connectId) && checkFormValidation) {
+    if (executeAfter) {
+        executeAfter.push(onClick);
+    } else {
         await onClick();
     }
 }
 
-if(executeAfter){
-    executeAfter.push(executeOnClickEvent);
-} else {
-    await executeOnClickEvent();
-}
 ---
 <button type="submit" name="button-callback" value={connectId} {...props}>
     <slot/>

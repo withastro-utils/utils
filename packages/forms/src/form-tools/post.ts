@@ -1,18 +1,24 @@
-import parseAstroForm, {File, FormDataValue, ExtendedFormData} from "@astro-utils/formidable";
-import { FORM_OPTIONS } from "../settings.js";
-import { AstroLinkHTTP } from "../utils.js";
-import { validateFrom } from "./csrf.js";
+import parseAstroForm, {ExtendedFormData, FormDataValue, PersistentFile} from '@astro-utils/formidable';
+import {FORM_OPTIONS} from '../settings.js';
+import {AstroLinkHTTP} from '../utils.js';
+import {validateFrom} from './csrf.js';
 import AwaitLock from 'await-lock';
+
 export function isPost(astro: {request: Request}){
     return astro.request.method === "POST";
 }
 
 function extractDeleteMethods(formData: ExtendedFormData | FormData){
     return [...formData].map(([_, value]) => {
-        if(value instanceof File){
+        if (value instanceof PersistentFile) {
             return value.destroy.bind(value);
         }
     }).filter(Boolean);
+}
+
+export function deleteFormFiles(request: AstroLinkHTTP['request']) {
+    //@ts-ignore
+    request.formData?.deleteFiles?.forEach(fn => fn());
 }
 
 export async function parseFormData(request: Request): Promise<ExtendedFormData> {
@@ -26,9 +32,9 @@ export async function parseFormData(request: Request): Promise<ExtendedFormData>
         }
 
         const formData = await parseAstroForm(request, FORM_OPTIONS.forms);
+        request.formData = () => <any>Promise.resolve(formData);
         //@ts-ignore
         request.formData.deleteFiles = extractDeleteMethods(formData);
-        request.formData = () => <any>Promise.resolve(formData);
         return formData;
     } finally {
         lock.release();

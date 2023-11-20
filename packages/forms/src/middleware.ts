@@ -1,15 +1,13 @@
 import {APIContext, MiddlewareEndpointHandler, MiddlewareNextResponse} from 'astro';
-import {validateFrom} from './form-tools/csrf.js';
+import {DEFAULT_SETTINGS as DEFAULT_SETTINGS_CSRF, ensureValidationSecret} from './form-tools/csrf.js';
 import {JWTSession} from './jwt-session.js';
 import {FORM_OPTIONS, FormsSettings} from './settings.js';
 import {v4 as uuid} from 'uuid';
 import defaults from 'defaults';
+import {deleteFormFiles} from './form-tools/post.js';
 
 const DEFAULT_FORM_OPTIONS: FormsSettings = {
-    csrf: {
-        formFiled: 'request-validation-token',
-        sessionFiled: 'request-validation-secret'
-    },
+    csrf: DEFAULT_SETTINGS_CSRF,
     forms: {
         allowEmptyFiles: true,
         minFileSize: 0,
@@ -33,10 +31,11 @@ export default function astroForms(settings: Partial<FormsSettings> = {}){
         const session = new JWTSession(cookies);
         locals.session = session.sessionData;
 
-        await validateFrom({cookies, locals, request}, FORM_OPTIONS.csrf); 
+        await ensureValidationSecret({locals, request, cookies});
         const response = await next();
-        session.setCookieHeader(response.headers);
+        deleteFormFiles(request);
 
+        session.setCookieHeader(response.headers);
         return response;
     } as MiddlewareEndpointHandler;
 }

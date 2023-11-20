@@ -1,12 +1,12 @@
-import {File} from 'formidable';
+import {File as FormidableFile} from 'formidable';
 
-export type FormDataValue = string | File;
+export type FormDataValue = string | FormidableFile;
 
 export default class ExtendedFormData {
     #data = new Map<string, FormDataValue[]>();
 
     #validateFileType(value: FormDataValue) {
-        if (typeof value != 'string' && !(value instanceof File)) {
+        if (typeof value != 'string' && !(value instanceof FormidableFile)) {
             return String(value);
         }
         return value;
@@ -43,13 +43,13 @@ export default class ExtendedFormData {
         return this.getAll(name).filter(value => typeof value == 'string') as string[];
     }
 
-    getFile(name: string): File | null {
+    getFile(name: string): FormidableFile | null {
         const value = this.get(name);
-        return value instanceof File ? value as File : null;
+        return value instanceof FormidableFile ? value as FormidableFile : null;
     }
 
-    getAllFiles(name: string): File[] {
-        return this.getAll(name).filter(value => value instanceof File) as File[];
+    getAllFiles(name: string): FormidableFile[] {
+        return this.getAll(name).filter(value => value instanceof File) as FormidableFile[];
     }
 
     has(name: string): boolean {

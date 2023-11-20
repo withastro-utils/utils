@@ -10,7 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astro-utils/express-endpoints": "^0.0.1",
     "@astro-utils/forms": "^0.0.1",
-    "astro": "^3.5.5"
+    "astro": "^3.5.5",
+    "zod": "^3.22.4"
   }
 }

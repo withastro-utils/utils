@@ -1,0 +1,58 @@
+{
+  "name": "@astro-utils/express-endpoints",
+  "version": "0.0.1",
+  "description": "Express-like framework for Astro Endpoints",
+  "type": "module",
+  "scripts": {
+    "build": "rm -r dist; tsc",
+    "prepack": "npm run build",
+    "release": "semantic-release --extends ../../.config/semantic-release.json"
+  },
+  "files": [
+    "dist/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "keywords": [
+    "astro",
+    "express",
+    "astro-utils",
+    "rest",
+    "restful",
+    "http",
+    "api",
+    "endpoints"
+  ],
+  "homepage": "https://withastro-utils.github.io/docs/",
+  "author": "Ido S.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/withastro-utils/utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/withastro-utils/utils/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/mime": "^3.0.4",
+    "@types/statuses": "^2.0.4",
+    "astro": "^3.5.5",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@astro-utils/formidable": "^0.0.1",
+    "@tinyhttp/accepts": "^2.2.0",
+    "cookie": "^0.6.0",
+    "express-serve-static-core": "^0.1.1",
+    "mime": "^3.0.0",
+    "statuses": "^2.0.1",
+    "zod-express-middleware": "^1.4.0"
+  }
+}
