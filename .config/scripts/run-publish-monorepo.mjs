@@ -15,10 +15,10 @@ async function updateAllPackages() {
         const packageJsonPath = path.join(packagePath, 'package.json');
 
         const packageManage = new UpdateMonorepoPackagesVersion(packageJsonPath);
-        const packageContent = packageManage.updatePackage();
+        const packageContent = await packageManage.updatePackage();
 
         packageContent.release = {...semanticReleaseConfig};
-        packageContent.release.tagFormat = `${packageContent.name}@${packageContent.version}`;
+        packageContent.release.tagFormat = `${packageContent.name}@\${version}`;
 
         await packageManage.savePackageJson();
 
