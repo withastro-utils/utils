@@ -12,8 +12,8 @@ async function updateAllPackages() {
 
     for (const packagePath of packagesPathByOrder) {
         const packageJsonPath = path.join(packagePath, 'package.json');
-        const {name} = await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
-        execSync('npm run release -- --tag-format=\'' + name + '@${version}\'', {cwd: packagePath, stdio: 'inherit'});
+        await new UpdateMonorepoPackagesVersion(packageJsonPath).updatePackage();
+        execSync('npm run release', {cwd: packagePath, stdio: 'inherit'});
     }
 }
 
