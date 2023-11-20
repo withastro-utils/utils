@@ -46,11 +46,11 @@ import LayoutTitle from '../components/LayoutTitle.astro';
 ## Functions
 
 ```ts
-// if you are module/lib, change the name accordingly
+// remember to change the name if you have multiple contexts
 function getContextProps(astro: AstroGlobal, name = "default"): {[key: string]: any}
 ```
 
-Every new context inherit the last one
+Every new context inherits the last one
 
 
 ```ts
