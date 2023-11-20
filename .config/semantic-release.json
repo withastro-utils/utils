@@ -1,5 +1,5 @@
 {
-  "extends": "semantic-release-monorepo",
+  "extends": "semantic-release-monorepo-esm",
   "branches": [
     "main"
   ],
