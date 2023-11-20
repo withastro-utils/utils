@@ -1,5 +1,6 @@
 {
   "name": "simple-form",
+  "description": "A simple form with validation",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
