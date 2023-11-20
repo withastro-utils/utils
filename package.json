@@ -5,14 +5,16 @@
         "examples/*"
     ],
     "scripts": {
-        "create-release": "node .config/scripts/run-publish-monorepo.mjs"
+        "create-release": "semantic-release-npm-workspaces-monorepo"
+    },
+    "workspaceRelease": {
+        "release": {
+            "branches": [
+                "main"
+            ]
+        }
     },
     "devDependencies": {
-        "@semantic-release/changelog": "^6.0.3",
-        "@semantic-release/commit-analyzer": "^11.1.0",
-        "@semantic-release/npm": "^11.0.1",
-        "@semantic-release/release-notes-generator": "^12.1.0",
-        "semantic-release": "^22.0.8",
-        "semantic-release-commit-filter": "^1.0.2"
+        "semantic-release-npm-workspaces-monorepo": "^1.0.0"
     }
 }

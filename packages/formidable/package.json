@@ -14,8 +14,7 @@
   ],
   "scripts": {
     "build": "rm -r dist; tsc",
-    "prepack": "npm run build",
-    "release": "semantic-release"
+    "prepack": "npm run build"
   },
   "keywords": [
     "astro",
