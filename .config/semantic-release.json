@@ -1,5 +1,5 @@
 {
-  "extends": "semantic-release-monorepo-esm",
+  "extends": "semantic-release-commit-filter",
   "branches": [
     "main"
   ],
