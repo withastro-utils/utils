@@ -47,10 +47,10 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@astro-utils/formidable": "^0.0.1",
+    "@astro-utils/formidable": "0.0.1",
     "@tinyhttp/accepts": "^2.2.0",
     "cookie": "^0.6.0",
-    "express-serve-static-core": "^0.1.1",
+    "express-serve-static-core": "0.1.1",
     "mime": "^3.0.0",
     "statuses": "^2.0.1",
     "zod-express-middleware": "^1.4.0"

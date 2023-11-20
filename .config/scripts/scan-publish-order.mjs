@@ -47,9 +47,11 @@ export default class ScanPublishOrder {
     }
 
     async #readAllPackages() {
-        const packages = await fs.readdir(this.scanLocation);
-        for (const packageName of packages) {
-            const packagePath = path.join(this.scanLocation, packageName);
+        const packages = await fs.readdir(this.scanLocation, {withFileTypes: true});
+        for (const packageState of packages) {
+            if (packageState.isFile()) continue;
+
+            const packagePath = path.join(this.scanLocation, packageState.name);
             const packageJsonPath = path.join(packagePath, 'package.json');
             if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
                 const packageContent = await fs.readFile(packageJsonPath, 'utf-8').then(JSON.parse);
@@ -83,7 +85,7 @@ export default class ScanPublishOrder {
      */
     #checkOkToBeNextInOrder(dependencies = {}) {
         for (const [key, value] of Object.entries(dependencies)) {
-            if (value === DEFAULT_ORGANIZATION_PACKAGE_VERSION && !this.#packagesOrder.includes(key)) {
+            if (value.endsWith(DEFAULT_ORGANIZATION_PACKAGE_VERSION) && !this.#packagesOrder.includes(key)) {
                 return false;
             }
         }

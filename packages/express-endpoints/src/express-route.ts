@@ -80,11 +80,4 @@ export default class ExpressRoute {
             }
         }
     }
-
-    private _clone() {
-        const clone = new ExpressRoute();
-        clone._middleware = this._middleware.slice();
-        clone._bodyOptions = this._bodyOptions;
-        return clone;
-    }
 }
