@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-Please refer to the [troubleshooting](https://github.com/ido-pluto/catai/blob/main/docs/troubleshooting.md) before
+Please refer to the [troubleshooting](https://github.com/@astro-utils/forms/blob/main/docs/troubleshooting.md) before
 opening an issue. You might find the solution there.
 
 **Describe the bug**

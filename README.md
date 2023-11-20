@@ -3,6 +3,12 @@
 # Astro Utils
 
 <img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+
+
+[![Build](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/build.yml)
+[![License](https://badgen.net/badge/color/MIT/green?label=license)](https://www.npmjs.com/package/@astro-utils/forms)
+[![License](https://badgen.net/badge/color/TypeScript/blue?label=types)](https://www.npmjs.com/package/@astro-utils/forms)
+[![Version](https://badgen.net/npm/v/@astro-utils/forms)](https://www.npmjs.com/package/@astro-utils/forms)
 </div>
 
 > Components to help with your astro app
