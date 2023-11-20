@@ -1,4 +1,6 @@
-{
+require('semantic-release-commit-filter');
+
+module.exports = {
   "extends": "semantic-release-commit-filter",
   "branches": [
     "main"
