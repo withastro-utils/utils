@@ -28,7 +28,6 @@ jobs:
       - name: Install modules & build
         run: |
           npm ci
-          npm run build -w ./packages
 
       - name: Release
         if: github.ref == 'refs/heads/main'

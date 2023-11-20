@@ -9,7 +9,6 @@ const PACKAGES_PATH = path.join(__dirname, '..', '..', 'packages');
 
 async function updateAllPackages() {
     const packagesPathByOrder = await new ScanPublishOrder(PACKAGES_PATH).getReleaseOrder();
-    console.log(packagesPathByOrder);
 
     for (const packagePath of packagesPathByOrder) {
         const packageJsonPath = path.join(packagePath, 'package.json');
