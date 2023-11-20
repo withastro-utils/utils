@@ -8,7 +8,7 @@ Allow you to use formidable for request parse
 ```ts
 import {parseAstroForm, isFormidableFile} from '@astro-utils/formidable';
 
-export const post: APIRoute = ({ request }) => {
+export const post: APIRoute = async ({request}) => {
     const formData: FormData = await parseAstroForm(Astro.request);
     let name = 'Not-File'
 
