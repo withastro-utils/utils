@@ -2,7 +2,8 @@
 
 # Astro Forms
 
-<img src="../../assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+<img src="https://raw.githubusercontent.com/withastro-utils/utils/main/assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+
 
 [![Build](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/build.yml)
 [![License](https://badgen.net/badge/color/MIT/green?label=license)](https://www.npmjs.com/package/@astro-utils/forms)
