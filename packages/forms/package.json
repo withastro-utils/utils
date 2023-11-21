@@ -1,7 +1,7 @@
 {
   "name": "@astro-utils/forms",
   "version": "0.0.1",
-  "description": "ASPX like web forms for astro.js",
+  "description": "ASPX like web forms hooks for Astro (server + client validation)",
   "type": "module",
   "scripts": {
     "build": "rm -r dist; tsc",
@@ -10,6 +10,7 @@
   "keywords": [
     "ASPX",
     "astro",
+    "astro-component",
     "forms",
     "react",
     "hooks"

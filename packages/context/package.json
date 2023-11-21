@@ -1,7 +1,7 @@
 {
   "name": "@astro-utils/context",
   "version": "0.0.1",
-  "description": "Context props for astro.js",
+  "description": "React like Context for astro.js",
   "type": "module",
   "scripts": {
     "build": "rm -r dist; tsc",
@@ -12,6 +12,7 @@
     "props",
     "react",
     "context",
+    "withastro",
     "jsx"
   ],
   "homepage": "https://withastro-utils.github.io/docs/",

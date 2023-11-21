@@ -24,7 +24,8 @@
     "restful",
     "http",
     "api",
-    "endpoints"
+    "endpoints",
+    "withastro"
   ],
   "homepage": "https://withastro-utils.github.io/docs/",
   "author": "Ido S.",
