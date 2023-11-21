@@ -9,13 +9,14 @@ export type ExpressRouteBodyType = 'json' | 'multipart' | 'urlencoded' | 'text' 
 export type ExpressRouteCallback = (req: ExpressRequest, res: ExpressResponse, next?: () => any) => any;
 export type ExpressRouteBodyOptions = {
     type?: ExpressRouteBodyType,
-    options?: Options
+    options?: Options,
+    default?: boolean
 };
 
 export default class ExpressRoute {
     private _middleware: ExpressRouteCallback[] = [];
     private _lastValidation: ExpressRouteCallback[] = [];
-    private _bodyOptions: ExpressRouteBodyOptions[] = [{type: 'auto'}];
+    private _bodyOptions: ExpressRouteBodyOptions = {type: 'auto', default: true};
 
     public constructor() {
     }
@@ -23,7 +24,9 @@ export default class ExpressRoute {
     use(middleware: ExpressRouteCallback | RequestHandlerParams | ExpressRoute) {
         if (middleware instanceof ExpressRoute) {
             this._middleware = this._middleware.concat(middleware._middleware);
-            this._bodyOptions = this._bodyOptions.concat(middleware._bodyOptions);
+            if (!middleware._bodyOptions.default) {
+                this._bodyOptions = middleware._bodyOptions;
+            }
             return this;
         }
         this._middleware.push(middleware as any);
@@ -31,10 +34,7 @@ export default class ExpressRoute {
     }
 
     body(type: ExpressRouteBodyType | null, options?: Options) {
-        this._bodyOptions.push({
-            type,
-            options
-        });
+        this._bodyOptions = {type, options};
         return this;
     }
 
@@ -49,7 +49,7 @@ export default class ExpressRoute {
     }
 
     route(...middlewares: ExpressRouteCallback[]): APIRoute {
-        const bodyOptions = this._bodyOptions.at(-1);
+        const bodyOptions = this._bodyOptions;
         const validation = this._lastValidation.pop();
         if (validation) {
             middlewares.unshift(validation);

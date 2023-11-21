@@ -7,13 +7,6 @@
     "scripts": {
         "create-release": "semantic-release-npm-workspaces-monorepo"
     },
-    "workspaceRelease": {
-        "release": {
-            "branches": [
-                "main"
-            ]
-        }
-    },
     "devDependencies": {
         "semantic-release-npm-workspaces-monorepo": "^1.0.0"
     }
