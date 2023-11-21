@@ -4,10 +4,13 @@
         "packages/*",
         "examples/*"
     ],
+    "workspaceRelease": {
+        "npmRelease": true
+    },
     "scripts": {
         "create-release": "semantic-release-npm-workspaces-monorepo"
     },
     "devDependencies": {
-        "semantic-release-npm-workspaces-monorepo": "^1.1.2"
+        "semantic-release-npm-workspaces-monorepo": "^1.1.3"
     }
 }
