@@ -1,4 +1,4 @@
-import parseAstroForm, {ExtendedFormData, FormDataValue, PersistentFile} from '@astro-utils/formidable';
+import parseAstroForm, {ExtendedFormData, FormDataValue, VolatileFile} from '@astro-utils/formidable';
 import {FORM_OPTIONS} from '../settings.js';
 import {AstroLinkHTTP} from '../utils.js';
 import {validateFrom} from './csrf.js';
@@ -10,7 +10,7 @@ export function isPost(astro: {request: Request}){
 
 function extractDeleteMethods(formData: ExtendedFormData | FormData){
     return [...formData].map(([_, value]) => {
-        if (value instanceof PersistentFile) {
+        if (value instanceof VolatileFile) {
             return value.destroy.bind(value);
         }
     }).filter(Boolean);

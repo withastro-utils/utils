@@ -1,20 +1,21 @@
-//@ts-nocheck
-import BindForm from "./components/form/BindForm.astro";
-import Button from "./components/form/Button.astro";
-import FormErrors from "./components/form/FormErrors.astro";
-import Input from "./components/form/Input.astro";
-import Textarea from "./components/form/Textarea.astro";
-import Option from "./components/form/Option.astro";
-import Select from "./components/form/Select.astro";
-import WebForms from "./components/WebForms.astro";
+import BindForm from './components/form/BindForm.astro';
+import BButton from './components/form/BButton.astro';
+import FormErrors from './components/form/FormErrors.astro';
+import BInput from './components/form/BInput.astro';
+import BTextarea from './components/form/BTextarea.astro';
+import BOption from './components/form/BOption.astro';
+import BSelect from './components/form/BSelect.astro';
+import WebForms from './components/WebForms.astro';
+import Bind from './dist/components/form-utils/bind-form.js';
 
 export {
+    Bind,
     BindForm,
-    Button,
+    BButton,
     FormErrors,
-    Input,
-    Textarea,
-    Option,
-    Select,
+    BInput,
+    BTextarea,
+    BOption,
+    BSelect,
     WebForms
 }

@@ -16,13 +16,12 @@ export type FormsSettings = {
     secret?: string
 }
 
-declare global {
-    export namespace App {
-        export interface Locals {
-            session: any;
-            [key: string]: any
-        }
+/// <reference types="astro/client" />
+declare namespace App {
+    export interface Locals {
+        session: { [key: string]: any };
     }
 }
+
 
 export const FORM_OPTIONS: FormsSettings = {} as any;

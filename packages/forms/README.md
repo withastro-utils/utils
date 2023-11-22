@@ -48,8 +48,7 @@ import {WebForms} from '@astro-utils/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { Bind } from "@astro-utils/forms";
-import { BindForm, Button, Input } from "@astro-utils/forms/forms.js";
+import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 const form = Bind();
@@ -64,12 +63,12 @@ function formSubmit(){
         {showSubmitText}
         
         <h4>What you name*</h4>
-        <Input type={'text'} name="name" maxlength={20} required/>
+        <BInput type="text" name="name" maxlength={20} required/>
     
         <h4>Enter age*</h4>
-        <Input type={'int'} name="age" required/>
+        <BInput type="int" name="age" required/>
     
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
 ```
@@ -79,8 +78,7 @@ function formSubmit(){
 `pages/index.astro`
 ```astro
 ---
-import { BindForm, Button, FormErrors, Input, Option, Select, Textarea } from "@astro-utils/forms/forms.js";
-import { Bind } from "@astro-utils/forms";
+import { Bind, BindForm, FormErrors, BButton, BInput, BOption, BSelect, BTextarea } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 type formType = {
@@ -110,23 +108,23 @@ function formSubmit(){
         <FormErrors title="Form Errors"/>
     
         <h4>What you name*</h4>
-        <Input type={'text'} name="name" maxlength={20} required/>
+        <BInput type={'text'} name="name" maxlength={20} required/>
     
         <h4>Enter age*</h4>
-        <Input type={'int'} name="age" required/>
+        <BInput type={'int'} name="age" required/>
     
         <h4>Tell about yourself</h4>
-        <Textarea name="about" maxlength={300}></Textarea>
+        <BTextarea name="about" maxlength={300}></BTextarea>
     
         <h4>What you favorite food?</h4>
-        <Select name="favoriteFood" required={false}>
-            <Option disabled selected>Idk</Option>
-            <Option>Pizaa</Option>
-            <Option>Salad</Option>
-            <Option>Lasagna</Option>
-        </Select>
+        <BSelect name="favoriteFood" required={false}>
+            <BOption disabled selected>Idk</BOption>
+            <BOption>Pizaa</BOption>
+            <BOption>Salad</BOption>
+            <BOption>Lasagna</BOption>
+        </BSelect>
     
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     
         {showSubmitText && <>
             <h3>You submitted the form:</h3>
@@ -142,8 +140,10 @@ You can also use this as a simple on click hook
 
 ```astro
 ---
-import { Button } from "@astro-utils/forms/forms.js";
-const { session } = Astro.locals
+import { BButton } from "@astro-utils/forms/forms.js";
+import { Button } from 'reactstrap';
+
+const { session } = Astro.locals;
 
 function increaseCounter() {
     session.counter ??= 0
@@ -151,7 +151,7 @@ function increaseCounter() {
 }
 ---
 <Layout>
-    <Button onClick={increaseCounter}>++</Button>
+    <BButton as={Button} props={{color: 'info'}} onClick={increaseCounter}>++</BButton>
     {session.counter}
 <Layout/>
 ```

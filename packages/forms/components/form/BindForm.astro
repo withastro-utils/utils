@@ -11,7 +11,7 @@ const context = {executeAfter: [], method: Astro.request.method, bind};
 let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-utils/forms", context});
 bind?.finishFormValidation();
 for(const func of context.executeAfter){
-    await func();
+    await (func as any)();
 }
 
 

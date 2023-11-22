@@ -54,8 +54,7 @@ import {WebForms} from '@astro-utils/forms/forms.js';
 ### Simple example
 ```astro
 ---
-import { Bind } from "@astro-utils/forms";
-import { BindForm, Button, Input } from "@astro-utils/forms/forms.js";
+import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 const form = Bind();
@@ -68,14 +67,14 @@ function formSubmit(){
 <Layout>
     <BindForm bind={form}>
         {showSubmitText}
-
+        
         <h4>What you name*</h4>
-        <Input type={'text'} name="name" maxlength={20} required/>
+        <BInput type="text" name="name" maxlength={20} required/>
     
         <h4>Enter age*</h4>
-        <Input type={'int'} name="age" required/>
+        <BInput type="int" name="age" required/>
     
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
 ```
@@ -89,7 +88,7 @@ import { defineConfig } from 'astro/config';
 import astroFormsDebug from "@astro-utils/forms/dist/integration.js";
 
 export default defineConfig({
-	output: 'server',
+    output: 'server',
     integrations: [astroFormsDebug]
 });
 ```

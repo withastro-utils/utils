@@ -15,6 +15,7 @@
     "react",
     "hooks"
   ],
+  "funding": "https://github.com/sponsors/ido-pluto",
   "homepage": "https://withastro-utils.github.io/docs/",
   "author": "Ido S.",
   "license": "MIT",

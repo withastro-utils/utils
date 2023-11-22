@@ -1,0 +1,38 @@
+---
+import getContext from '@astro-utils/context';
+import {caseTypes, inputReturnValueAttr, validateFormInput} from '../../dist/components/input-parse.js';
+import {validatePostRequest} from '../../dist/form-tools/post.js';
+import {ModifyDeep} from '../../dist/utils.js';
+
+type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int';
+
+interface ModifyInputProps {
+    type?: inputTypes;
+    pattern?: RegExp;
+    minlength?: number;
+    maxlength?: number;
+}
+
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
+    name: string;
+    errorMessage?: string;
+    validate?: Function;
+    as?: T;
+    props?: React.ComponentProps<T>;
+};
+
+const {bind, method, webFormsSettings} = getContext(Astro, '@astro-utils/forms');
+if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+    await validateFormInput(Astro, bind);
+}
+
+const {as: asComponent = 'input', props: componentProps, type = 'text', pattern, ...props} = Astro.props;
+const castProps = caseTypes(type);
+const inputValue = inputReturnValueAttr(Astro, bind);
+
+const allProps = {...inputValue, ...props, ...componentProps, pattern: pattern?.toString(), ...castProps};
+webFormsSettings.haveFileUpload ||= allProps.type === 'file';
+
+const Component = asComponent as any;
+---
+<Component {...allProps}/>

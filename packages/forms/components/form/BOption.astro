@@ -1,0 +1,27 @@
+---
+import getContext from '@astro-utils/context';
+import {validatePostRequest} from '../../dist/form-tools/post.js';
+import {validateSelectOption} from '../../dist/components/select.js';
+
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.OptionHTMLAttributes {
+    as?: T;
+    props?: React.ComponentProps<T>;
+};
+
+const {bind, name, value: selectValue, allowSelected, method} = getContext(Astro, '@astro-utils/forms');
+
+const htmlSolt = await Astro.slots.render('default');
+if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+    validateSelectOption(Astro, bind, name, htmlSolt);
+}
+
+const optionValue = Astro.props.value ?? htmlSolt;
+const {as: asComponent = 'option', props: componentProps, selected, ...props} = Astro.props;
+
+const isSelectedByDefault = allowSelected && selectValue.length == 0;
+
+const Component = asComponent as any;
+---
+<Component selected={isSelectedByDefault ? selected : selectValue.includes(optionValue)} {...props} {...componentProps}>
+    <Fragment set:html={htmlSolt}/>
+</Component>
