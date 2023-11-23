@@ -13,7 +13,9 @@
     "astro-component",
     "forms",
     "react",
-    "hooks"
+    "hooks",
+    "validation",
+    "astro-utils"
   ],
   "funding": "https://github.com/sponsors/ido-pluto",
   "homepage": "https://withastro-utils.github.io/docs/",
