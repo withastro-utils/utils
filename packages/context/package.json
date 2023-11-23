@@ -13,6 +13,7 @@
     "react",
     "context",
     "withastro",
+    "astro-utils",
     "jsx"
   ],
   "homepage": "https://withastro-utils.github.io/docs/",
