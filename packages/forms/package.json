@@ -1,7 +1,7 @@
 {
   "name": "@astro-utils/forms",
   "version": "0.0.1",
-  "description": "ASPX like web forms hooks for Astro (server + client validation)",
+  "description": "React-like web forms hooks for Astro (server + client validation)",
   "type": "module",
   "scripts": {
     "build": "rm -r dist; tsc",
@@ -15,7 +15,9 @@
     "react",
     "hooks",
     "validation",
-    "astro-utils"
+    "astro-utils",
+    "on-click",
+    "on-submit"
   ],
   "funding": "https://github.com/sponsors/ido-pluto",
   "homepage": "https://withastro-utils.github.io/docs/",
