@@ -21,7 +21,8 @@
     "forms",
     "formidable",
     "request",
-    "withastro"
+    "withastro",
+    "withastro-utils"
   ],
   "homepage": "https://withastro-utils.github.io/docs/",
   "author": "Ido S.",
