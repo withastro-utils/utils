@@ -1,3 +1,5 @@
+# [2.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@1.1.4...@astro-utils/formidable@2.0.0) (2023-11-23)
+
 ## [1.1.4](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@1.1.3...@astro-utils/formidable@1.1.4) (2023-11-21)
 
 
