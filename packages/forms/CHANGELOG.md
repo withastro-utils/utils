@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.0...@astro-utils/forms@3.0.1) (2023-12-04)
+
+
+### Bug Fixes
+
+* jwt save session ([ecc6c76](https://github.com/withastro-utils/utils/commit/ecc6c767d706b649f90997eaf32cd1e70fb316c4))
+
 # [3.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@2.0.0...@astro-utils/forms@3.0.0) (2023-11-23)
 
 
