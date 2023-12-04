@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.2...@astro-utils/forms@3.0.3) (2023-12-04)
+
+
+### Bug Fixes
+
+* better errors ([b415f40](https://github.com/withastro-utils/utils/commit/b415f40f17653e452ea81620d77fb507db598541))
+
 ## [3.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.1...@astro-utils/forms@3.0.2) (2023-12-04)
 
 
