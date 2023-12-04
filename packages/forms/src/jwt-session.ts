@@ -1,8 +1,8 @@
-import { FORM_OPTIONS } from "./settings.js";
-import { AstroLinkHTTP } from "./utils.js";
+import {FORM_OPTIONS} from './settings.js';
+import {AstroLinkHTTP} from './utils.js';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
-import { deepStrictEqual } from "assert";
+import {deepStrictEqual} from 'assert';
 
 export class JWTSession {
     private stringifyCookie: string
@@ -18,8 +18,8 @@ export class JWTSession {
         if (!cookieContent) return;
 
         try {
-            this.lastData = (<any>jwt.verify(cookieContent, FORM_OPTIONS.secret)).session || {};
-            this.sessionData = structuredClone(this.lastData);
+            this.sessionData = (<any>jwt.verify(cookieContent, FORM_OPTIONS.secret)).session || {};
+            this.lastData = structuredClone(this.sessionData);
         } catch { }
     }
 
