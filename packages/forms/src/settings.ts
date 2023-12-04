@@ -13,7 +13,8 @@ export type FormsSettings = {
             maxAge: number
         }
     },
-    secret?: string
+    secret?: string,
+    pageLoadTimeoutMS?: number
 }
 
 /// <reference types="astro/client" />

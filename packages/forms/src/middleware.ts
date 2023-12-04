@@ -5,6 +5,7 @@ import {FORM_OPTIONS, FormsSettings} from './settings.js';
 import {v4 as uuid} from 'uuid';
 import defaults from 'defaults';
 import {deleteFormFiles} from './form-tools/post.js';
+import {timeout} from 'promise-timeout';
 
 const DEFAULT_FORM_OPTIONS: FormsSettings = {
     csrf: DEFAULT_SETTINGS_CSRF,
@@ -21,6 +22,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
             maxAge: 1000 * 60 * 60 * 24 * 7
         }
     },
+    pageLoadTimeoutMS: 1000 * 5,
     secret: uuid()
 };
 
@@ -31,11 +33,29 @@ export default function astroForms(settings: Partial<FormsSettings> = {}){
         const session = new JWTSession(cookies);
         locals.session = session.sessionData;
 
-        await ensureValidationSecret({locals, request, cookies});
-        const response = await next();
-        deleteFormFiles(request);
+        let response: Response;
+        let pageFinished: (data?: any) => void;
 
-        session.setCookieHeader(response.headers);
+        locals.__formsInternalUtils = {
+            onWebFormClose() {
+                session.setCookieHeader(response.headers);
+                deleteFormFiles(request);
+                pageFinished();
+            }
+        };
+
+        await ensureValidationSecret({locals, request, cookies});
+        response = await next();
+
+        if (!locals.webFormOff) {
+            try {
+                const pageFinishedPromise = new Promise(resolve => pageFinished = resolve);
+                await timeout(pageFinishedPromise, FORM_OPTIONS.pageLoadTimeoutMS);
+            } catch {
+                throw new Error('WebForms is not used in this page');
+            }
+        }
+
         return response;
     } as MiddlewareEndpointHandler;
 }

@@ -9,12 +9,17 @@ const form = Bind({age: 0, name: ''});
 let showSubmitText: string;
 
 function formSubmit(){
+    Astro.locals.session.counter ??= 0;
+    Astro.locals.session.counter++;
     showSubmitText = `You name is ${form.name}, you are ${form.age} years old. `;
 }
 ---
 <Layout title="Welcome to Astro Metro.">
     <BindForm bind={form}>
         {showSubmitText}
+        {Astro.locals.session.counter &&
+                <p>You have submitted {Astro.locals.session.counter} times.</p>
+        }
 
         <h4>What you name*</h4>
         <BInput type="text" name="name" maxlength={20} required/>

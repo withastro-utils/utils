@@ -11,6 +11,7 @@ const context = {
     webFormsSettings: {haveFileUpload: false}
 };
 
+await Astro.locals.__formsInternalUtils?.onWebFormsOpen?.();
 const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
 
 const {webFormsSettings, ...props} = context;
@@ -19,6 +20,7 @@ if (webFormsSettings.haveFileUpload) {
 }
 
 const formRequestToken = FORM_OPTIONS.session?.cookieOptions?.maxAge && await createFormToken(Astro);
+await Astro.locals.__formsInternalUtils?.onWebFormClose?.();
 ---
 <form method="post" {...props}>
     {formRequestToken && <input type="hidden" name={formRequestToken.filed} value={formRequestToken.token}/>}
