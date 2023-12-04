@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import {BButton, Bind, BindForm, BInput} from '@astro-utils/forms/forms.js';
+import {BButton, Bind, BindForm, BInput, FormErrors} from '@astro-utils/forms/forms.js';
 import {Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -16,7 +16,9 @@ function formSubmit(){
 ---
 <Layout title="Welcome to Astro Metro.">
     <BindForm bind={form}>
+        <FormErrors/>
         {showSubmitText}
+
         {Astro.locals.session.counter &&
                 <p>You have submitted {Astro.locals.session.counter} times.</p>
         }

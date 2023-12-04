@@ -14,14 +14,17 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 const {as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId = createUniqueContinuanceName(onClick), ...props} = Astro.props;
 const {bind, executeAfter} = getContext(Astro, '@astro-utils/forms');
 
-const checkFormValidation = whenFormOK && !bind?.errors.length || !whenFormOK;
-
-if (isPost(Astro) && await validateAction(Astro, 'button-callback', connectId) && checkFormValidation) {
-    if (executeAfter) {
-        executeAfter.push(onClick);
-    } else {
-        await onClick();
+async function executeFormAction(callback = onClick) {
+    const checkFormValidation = whenFormOK && !bind?.errors.length || !whenFormOK;
+    if (isPost(Astro) && await validateAction(Astro, 'button-callback', connectId) && checkFormValidation) {
+        await callback();
     }
+}
+
+if (executeAfter) {
+    executeAfter.push(executeFormAction);
+} else {
+    throw new Error('Use BButton inside a BindForm component');
 }
 
 const Component = asComponent as any;
