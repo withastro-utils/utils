@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.3...@astro-utils/forms@3.1.0) (2023-12-18)
+
+
+### Features
+
+* native form parser ([dbef97d](https://github.com/withastro-utils/utils/commit/dbef97db6d71f138edb8829d79b532b468d46e33))
+
 ## [3.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.2...@astro-utils/forms@3.0.3) (2023-12-04)
 
 
