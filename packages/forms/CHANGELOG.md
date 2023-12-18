@@ -1,3 +1,5 @@
+## [3.1.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.1...@astro-utils/forms@3.1.2) (2023-12-18)
+
 ## [3.1.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.0...@astro-utils/forms@3.1.1) (2023-12-18)
 
 
