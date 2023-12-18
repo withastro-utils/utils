@@ -41,7 +41,7 @@
     "./Context.astro": "./Context.astro"
   },
   "devDependencies": {
-    "astro": "^3.5.5",
+    "astro": "^4.0.6",
     "typescript": "^5.2.2"
   }
 }

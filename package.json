@@ -5,7 +5,13 @@
         "examples/*"
     ],
     "workspaceRelease": {
-        "npmRelease": true
+        "npmRelease": true,
+        "extendsReleaseRules": [
+            {
+                "type": "bump",
+                "release": "patch"
+            }
+        ]
     },
     "scripts": {
         "create-release": "semantic-release-npm-workspaces-monorepo"
