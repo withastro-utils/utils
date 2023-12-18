@@ -33,12 +33,14 @@
     "dist/*",
     "README.md",
     "Context.astro",
+    "context.ts",
     "LICENSE"
   ],
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./Context.astro": "./Context.astro"
+    "./Context.astro": "./Context.astro",
+    "./context.js": "./context.js"
   },
   "devDependencies": {
     "astro": "^4.0.6",
