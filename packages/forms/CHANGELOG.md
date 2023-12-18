@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.0...@astro-utils/forms@3.1.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* remove @astro-utils/formidable deps ([16e95a2](https://github.com/withastro-utils/utils/commit/16e95a2bcea38e0de07c285d73ef6a6a07f4b468))
+
 # [3.1.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.0.3...@astro-utils/forms@3.1.0) (2023-12-18)
 
 
