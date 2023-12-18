@@ -3,8 +3,9 @@ import getContext from '@astro-utils/context';
 import {caseTypes, inputReturnValueAttr, validateFormInput} from '../../dist/components/input-parse.js';
 import {validatePostRequest} from '../../dist/form-tools/post.js';
 import {ModifyDeep} from '../../dist/utils.js';
+import type { HTMLAttributes } from 'astro/types';
 
-type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int';
+type inputTypes = HTMLAttributes<'input'>['type'] | 'int';
 
 interface ModifyInputProps {
     type?: inputTypes;
@@ -13,7 +14,7 @@ interface ModifyInputProps {
     maxlength?: number;
 }
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<HTMLAttributes<'input'>, ModifyInputProps>> {
     name: string;
     errorMessage?: string;
     validate?: Function;

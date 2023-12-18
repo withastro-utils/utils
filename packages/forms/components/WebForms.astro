@@ -2,8 +2,9 @@
 import {asyncContext} from '@astro-utils/context';
 import {createFormToken} from '../dist/form-tools/csrf.js';
 import {FORM_OPTIONS} from '../dist/settings.js';
+import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends astroHTML.JSX.FormHTMLAttributes {
+export interface Props extends HTMLAttributes<'form'> {
 }
 
 const context = {

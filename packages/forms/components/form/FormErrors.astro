@@ -1,7 +1,8 @@
 ---
 import getContext from '@astro-utils/context';
+import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends astroHTML.JSX.HTMLAttributes {
+export interface Props extends HTMLAttributes<'div'> {
     title?: string
 };
 
