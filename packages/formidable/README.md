@@ -1,6 +1,9 @@
 # Astro Formidable
 
-Allow you to use formidable for request parse
+Allow you to use formidable for request parse.
+
+
+> **Deprecate** because Astro now support `multipart/form-data` by default
 
 ## Usage
 

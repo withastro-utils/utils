@@ -15,7 +15,6 @@
 
 ### What that includes?
 - [Reactive Forms](./packages/forms/README.md) - feel native as regular HTML
-- [Formidable (for astro)](./packages/formidable/README.md) - parse astro formsData
 - [Component Context](./packages/context/README.md) - extra props base on context
 - [Express Endpoints](./packages/express-endpoints/README.md) - express-like framework for astro endpoints
 
