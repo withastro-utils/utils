@@ -1,10 +1,9 @@
-import { isFormidableFile } from "@astro-utils/formidable";
-import { z } from "zod";
-import AboutFormName from "../form-utils/about-form-name.js";
+import {z} from 'zod';
+import AboutFormName from '../form-utils/about-form-name.js';
 
 function validateEmptyFile(about: AboutFormName){
     const value = about.formValue;
-    return isFormidableFile(value) && value.size == 0;
+    return value instanceof File && value.size == 0;
 }
 
 export function validateRequire(about: AboutFormName, required: boolean){
