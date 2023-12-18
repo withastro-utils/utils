@@ -1,4 +1,3 @@
-import {Options} from 'formidable';
 import ExpressRequest from './http/express-request.js';
 import ExpressResponse from './http/express-response.js';
 import {APIRoute} from 'astro';
@@ -9,7 +8,6 @@ export type ExpressRouteBodyType = 'json' | 'multipart' | 'urlencoded' | 'text' 
 export type ExpressRouteCallback = (req: ExpressRequest, res: ExpressResponse, next?: () => any) => any;
 export type ExpressRouteBodyOptions = {
     type?: ExpressRouteBodyType,
-    options?: Options,
     default?: boolean
 };
 
@@ -33,8 +31,8 @@ export default class ExpressRoute {
         return this;
     }
 
-    body(type: ExpressRouteBodyType | null, options?: Options) {
-        this._bodyOptions = {type, options};
+    body(type: ExpressRouteBodyType | null) {
+        this._bodyOptions = {type};
         return this;
     }
 

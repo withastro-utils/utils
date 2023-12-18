@@ -1,7 +1,6 @@
 import ExpressResponse from './express-response.js';
 import {APIContext, Props} from 'astro';
 import {parse as cookieParse} from 'cookie';
-import parseAstroForm, {ExtendedFormData, PersistentFile} from '@astro-utils/formidable';
 import mime from 'mime';
 import ExpressBodyError from './http-errors/express-body-error.js';
 import {EventEmitter} from 'events';
@@ -26,9 +25,7 @@ const BODY_REQUEST_TYPES_MAP = {
 const BODY_METHODS = ['POST', 'PUT', 'PATCH'] as const;
 
 type StringMap = { [key: string]: string };
-type PersistentFileInstance = InstanceType<typeof PersistentFile>;
 export default class ExpressRequest extends EventEmitter implements ExpressRequestEventEmitterTypes {
-    private _allFiles: PersistentFileInstance[] = [];
     private _accepts: Accepts;
 
     /**
@@ -43,10 +40,10 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
     public headers: StringMap = {};
     public params: StringMap = {};
     public filesOne: {
-        [key: string]: PersistentFileInstance
+        [key: string]: File
     } = {};
     public filesMany: {
-        [key: string]: PersistentFileInstance[]
+        [key: string]: File[]
     } = {};
     public method: string = '';
     public url: string = '';
@@ -60,7 +57,6 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
     constructor(public astroContext: APIContext<Props>, private _bodyOptions: ExpressRouteBodyOptions) {
         super();
         this._response = new ExpressResponse(astroContext);
-        this.once('close', this._clearRequest.bind(this));
     }
 
     /**
@@ -122,19 +118,25 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
 
     private async _parseBodyMultiPart(options?: Options) {
         try {
-            const formData: ExtendedFormData = await parseAstroForm(this.astroContext.request, options ?? this._bodyOptions.options);
+            const formData = await this.astroContext.request.formData();
 
             for (const [key, value] of formData) {
-                const notMustBeArray = value.length === 1 ? value[0] : value;
+                if (typeof value === 'string') {
+                    if (this.body[key]) {
+                        if (!Array.isArray(this.body[key])) {
+                            this.body[key] = [this.body[key]];
+                        }
 
-                if (typeof value[0] === 'string') {
-                    this.body[key] = notMustBeArray;
+                        this.body[key].push(value);
+                    } else {
+                        this.body[key] = value;
+                    }
                     continue;
                 }
 
-                this._allFiles.push(...value as any);
-                this.filesMany[key] = value as any;
-                this.filesOne[key] = value[0] as any;
+                this.filesOne[key] = value;
+                this.filesMany[key] ??= [];
+                this.filesMany[key].push(value);
             }
         } catch (error) {
             debugger
@@ -182,11 +184,5 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
 
     public header(name: string, defaultValue?: any) {
         return this.get(name) ?? defaultValue;
-    }
-
-    private _clearRequest() {
-        for (const file of this._allFiles) {
-            file.destroy();
-        }
     }
 }

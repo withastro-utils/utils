@@ -42,9 +42,7 @@ You can configure the body parser by calling the `body` method.
 ```ts
 const router = new ExpressRoute();
 
-router.body('multipart', {
-    maxFileSize: 10 * 1024 * 1024 // 10MB
-});
+router.body('multipart');
 
 export const POST = router.route((req, res) => {
     const myFile = req.filesOne.myFile;

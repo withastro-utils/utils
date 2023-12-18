@@ -43,11 +43,10 @@
   "devDependencies": {
     "@types/mime": "^3.0.4",
     "@types/statuses": "^2.0.4",
-    "astro": "^3.5.5",
+    "astro": "^4.0.6",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@astro-utils/formidable": "0.0.1",
     "@tinyhttp/accepts": "^2.2.0",
     "cookie": "^0.6.0",
     "express-serve-static-core": "0.1.1",
