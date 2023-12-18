@@ -4,17 +4,21 @@ import {BButton, Bind, BindForm, BInput, FormErrors} from '@astro-utils/forms/fo
 import {Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
+type Form = {
+    name: string;
+    file: File;
+}
 
-const form = Bind({age: 0, name: ''});
+const form = Bind<Form>();
 let showSubmitText: string;
 
-function formSubmit(){
+function formSubmit() {
     Astro.locals.session.counter ??= 0;
     Astro.locals.session.counter++;
-    showSubmitText = `Your name is ${form.name}, you are ${form.age} years old. `;
+    showSubmitText = `Your name is ${form.name}, you upload "${form.file.name}"`;
 }
 ---
-<Layout title="Form + Session">
+<Layout title="Upload file">
     <BindForm bind={form}>
         <FormErrors/>
         {showSubmitText}
@@ -26,9 +30,9 @@ function formSubmit(){
         <h4>What you name*</h4>
         <BInput type="text" name="name" maxlength={20} required/>
 
-        <h4>Enter age*</h4>
-        <BInput type="int" name="age" required/>
+        <h4>File to upload*</h4>
+        <BInput type="file" name="file" required/>
 
-        <BButton as={Button} props={{color: 'info'}} onClick={formSubmit} whenFormOK>Submit</BButton>
+        <BButton as={Button} props={{color: 'success'}} onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>

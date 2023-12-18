@@ -1,52 +1,34 @@
-import parseAstroForm, {ExtendedFormData, FormDataValue, VolatileFile} from '@astro-utils/formidable';
-import {FORM_OPTIONS} from '../settings.js';
+import AwaitLockDefault from 'await-lock';
 import {AstroLinkHTTP} from '../utils.js';
 import {validateFrom} from './csrf.js';
-import AwaitLock from 'await-lock';
+
+const AwaitLock = AwaitLockDefault.default || AwaitLockDefault;
 
 export function isPost(astro: {request: Request}){
     return astro.request.method === "POST";
 }
 
-function extractDeleteMethods(formData: ExtendedFormData | FormData){
-    return [...formData].map(([_, value]) => {
-        if (value instanceof VolatileFile) {
-            return value.destroy.bind(value);
-        }
-    }).filter(Boolean);
-}
-
-export function deleteFormFiles(request: AstroLinkHTTP['request']) {
-    //@ts-ignore
-    request.formData?.deleteFiles?.forEach(fn => fn());
-}
-
-export async function parseFormData(request: Request): Promise<ExtendedFormData> {
+export async function parseFormData(request: Request): Promise<FormData> {
     //@ts-ignore
     const lock = request.formDataLock ??= new AwaitLock();
     await lock.acquireAsync();
 
     try {
-        if(request.formData.name === ''){ // this is the anonymous function we created
-            return await request.formData() as any;
-        }
+        const formData = await request.formData();
+        request.formData = () => Promise.resolve(formData);
 
-        const formData = await parseAstroForm(request, FORM_OPTIONS.forms);
-        request.formData = () => <any>Promise.resolve(formData);
-        //@ts-ignore
-        request.formData.deleteFiles = extractDeleteMethods(formData);
         return formData;
     } finally {
         lock.release();
     }
 }
 
-export async function getFormValue(request: Request, key: string): Promise<FormDataValue | null>{
+export async function getFormValue(request: Request, key: string): Promise<FormDataEntryValue | null> {
     const data = await parseFormData(request);
-    return data.get(key) as any;
+    return data.get(key);
 }
 
-export async function getFormMultiValue(request: Request, key: string): Promise<FormDataValue[]> {
+export async function getFormMultiValue(request: Request, key: string): Promise<FormDataEntryValue[]> {
     const data = await parseFormData(request);
     return data.getAll(key);
 }

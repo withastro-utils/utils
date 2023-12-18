@@ -1,8 +1,7 @@
-import { isFormidableFile } from "@astro-utils/formidable";
-import { AstroGlobal } from "astro";
-import { z } from "zod";
-import { getFormMultiValue } from "../../form-tools/post.js";
-import AboutFormName from "./about-form-name.js";
+import {AstroGlobal} from 'astro';
+import {z} from 'zod';
+import {getFormMultiValue} from '../../form-tools/post.js';
+import AboutFormName from './about-form-name.js';
 
 const HEX_COLOR_REGEX = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i;
 
@@ -65,7 +64,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
     }
 
     for(const value of values){
-        if(!isFormidableFile(value)){
+        if (!(value instanceof File)) {
             about.pushErrorManually('upload-not-file', 'The upload value is not a file');
             break;
         }
