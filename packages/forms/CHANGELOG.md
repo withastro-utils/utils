@@ -1,3 +1,10 @@
+## [3.1.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.3...@astro-utils/forms@3.1.4) (2023-12-18)
+
+
+### Reverts
+
+* Revert "style: better types" ([fc17859](https://github.com/withastro-utils/utils/commit/fc178598c28aa32d1f99b1a41490f5def509a3b2))
+
 ## [3.1.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.2...@astro-utils/forms@3.1.3) (2023-12-18)
 
 
