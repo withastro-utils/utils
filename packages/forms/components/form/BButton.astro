@@ -2,9 +2,8 @@
 import getContext from '@astro-utils/context';
 import {createUniqueContinuanceName} from '../../dist/form-tools/connectId.js';
 import {isPost, validateAction} from '../../dist/form-tools/post.js';
-import type { HTMLAttributes } from 'astro/types';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends HTMLAttributes<'button'> {
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.ButtonHTMLAttributes {
     onClick: Function;
     connectId?: string;
     whenFormOK?: boolean;

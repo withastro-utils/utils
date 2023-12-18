@@ -2,9 +2,8 @@
 import getContext from '@astro-utils/context';
 import {validatePostRequest} from '../../dist/form-tools/post.js';
 import {validateSelectOption} from '../../dist/components/select.js';
-import type { HTMLAttributes } from 'astro/types';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends HTMLAttributes<'option'> {
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.OptionHTMLAttributes {
     as?: T;
     props?: React.ComponentProps<T>;
 };

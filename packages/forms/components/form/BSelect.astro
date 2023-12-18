@@ -4,9 +4,8 @@ import {validateSelect} from '../../dist/components/select.js';
 import {getSelectValue} from '../../dist/components/select.js';
 import getContext from '@astro-utils/context';
 import Context from '@astro-utils/context/Context.astro';
-import type { HTMLAttributes } from 'astro/types';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends HTMLAttributes<'select'> {
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.SelectHTMLAttributes {
     name: string
     errorMessage?: string
     type?: 'string' | 'number' | 'date',
