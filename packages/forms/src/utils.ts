@@ -9,6 +9,8 @@ export interface AstroLinkHTTP {
 declare global {
   export namespace App {
       interface Locals {
+          [key: string]: any;
+          webFormOff?: boolean;
           session: {
               [key: string]: any;
           }
