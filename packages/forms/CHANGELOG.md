@@ -1,3 +1,10 @@
+## [3.1.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.4...@astro-utils/forms@3.1.5) (2023-12-19)
+
+
+### Bug Fixes
+
+* astro local types ([c72171f](https://github.com/withastro-utils/utils/commit/c72171f6ac0b147be7c13f68381b038203f6ca11))
+
 ## [3.1.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.3...@astro-utils/forms@3.1.4) (2023-12-18)
 
 
