@@ -6,6 +6,15 @@ export interface AstroLinkHTTP {
   locals: AstroGlobal['locals'];
 }
 
+declare global {
+  export namespace App {
+      interface Locals {
+          session: {
+              [key: string]: any;
+          }
+      }
+  }
+}
 
 export type ModifyDeep<A, B extends DeepPartialAny<A>> = {
   [K in keyof A | keyof B]:          // For all keys in A and B:
