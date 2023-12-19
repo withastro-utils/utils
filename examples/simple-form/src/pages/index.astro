@@ -13,9 +13,24 @@ function formSubmit(){
     Astro.locals.session.counter++;
     showSubmitText = `Your name is ${form.name}, you are ${form.age} years old. `;
 }
+
+let value = 4;
+function makeBackgroundRed() {
+    this.style = 'background-color: red';
+    value = 5;
+    this.innerHTML = 'Clicked ' + this.hidden;
+}
 ---
 <Layout title="Form + Session">
+    <BButton props={{color: 'info'}} onClick={makeBackgroundRed} hidden={0}>Should click</BButton>
+
     <BindForm bind={form}>
+        {[1, 2, 3].map(key =>
+                <BButton props={{color: 'info'}} onClick={makeBackgroundRed} hidden={key}>Should click</BButton>
+        )}
+
+        <p>Value: {value}</p>
+
         <FormErrors/>
         {showSubmitText}
 

@@ -8,7 +8,8 @@ export interface Props extends astroHTML.JSX.FormHTMLAttributes {
 
 const context = {
     ...Astro.props,
-    webFormsSettings: {haveFileUpload: false}
+    webFormsSettings: {haveFileUpload: false},
+    tempValues: {},
 };
 
 await Astro.locals.__formsInternalUtils?.onWebFormsOpen?.();

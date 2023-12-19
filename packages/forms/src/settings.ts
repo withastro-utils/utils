@@ -1,10 +1,12 @@
-// @ts-ignore
-import {Options as formidableOptions} from 'formidable';
 import {CSRFSettings} from './form-tools/csrf.js';
 
 export type FormsSettings = {
     csrf?: CSRFSettings
-    forms?: formidableOptions
+    forms?: {
+        allowEmptyFiles: boolean
+        minFileSize: number
+        multiples: boolean
+    }
     session?: {
         cookieName: string
         cookieOptions: {

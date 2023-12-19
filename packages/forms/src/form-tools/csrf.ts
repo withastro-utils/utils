@@ -3,6 +3,9 @@ import {promisify} from 'node:util';
 import {AstroLinkHTTP} from '../utils.js';
 import {getFormValue, isPost} from './post.js';
 import {FORM_OPTIONS} from '../settings.js';
+import AwaitLockDefault from 'await-lock';
+
+const AwaitLock = AwaitLockDefault.default || AwaitLockDefault;
 
 export type CSRFSettings = {
     formFiled: string,
@@ -24,15 +27,23 @@ export async function ensureValidationSecret(astro: AstroLinkHTTP) {
 
 export async function validateFrom(astro: AstroLinkHTTP) {
     //@ts-ignore
-    if (!isPost(astro) || typeof astro.request.formData.requestFormValid == 'boolean') return;
+    const lock = astro.request.validateFormLock ??= new AwaitLock();
+    await lock.acquireAsync();
 
-    const validationSecret = await ensureValidationSecret(astro);
-    const validateToken = await getFormValue(astro.request, FORM_OPTIONS.csrf.formFiled);
-    const requestValid = validateToken && validationSecret && typeof validateToken == 'string' &&
-        tokens.verify(validationSecret, validateToken);
+    try {
+        //@ts-ignore
+        if (!isPost(astro) || typeof astro.request.formData.requestFormValid == 'boolean') return;
 
-    //@ts-ignore
-    astro.request.formData.requestFormValid = Boolean(requestValid);
+        const validationSecret = await ensureValidationSecret(astro);
+        const validateToken = await getFormValue(astro.request, FORM_OPTIONS.csrf.formFiled);
+        const requestValid = validateToken && validationSecret && typeof validateToken == 'string' &&
+            tokens.verify(validationSecret, validateToken);
+
+        //@ts-ignore
+        astro.request.formData.requestFormValid = Boolean(requestValid);
+    } finally {
+        lock.release();
+    }
 }
 
 export async function createFormToken(astro: AstroLinkHTTP) {

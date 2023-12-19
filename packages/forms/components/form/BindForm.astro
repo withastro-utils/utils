@@ -6,7 +6,7 @@ export interface Props  {
 };
 
 const {bind} = Astro.props;
-const context = {executeAfter: [], method: Astro.request.method, bind};
+const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}};
 
 let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-utils/forms", context});
 bind?.finishFormValidation();
@@ -14,9 +14,9 @@ for(const func of context.executeAfter){
     await (func as any)();
 }
 
-
 if(context.method == "POST"){
     context.method = "GET";
+    context.tempBindValues = {};
     htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "@astro-utils/forms", context});
 }
 ---
