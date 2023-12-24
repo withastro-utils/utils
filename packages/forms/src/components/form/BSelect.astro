@@ -1,9 +1,8 @@
 ---
-import {validatePostRequest} from '../../dist/form-tools/post.js';
-import {validateSelect} from '../../dist/components/select.js';
-import {getSelectValue} from '../../dist/components/select.js';
 import getContext from '@astro-utils/context';
 import Context from '@astro-utils/context/Context.astro';
+import {getSelectValue, validateSelect} from '../../components-control/select.js';
+import {validateFrom} from '../../form-tools/csrf.js';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.SelectHTMLAttributes {
     name: string
@@ -18,7 +17,7 @@ const {bind, method} = getContext(Astro, '@astro-utils/forms');
 const {as: asComponent = 'select', props: componentProps, value: defaultValue, ...props} = Astro.props;
 let value = bind[Astro.props.name] ?? defaultValue;
 
-if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
     await validateSelect(Astro, bind);
     value = await getSelectValue(Astro);
 }

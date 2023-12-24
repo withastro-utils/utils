@@ -1,21 +1,21 @@
-import { AstroGlobal } from "astro";
-import { getFormMultiValue } from "../form-tools/post.js";
-import AboutFormName from "./form-utils/about-form-name.js";
-import HTMLSelectPlugin from "./form-utils/bind-form-plugins/select.js";
-import { BindForm } from "./form-utils/bind-form.js";
-import { parseMultiDate, parseMultiNumber } from "./form-utils/parse-multi.js";
-import { validateRequire } from "./form-utils/validate.js";
+import type {AstroGlobal} from 'astro';
+import {getFormMultiValue} from '../form-tools/post.js';
+import AboutFormName from './form-utils/about-form-name.js';
+import HTMLSelectPlugin from './form-utils/bind-form-plugins/select.js';
+import {BindForm} from './form-utils/bind-form.js';
+import {parseMultiDate, parseMultiNumber} from './form-utils/parse-multi.js';
+import {validateRequire} from './form-utils/validate.js';
 
-type InputTypes = "number" | "date" | "text"
+type InputTypes = 'number' | 'date' | 'text'
 
-export async function getSelectValue(astro: AstroGlobal){
+export async function getSelectValue(astro: AstroGlobal) {
     const {value: originalValue, name} = astro.props;
-    if(originalValue) return [originalValue];
+    if (originalValue) return [originalValue];
     return await getFormMultiValue(astro.request, name);
 }
 
 export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {
-    const { type, required, name, multiple, errorMessage } = astro.props;
+    const {type, required, name, multiple, errorMessage} = astro.props;
 
     const parseValue: any = await getSelectValue(astro);
     const aboutSelect = new AboutFormName(bind, name, parseValue, errorMessage);
@@ -39,8 +39,8 @@ export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {
 }
 
 export function validateSelectOption(astro: AstroGlobal, bind: BindForm<any>, name: string, slotValue: string) {
-    const { value, disabled } = astro.props;
-    if(disabled) return;
+    const {value, disabled} = astro.props;
+    if (disabled) return;
 
     const realValue = value ?? slotValue;
     const selectPlugin = bind.getPlugin('HTMLSelectPlugin') as HTMLSelectPlugin;

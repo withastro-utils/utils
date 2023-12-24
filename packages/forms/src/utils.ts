@@ -1,7 +1,26 @@
-import {AstroGlobal} from 'astro';
+import type {AstroGlobal} from 'astro';
+import {FormsSettings} from './settings.js';
+import AwaitLockDefault from 'await-lock';
+import FormsReact from './form-tools/forms-react.js';
+
+export function createLock(): InstanceType<typeof AwaitLockDefault['default']> {
+    if ('default' in AwaitLockDefault) {
+        return new AwaitLockDefault.default();
+    }
+
+    return new (AwaitLockDefault as any)();
+}
+
+export type ExtendedRequest = AstroGlobal['request'] & {
+    formDataLock?: ReturnType<typeof createLock>
+    validateFormLock?: ReturnType<typeof createLock>
+    formData: (Request['formData'] | (() => FormData | Promise<FormData>)) & {
+        requestFormValid?: boolean
+    }
+}
 
 export interface AstroLinkHTTP {
-  request: AstroGlobal['request']
+    request: ExtendedRequest;
   cookies: AstroGlobal['cookies']
   locals: AstroGlobal['locals'];
 }
@@ -9,11 +28,18 @@ export interface AstroLinkHTTP {
 declare global {
   export namespace App {
       interface Locals {
-          [key: string]: any;
+          /**
+           * @internal
+           */
+          __formsInternalUtils: {
+              onWebFormClose(): void;
+              FORM_OPTIONS: FormsSettings;
+          };
+          forms: FormsReact;
           webFormOff?: boolean;
           session: {
               [key: string]: any;
-          }
+          };
       }
   }
 }

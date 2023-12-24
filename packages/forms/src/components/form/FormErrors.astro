@@ -2,15 +2,17 @@
 import getContext from '@astro-utils/context';
 
 export interface Props extends astroHTML.JSX.HTMLAttributes {
-    title?: string
+    title?: string;
 };
 
-const { bind } = getContext(Astro,  "@astro-utils/forms");
+const {bind} = getContext(Astro, '@astro-utils/forms');
 const {title, ...props} = Astro.props;
 ---
-{bind.errors.length && <div {...props}>
+{bind.errors.length &&
+<div {...props}>
     {title && <h4>{title}</h4>}
     <ol>
-        {bind.errors.map(x => <li>{x.message}</li>)}
+        {bind.errors.map(x =>
+                <li>{x.message}</li>)}
     </ol>
 </div> || ''}

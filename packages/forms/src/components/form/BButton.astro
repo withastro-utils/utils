@@ -1,0 +1,67 @@
+---
+import getContext from '@astro-utils/context';
+import {createUniqueContinuanceName} from '../../form-tools/connectId.js';
+import {isPost, validateAction} from '../../form-tools/post.js';
+import {diffProps} from '../../components-control/props-utils.js';
+
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.ButtonHTMLAttributes {
+    onClick: Function;
+    connectId?: string;
+    whenFormOK?: boolean;
+    as?: T;
+    props?: React.ComponentProps<T>;
+    state?: any;
+    extra?: any;
+}
+
+const {as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props} = Astro.props;
+const {bind, executeAfter, elementsState, tempValues, tempBindValues, method} = getContext(Astro, '@astro-utils/forms');
+const tempCounter = tempBindValues || tempValues;
+const elementPropsState = elementsState || tempValues;
+
+let buttonUniqueId = connectId;
+if (!connectId) {
+    const idBaseFunction = createUniqueContinuanceName(onClick) + (method ? 'form' : '');
+    tempCounter[idBaseFunction] ??= 0;
+
+    const counter = ++tempCounter[idBaseFunction];
+    buttonUniqueId = `${idBaseFunction}-${counter}`;
+}
+
+const allProps = {...props, ...componentProps};
+async function executeFormAction(callback: Function = onClick) {
+    const checkFormValidation = (whenFormOK && !bind?.errors.length) || !whenFormOK;
+    if (checkFormValidation && isPost(Astro) && (await validateAction(Astro, 'button-callback', buttonUniqueId))) {
+        const copyProps = structuredClone({...allProps, ...elementPropsState[buttonUniqueId]});
+
+        await callback.call(copyProps);
+        delete copyProps.extra;
+
+        elementPropsState[buttonUniqueId] = diffProps(allProps, copyProps);
+    }
+}
+
+if (executeAfter) {
+    executeAfter.push(executeFormAction);
+} else if (whenFormOK) {
+    throw new Error('Use BButton with `whenFormOK` inside a BindForm component');
+} else {
+    await executeFormAction();
+}
+
+const {innerText, innerHTML, remove: doNotWriteHTML, ...changedProps}: any = {...allProps, ...elementPropsState[buttonUniqueId]};
+delete changedProps.extra;
+delete changedProps.state; 
+
+const Component = asComponent as any;
+const slotData = innerHTML ?? (Astro.slots.has('default') ? await Astro.slots.render('default') : '');
+---
+
+{
+    !doNotWriteHTML && (
+    <Component type="submit" name="button-callback" value={buttonUniqueId} formNoValidate={!whenFormOK} {...changedProps}>
+        {innerText ??
+                <Fragment set:html={slotData}/>}
+    </Component>
+        )
+    }

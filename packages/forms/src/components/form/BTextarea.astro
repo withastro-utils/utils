@@ -1,8 +1,8 @@
 ---
 import getContext from '@astro-utils/context';
-import {validateFormInput} from '../../dist/components/input-parse.js';
-import {validatePostRequest} from '../../dist/form-tools/post.js';
-import {ModifyDeep} from '../../dist/utils.js';
+import {validateFormInput} from '../../components-control/input-parse.js';
+import {validateFrom} from '../../form-tools/csrf.js';
+import {ModifyDeep} from '../../utils.js';
 
 interface ModifyInputProps {
     minlength?: number;
@@ -18,7 +18,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 };
 
 const {bind, method} = getContext(Astro, '@astro-utils/forms');
-if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
     await validateFormInput(Astro, bind);
 }
 

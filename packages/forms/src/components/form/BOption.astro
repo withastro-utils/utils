@@ -1,7 +1,7 @@
 ---
 import getContext from '@astro-utils/context';
-import {validatePostRequest} from '../../dist/form-tools/post.js';
-import {validateSelectOption} from '../../dist/components/select.js';
+import {validateSelectOption} from '../../components-control/select.js';
+import {validateFrom} from '../../form-tools/csrf.js';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.OptionHTMLAttributes {
     as?: T;
@@ -11,7 +11,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 const {bind, name, value: selectValue, allowSelected, method} = getContext(Astro, '@astro-utils/forms');
 
 const htmlSolt = await Astro.slots.render('default');
-if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
     validateSelectOption(Astro, bind, name, htmlSolt);
 }
 

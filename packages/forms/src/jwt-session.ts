@@ -1,5 +1,5 @@
 import {FORM_OPTIONS} from './settings.js';
-import {AstroLinkHTTP} from './utils.js';
+import type {AstroLinkHTTP} from './utils.js';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import {deepStrictEqual} from 'assert';

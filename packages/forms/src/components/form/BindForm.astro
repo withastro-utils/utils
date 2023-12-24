@@ -1,0 +1,32 @@
+---
+import {asyncContext} from '@astro-utils/context';
+import getContext from '@astro-utils/context';
+import ViewStateManager from '../../components-control/form-utils/view-state.js';
+
+export interface Props {
+    bind?: any;
+    state?: boolean | string[];
+}
+
+const {viewStates} = getContext(Astro, '@astro-utils/forms');
+const {bind} = Astro.props;
+const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}, elementsState: {}};
+
+const viewState = new ViewStateManager(bind, context.elementsState, Astro, viewStates.counter++);
+await viewState.loadState();
+
+let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
+bind?.finishFormValidation();
+for (const func of context.executeAfter) {
+    await (func as any)();
+}
+
+if (context.method == 'POST') {
+    context.method = 'GET';
+    context.tempBindValues = {};
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
+}
+---
+
+{viewState.useState ? <input type="hidden" name={viewState.filedName} value={await viewState.createViewState()}/> : null}
+<Fragment set:html={htmlSolt}/>

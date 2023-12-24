@@ -7,7 +7,6 @@ import {EventEmitter} from 'events';
 import type {ExpressRouteBodyType} from '../express-route.js';
 import {ExpressRouteBodyOptions} from '../express-route.js';
 import {Accepts} from '@tinyhttp/accepts';
-import {Options} from 'formidable';
 
 interface ExpressRequestEventEmitterTypes {
     on(event: 'close', listener: (error?: Error) => void): this;
@@ -82,7 +81,7 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
         }
     }
 
-    async parseBody(type: ExpressRouteBodyType, options?: Options) {
+    async parseBody(type: ExpressRouteBodyType) {
         if (!BODY_METHODS.includes(this.method as any)) {
             throw new ExpressBodyError(`Body parsing only available for ${BODY_METHODS.join(', ')}`, 500);
         }
@@ -101,7 +100,7 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
                 this.body = await this.astroContext.request.json();
                 break;
             case 'multipart':
-                await this._parseBodyMultiPart(options);
+                await this._parseBodyMultiPart();
                 break;
             case 'urlencoded':
                 this.body = await this.astroContext.request.formData();
@@ -116,7 +115,7 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
         return this.body;
     }
 
-    private async _parseBodyMultiPart(options?: Options) {
+    private async _parseBodyMultiPart() {
         try {
             const formData = await this.astroContext.request.formData();
 
