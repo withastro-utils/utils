@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.5...@astro-utils/forms@3.2.0) (2023-12-24)
+
+
+### Features
+
+* form state (ASPX) ([#3](https://github.com/withastro-utils/utils/issues/3)) ([1f71d80](https://github.com/withastro-utils/utils/commit/1f71d8035b4251f133333cfa35660070a5423492))
+
 ## [3.1.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.4...@astro-utils/forms@3.1.5) (2023-12-19)
 
 
