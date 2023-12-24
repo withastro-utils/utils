@@ -39,14 +39,14 @@ export default class ViewStateManager {
 
     private async _extractStateFromForm() {
         const form = await parseFormData(this._astro.request);
-        const value = form.get(this.filedName).toString();
-        form.delete(this.filedName);
-        return value;
+        return form.get(this.filedName)?.toString();
     }
 
     private async _parseState() {
         try {
             const state = await this._extractStateFromForm();
+            if(state == null) return;
+            
             const data = this._cryptr.decrypt(state);
             const uncompress = await snappy.uncompress(Buffer.from(data, 'base64'));
             return superjson.parse(uncompress.toString());
