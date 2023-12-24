@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.0...@astro-utils/forms@3.2.1) (2023-12-24)
+
+
+### Bug Fixes
+
+* parse first state ([e6dd31f](https://github.com/withastro-utils/utils/commit/e6dd31f9ad95ee69485c32ae2645b1ff02fa0e9f))
+
 # [3.2.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.1.5...@astro-utils/forms@3.2.0) (2023-12-24)
 
 
