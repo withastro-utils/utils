@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.0.0...@astro-utils/express-endpoints@2.1.0) (2023-12-24)
+
+
+### Features
+
+* form state (ASPX) ([#3](https://github.com/withastro-utils/utils/issues/3)) ([1f71d80](https://github.com/withastro-utils/utils/commit/1f71d8035b4251f133333cfa35660070a5423492))
+
 # [2.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@1.0.3...@astro-utils/express-endpoints@2.0.0) (2023-12-18)
 
 
