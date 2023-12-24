@@ -5,31 +5,34 @@ import {Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 
-const form = Bind({age: 0, name: ''});
+const form = Bind({age: 0, name: '', about: ''});
 let showSubmitText: string;
 
 function formSubmit(){
     Astro.locals.session.counter ??= 0;
     Astro.locals.session.counter++;
     showSubmitText = `Your name is ${form.name}, you are ${form.age} years old. `;
+    form.age++;
 }
 
 let value = 4;
 function makeBackgroundRed() {
     this.style = 'background-color: red';
     value = 5;
-    this.innerHTML = 'Clicked ' + this.hidden;
+    this.innerHTML = 'Clicked ' + (++this.extra || ++this.state.counter);
+    form.about = 'This is a form about something';
 }
 ---
 <Layout title="Form + Session">
-    <BButton props={{color: 'info'}} onClick={makeBackgroundRed} hidden={0}>Should click</BButton>
+    <BButton props={{color: 'info'}} onClick={makeBackgroundRed} extra={1}>Should click</BButton>
 
-    <BindForm bind={form}>
+    <BindForm bind={form} state={['about']}>
         {[1, 2, 3].map(key =>
-                <BButton props={{color: 'info'}} onClick={makeBackgroundRed} hidden={key}>Should click</BButton>
+                <BButton props={{color: 'info'}} onClick={makeBackgroundRed} state={{counter: key}}>Should click</BButton>
         )}
 
         <p>Value: {value}</p>
+        <p>About: {form.about}</p>
 
         <FormErrors/>
         {showSubmitText}

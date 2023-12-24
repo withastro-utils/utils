@@ -1,5 +1,5 @@
-import { z } from "zod";
-import AboutFormName from "./about-form-name.js";
+import {z} from 'zod';
+import AboutFormName from './about-form-name.js';
 
 export function parseMultiNumber(about: AboutFormName) {
     const numArray = z.array(z.number());

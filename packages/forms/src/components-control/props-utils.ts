@@ -10,3 +10,14 @@ export function diffProps(object1: any, object2: any) {
     }
     return diff;
 }
+
+export function getSomeProps(object: any, props: string[] | true) {
+    if (props === true) {
+        return object;
+    }
+    const result = {};
+    for (const prop of props) {
+        result[prop] = object[prop];
+    }
+    return result;
+}

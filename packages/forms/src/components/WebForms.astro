@@ -1,0 +1,36 @@
+---
+import {asyncContext} from '@astro-utils/context';
+import {createFormToken} from '../form-tools/csrf.js';
+const utils = Astro.locals.__formsInternalUtils;
+
+export interface Props extends astroHTML.JSX.FormHTMLAttributes {}
+
+const context = {
+    ...Astro.props,
+    webFormsSettings: {haveFileUpload: false},
+    tempValues: {},
+    viewStates: {
+        counter: 0,
+        store: {},
+    },
+};
+
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
+
+const {webFormsSettings, tempValues, viewStates, ...props} = context;
+if (webFormsSettings.haveFileUpload) {
+    props.enctype = 'multipart/form-data';
+}
+
+const useSession = utils?.FORM_OPTIONS.session?.cookieOptions?.maxAge;
+const formRequestToken = useSession && (await createFormToken(Astro));
+await utils?.onWebFormClose?.();
+
+const clientScript = Astro.locals.forms.scriptToRun;
+---
+
+<form method="post" {...props}>
+    {formRequestToken && <input type="hidden" name={formRequestToken.filed} value={formRequestToken.token}/>}
+    <Fragment set:html={htmlSolt}/>
+    {clientScript && <script set:html={clientScript}></script>}
+</form>

@@ -1,8 +1,8 @@
 ---
 import getContext from '@astro-utils/context';
-import {caseTypes, inputReturnValueAttr, validateFormInput} from '../../dist/components/input-parse.js';
-import {validatePostRequest} from '../../dist/form-tools/post.js';
-import {ModifyDeep} from '../../dist/utils.js';
+import {caseTypes, inputReturnValueAttr, validateFormInput} from '../../components-control/input-parse.js';
+import {validateFrom} from '../../form-tools/csrf.js';
+import {ModifyDeep} from '../../utils.js';
 
 type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int';
 
@@ -22,7 +22,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 };
 
 const {bind, method, webFormsSettings} = getContext(Astro, '@astro-utils/forms');
-if (!Astro.props.disabled && method === 'POST' && await validatePostRequest(Astro as any)) {
+if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
     await validateFormInput(Astro, bind);
 }
 

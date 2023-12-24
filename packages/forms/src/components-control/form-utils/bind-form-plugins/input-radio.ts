@@ -1,5 +1,5 @@
-import AboutFormName from "../about-form-name.js";
-import { IHTMLFormPlugin } from "./iform-plugin.js"
+import AboutFormName from '../about-form-name.js';
+import {IHTMLFormPlugin} from './iform-plugin.js';
 
 type RadioItem = {
     about: AboutFormName,
@@ -13,7 +13,7 @@ export default class HTMLInputRadioPlugin extends IHTMLFormPlugin {
     createOneValidation(name: string, keyData: any): void {
         const {options, about}: RadioItem = keyData;
 
-        if(!options.has(about.formValue)){
+        if (!options.has(about.formValue)) {
             about.pushErrorManually('radio-invalid-value', 'Radio value invalid');
             return;
         }
@@ -23,13 +23,13 @@ export default class HTMLInputRadioPlugin extends IHTMLFormPlugin {
 
     private createRadioDefault(about: AboutFormName): RadioItem {
         return {
-            about, 
+            about,
             options: new Set<string>()
-        }
+        };
     }
 
     addNewValue(about: AboutFormName, originalValue: string): void {
-        if(!this.storage.has(about.originalName)){
+        if (!this.storage.has(about.originalName)) {
             this.storage.set(about.originalName, this.createRadioDefault(about));
         } else {
             this.storage.get(about.originalName).options.add(originalValue);
