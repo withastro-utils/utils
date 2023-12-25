@@ -1,3 +1,10 @@
+## [3.2.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.1...@astro-utils/forms@3.2.2) (2023-12-25)
+
+
+### Bug Fixes
+
+* wait only for HTML content ([331937b](https://github.com/withastro-utils/utils/commit/331937b75a2d40639a11dc6e57e9f8e10d47c6db))
+
 ## [3.2.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.0...@astro-utils/forms@3.2.1) (2023-12-24)
 
 
