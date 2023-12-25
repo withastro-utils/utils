@@ -50,7 +50,8 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
         await ensureValidationSecret(likeAstro);
         response = await next();
 
-        if (!locals.webFormOff) {
+        const isHTML = response.headers.get('Content-Type')?.includes('text/html');
+        if (!locals.webFormOff && isHTML) {
             try {
                 const pageFinishedPromise = new Promise(resolve => pageFinished = resolve);
                 await timeout(pageFinishedPromise, FORM_OPTIONS.pageLoadTimeoutMS);
