@@ -1,3 +1,10 @@
+## [3.2.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.4...@astro-utils/forms@3.2.5) (2023-12-26)
+
+
+### Bug Fixes
+
+* crypto algorithm to aes-256-ctr ([57060eb](https://github.com/withastro-utils/utils/commit/57060eb1387d393b5306104b1c1029be7d4ebaa0))
+
 ## [3.2.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.3...@astro-utils/forms@3.2.4) (2023-12-26)
 
 
