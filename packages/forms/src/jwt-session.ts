@@ -37,6 +37,8 @@ export class JWTSession {
 
     setCookieHeader(headers: Headers) {
         this.save();
-        headers.set('Set-Cookie', this.stringifyCookie);
+        if(this.stringifyCookie){
+            headers.set('Set-Cookie', this.stringifyCookie);
+        }
     }
 }
