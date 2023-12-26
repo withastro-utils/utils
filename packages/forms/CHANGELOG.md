@@ -1,3 +1,10 @@
+## [3.2.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.3...@astro-utils/forms@3.2.4) (2023-12-26)
+
+
+### Bug Fixes
+
+* **view-state:** crypto ([811da77](https://github.com/withastro-utils/utils/commit/811da7797108facbc0cb3a09044a3d672902c4db))
+
 ## [3.2.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.2...@astro-utils/forms@3.2.3) (2023-12-26)
 
 
