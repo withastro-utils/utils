@@ -1,15 +1,17 @@
 import {AstroGlobal} from 'astro';
-import Cryptr from 'cryptr';
 import superjson from 'superjson';
 import {parseFormData} from '../../form-tools/post.js';
 import {FormsSettings, getFormOptions} from '../../settings.js';
 import {BindForm} from './bind-form.js';
 import snappy from 'snappy';
 import {getSomeProps} from '../props-utils.js';
+import crypto from 'crypto';
+
+const CRYPTO_ALGORITHM = 'aes-256-gcm';
 
 export default class ViewStateManager {
     private readonly _FORM_OPTIONS: FormsSettings;
-    private readonly _cryptr: Cryptr;
+    private _VALID_KEY: string;
 
     get filedName() {
         if (!this._FORM_OPTIONS.forms) {
@@ -33,8 +35,12 @@ export default class ViewStateManager {
         if (!this._FORM_OPTIONS.secret) {
             throw new Error('Secret not set in form options');
         }
+        this._initKey();
+    }
 
-        this._cryptr = new Cryptr(this._FORM_OPTIONS.secret, {'encoding': 'base64'});
+    private _initKey() {
+        const repeat = Math.ceil(this._FORM_OPTIONS.secret.length / 32);
+        this._VALID_KEY = this._FORM_OPTIONS.secret.repeat(repeat).slice(0, 32);
     }
 
     private async _extractStateFromForm() {
@@ -46,9 +52,13 @@ export default class ViewStateManager {
         try {
             const state = await this._extractStateFromForm();
             if(state == null) return;
-            
-            const data = this._cryptr.decrypt(state);
-            const uncompress = await snappy.uncompress(Buffer.from(data, 'base64'));
+
+            const [iv, content] = state.split('.');
+
+            const decipher = crypto.createDecipheriv(CRYPTO_ALGORITHM, this._VALID_KEY, Buffer.from(iv, 'base64'));
+            const decrypted = Buffer.concat([decipher.update(Buffer.from(content, 'base64')), decipher.final()]);
+
+            const uncompress = await snappy.uncompress(decrypted);
             return superjson.parse(uncompress.toString());
         } catch (error: any) {
             this._FORM_OPTIONS.logs?.('warn', `ViewStateManager: ${error.message}`);
@@ -76,6 +86,11 @@ export default class ViewStateManager {
 
         const stringify = superjson.stringify(data);
         const compress = await snappy.compress(stringify, {});
-        return this._cryptr.encrypt(compress.toString('base64'));
+
+        const iv = crypto.randomBytes(16);
+        const cipher = crypto.createCipheriv(CRYPTO_ALGORITHM, this._VALID_KEY, iv);
+        const encrypted = Buffer.concat([cipher.update(compress), cipher.final()]);
+
+        return `${iv.toString('base64')}.${encrypted.toString('base64')}`;
     }
 }

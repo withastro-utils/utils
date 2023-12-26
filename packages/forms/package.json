@@ -65,7 +65,6 @@
     "@astro-utils/context": "0.0.1",
     "await-lock": "^2.2.2",
     "cookie": "^0.5.0",
-    "cryptr": "^6.3.0",
     "csrf": "^3.1.0",
     "deepmerge": "^4.3.1",
     "jsonwebtoken": "^9.0.0",
