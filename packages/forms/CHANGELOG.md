@@ -1,3 +1,11 @@
+## [3.2.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.2...@astro-utils/forms@3.2.3) (2023-12-26)
+
+
+### Bug Fixes
+
+* no change in session ([6581a18](https://github.com/withastro-utils/utils/commit/6581a183c66f47bf8da2c4c2d05b25fc3c695b85))
+* saving session ([4535f21](https://github.com/withastro-utils/utils/commit/4535f21e4703dff5b1bd3c7a85074c85b07aa28f))
+
 ## [3.2.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.1...@astro-utils/forms@3.2.2) (2023-12-25)
 
 
