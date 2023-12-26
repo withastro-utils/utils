@@ -7,7 +7,7 @@ import snappy from 'snappy';
 import {getSomeProps} from '../props-utils.js';
 import crypto from 'crypto';
 
-const CRYPTO_ALGORITHM = 'aes-256-gcm';
+const CRYPTO_ALGORITHM = 'aes-256-ctr';
 
 export default class ViewStateManager {
     private readonly _FORM_OPTIONS: FormsSettings;
