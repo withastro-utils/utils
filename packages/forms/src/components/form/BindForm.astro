@@ -2,6 +2,7 @@
 import {asyncContext} from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
+import Bind from '../../components-control/form-utils/bind-form.js';
 
 export interface Props {
     bind?: any;
@@ -9,14 +10,14 @@ export interface Props {
 }
 
 const {viewStates} = getContext(Astro, '@astro-utils/forms');
-const {bind} = Astro.props;
+const {bind = Bind()} = Astro.props;
 const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}, elementsState: {}};
 
 const viewState = new ViewStateManager(bind, context.elementsState, Astro, viewStates.counter++);
 await viewState.loadState();
 
 let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
-bind?.finishFormValidation();
+bind.__finishFormValidation();
 for (const func of context.executeAfter) {
     await (func as any)();
 }

@@ -30,14 +30,17 @@ export class BindForm<T> {
         return this._plugins.find(x => x.constructor.name == name);
     }
 
-    finishFormValidation() {
+    defaults() {
+        this._defaults && Object.assign(this, this._defaults);
+    }
+
+    /**
+     * @internal
+     */
+    __finishFormValidation() {
         for (const plugin of this._plugins) {
             plugin.createValidation();
         }
-    }
-
-    defaults() {
-        this._defaults && Object.assign(this, this._defaults);
     }
 
     /**
