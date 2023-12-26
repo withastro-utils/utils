@@ -1,7 +1,7 @@
 ---
 import {asyncContext} from '@astro-utils/context';
 import {createFormToken} from '../form-tools/csrf.js';
-const utils = Astro.locals.__formsInternalUtils;
+import {getFormOptions} from '../settings.js';
 
 export interface Props extends astroHTML.JSX.FormHTMLAttributes {}
 
@@ -22,10 +22,8 @@ if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
 
-const useSession = utils?.FORM_OPTIONS.session?.cookieOptions?.maxAge;
+const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
 const formRequestToken = useSession && (await createFormToken(Astro));
-await utils?.onWebFormClose?.();
-
 const clientScript = Astro.locals.forms.scriptToRun;
 ---
 

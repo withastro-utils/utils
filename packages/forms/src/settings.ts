@@ -15,7 +15,6 @@ export type FormsSettings = {
         }
     },
     secret?: string,
-    pageLoadTimeoutMS?: number
     logs?: (type: 'warn' | 'error' | 'log', message: string) => void
 }
 

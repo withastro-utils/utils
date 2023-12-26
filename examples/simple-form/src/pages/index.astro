@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import {BButton, Bind, BindForm, BInput, FormErrors} from '@astro-utils/forms/forms.js';
 import {Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import Counter from '../components/Counter.astro';
 
 
 const form = Bind({age: 0, name: '', about: ''});
@@ -48,5 +49,6 @@ function makeBackgroundRed() {
         <BInput type="int" name="age" required/>
 
         <BButton as={Button} props={{color: 'info'}} onClick={formSubmit} whenFormOK>Submit</BButton>
+        <Counter/>
     </BindForm>
 </Layout>

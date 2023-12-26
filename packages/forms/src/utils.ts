@@ -32,7 +32,6 @@ declare global {
            * @internal
            */
           __formsInternalUtils: {
-              onWebFormClose(): void;
               FORM_OPTIONS: FormsSettings;
           };
           forms: FormsReact;

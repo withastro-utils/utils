@@ -1,0 +1,9 @@
+---
+import {BButton} from '@astro-utils/forms/forms.js';
+
+function inc() {
+    Astro.locals.session.count ??= 0;
+    this.innerText = Astro.locals.session.count++;
+}
+---
+<BButton onClick={inc}>Counter</BButton>
