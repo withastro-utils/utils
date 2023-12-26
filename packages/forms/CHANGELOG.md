@@ -1,3 +1,10 @@
+## [3.2.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.5...@astro-utils/forms@3.2.6) (2023-12-26)
+
+
+### Bug Fixes
+
+* default bind ([e2c9184](https://github.com/withastro-utils/utils/commit/e2c91849fcd70d3bc14d006806f78a179f8573f2))
+
 ## [3.2.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.4...@astro-utils/forms@3.2.5) (2023-12-26)
 
 
