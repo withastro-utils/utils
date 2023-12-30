@@ -47,7 +47,7 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
         }
 
         const content = await response.text();
-        const newResponse = new Response(content, response);
+        const newResponse = locals.forms.overrideResponse || new Response(content, response);
         session.setCookieHeader(newResponse.headers);
 
         return newResponse;

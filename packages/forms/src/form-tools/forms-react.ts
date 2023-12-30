@@ -3,21 +3,36 @@ import {AstroLinkHTTP} from 'src/utils.js';
 
 export default class FormsReact {
     public scriptToRun = '';
+    public overrideResponse: Response | null = null;
 
     public constructor(private _astro: AstroLinkHTTP) {
     }
 
     /**
      * Redirects the user to the given URL after the given timeout. (using `setTimeout`)
-     * @param url - URL to redirect to
+     * @param location
      * @param timeoutSec - timeout in seconds
      */
-    public redirectTimeoutSeconds(url: string, timeoutSec = 0) {
+    public redirectTimeoutSeconds(location: string, timeoutSec = 2) {
         this.scriptToRun += `
             setTimeout(function() {
-                window.location.href = new URL("${this._escapeParentheses(url)}", window.location.href).href;
+                window.location.href = new URL("${this._escapeParentheses(location)}", window.location.href).href;
             }, ${timeoutSec * 1000});
         `.trim();
+    }
+
+    /**
+     * Redirect the user to the given URL.
+     * @param location
+     * @param status - redirect status code
+     */
+    public redirect(location: string, status?: ValidRedirectStatus) {
+        this.overrideResponse = new Response(null, {
+            status: status || 302,
+            headers: {
+                Location: location,
+            },
+        });
     }
 
     /**
@@ -26,12 +41,13 @@ export default class FormsReact {
     public updateSearchParams() {
         const url = new URL(this._astro.request.url, 'http://example.com');
         const search = url.searchParams;
+        const self = this;
 
         return {
             search,
             redirect(status?: ValidRedirectStatus) {
                 const pathWithSearch = url.pathname.split('/').pop() + search.toString();
-                return new Response(null, {
+                self.overrideResponse = new Response(null, {
                     status: status || 302,
                     headers: {
                         Location: pathWithSearch,
@@ -56,7 +72,7 @@ export default class FormsReact {
             search.set(key, value);
         }
 
-        return redirect(status);
+        redirect(status);
     }
 
     /**
@@ -81,7 +97,9 @@ export default class FormsReact {
     /**
      * Print a message to the client console with the `console.log` function.
      */
-    public consoleLog = this.console.bind(this, 'log');
+    public consoleLog(...messages: any[]) {
+        this.console('log', ...messages);
+    }
 
     /**
      * Call a client side function with the given arguments.
