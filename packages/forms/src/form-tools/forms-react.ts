@@ -12,7 +12,7 @@ export default class FormsReact {
      * @param url - URL to redirect to
      * @param timeoutSec - timeout in seconds
      */
-    public redirectTimeoutScends(url: string, timeoutSec: number) {
+    public redirectTimeoutSeconds(url: string, timeoutSec = 0) {
         this.scriptToRun += `
             setTimeout(function() {
                 window.location.href = new URL("${this._escapeParentheses(url)}", window.location.href).href;
