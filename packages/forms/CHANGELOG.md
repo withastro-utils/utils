@@ -1,3 +1,10 @@
+## [3.2.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.6...@astro-utils/forms@3.2.7) (2023-12-30)
+
+
+### Bug Fixes
+
+* typo ([d535ae9](https://github.com/withastro-utils/utils/commit/d535ae975ecabb884aedd8aa0dce1d377b5e391d))
+
 ## [3.2.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.5...@astro-utils/forms@3.2.6) (2023-12-26)
 
 
