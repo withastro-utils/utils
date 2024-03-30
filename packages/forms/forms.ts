@@ -7,6 +7,7 @@ import BOption from './dist/components/form/BOption.astro';
 import BSelect from './dist/components/form/BSelect.astro';
 import WebForms from './dist/components/WebForms.astro';
 import Bind from './dist/components-control/form-utils/bind-form.js';
+import ThrowOverrideResponse from "./dist/throw-action/override-resposne-throw.js";
 
 export {
     Bind,
@@ -17,5 +18,6 @@ export {
     BTextarea,
     BOption,
     BSelect,
-    WebForms
+    WebForms,
+    ThrowOverrideResponse
 }

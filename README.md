@@ -1,6 +1,6 @@
 <div align="center">
 
-# Astro Utils
+# Astro Forms Utils
 
 <img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
 
@@ -11,46 +11,22 @@
 [![Version](https://badgen.net/npm/v/@astro-utils/forms)](https://www.npmjs.com/package/@astro-utils/forms)
 </div>
 
-> Components to help with your astro app
-
-### What that includes?
-- [Reactive Forms](./packages/forms/README.md) - feel native as regular HTML
-- [Component Context](./packages/context/README.md) - extra props base on context
-- [Express Endpoints](./packages/express-endpoints/README.md) - express-like framework for astro endpoints
+> Server component for Astro (validation and state management)
 
 
-# Full feature form control for Astro.js
+# Full feature server components for Astro.js
 
-Allow client side & server side validation and CSRF protection.
+This package is a framework for Astro.js that allows you to create forms and manage their state without any JavaScript.
 
-Export JWT session that can be used in every page.
+It also allows you to validate the form on the client side and server side, and protect against CSRF attacks.
 
-## Usage
+### More features
+- JWT session management
+- Override response at runtime (useful for error handling)
+- Custom server validation with `zod`
+- Multiples app states at the same time
 
-Add the middleware to your server
-
-
-`src/middleware.ts`
-```ts
-import astroForms from "@astro-utils/forms";
-import {sequence} from "astro/middleware";
-
-export const onRequest = sequence(astroForms());
-```
-
-Add the `WebForms` component in the layout
-
-`layouts/Layout.astro`
-```astro
----
-import {WebForms} from '@astro-utils/forms/forms.js';
----
-<WebForms>
-    <slot/>
-</WebForms>
-```
-
-### Simple example
+# Show me the code
 ```astro
 ---
 import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
@@ -76,6 +52,38 @@ function formSubmit(){
         <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
+```
+
+## Usage
+
+### Add the middleware to your server
+
+```
+npm install @astro-utils/forms
+```
+
+Add the middleware to your server
+
+
+`src/middleware.ts`
+```ts
+import astroForms from "@astro-utils/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(astroForms());
+```
+
+### Add to Layout
+Add the `WebForms` component in the layout
+
+`layouts/Layout.astro`
+```astro
+---
+import {WebForms} from '@astro-utils/forms/forms.js';
+---
+<WebForms>
+    <slot/>
+</WebForms>
 ```
 
 ### Easy debugging

@@ -1,7 +1,7 @@
 {
   "name": "@astro-utils/forms",
   "version": "0.0.1",
-  "description": "React-like web forms hooks for Astro (server + client validation)",
+  "description": "Server component for Astro (call server functions from client side with validation and state management)",
   "type": "module",
   "scripts": {
     "watch": "watch 'tsc' ./components",
@@ -18,7 +18,10 @@
     "validation",
     "astro-utils",
     "on-click",
-    "on-submit"
+    "on-submit",
+    "server-components",
+    "next.js",
+    "zod"
   ],
   "funding": "https://github.com/sponsors/ido-pluto",
   "homepage": "https://withastro-utils.github.io/docs/",

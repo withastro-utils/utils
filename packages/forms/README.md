@@ -1,8 +1,8 @@
 <div align="center">
 
-# Astro Forms
+# Astro Forms Utils
 
-<img src="https://raw.githubusercontent.com/withastro-utils/utils/main/assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+<img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
 
 
 [![Build](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/build.yml)
@@ -11,41 +11,22 @@
 [![Version](https://badgen.net/npm/v/@astro-utils/forms)](https://www.npmjs.com/package/@astro-utils/forms)
 </div>
 
-
-> Reactive forms for Astro without any JavaScript!
-
-### Why use this?
-- Allow client side & server side validation & parsing (number, boolean...)
-- CSRF protection (with JWT)
-- Export JWT session that can be used in every page.
-- Use formidable to parse forms data
+> Server component for Astro (validation and state management)
 
 
-## Usage
+# Full feature server components for Astro.js
 
-Add the middleware to your server
+This package is a framework for Astro.js that allows you to create forms and manage their state without any JavaScript.
 
-`src/middleware.ts`
-```ts
-import astroForms from "@astro-utils/forms";
-import {sequence} from "astro/middleware";
+It also allows you to validate the form on the client side and server side, and protect against CSRF attacks.
 
-export const onRequest = sequence(astroForms());
-```
+### More features
+- JWT session management
+- Override response at runtime (useful for error handling)
+- Custom server validation with `zod`
+- Multiples app states at the same time
 
-Add the `WebForms` component in the layout
-
-`layouts/Layout.astro`
-```astro
----
-import {WebForms} from '@astro-utils/forms/forms.js';
----
-<WebForms>
-    <slot/>
-</WebForms>
-```
-
-### Simple example
+# Show me the code
 ```astro
 ---
 import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
@@ -71,6 +52,52 @@ function formSubmit(){
         <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
+```
+
+## Usage
+
+### Add the middleware to your server
+
+```
+npm install @astro-utils/forms
+```
+
+Add the middleware to your server
+
+
+`src/middleware.ts`
+```ts
+import astroForms from "@astro-utils/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(astroForms());
+```
+
+### Add to Layout
+Add the `WebForms` component in the layout
+
+`layouts/Layout.astro`
+```astro
+---
+import {WebForms} from '@astro-utils/forms/forms.js';
+---
+<WebForms>
+    <slot/>
+</WebForms>
+```
+
+### Easy debugging
+When vite reloads the page, the browser will popup confirmation dialog. This is annoying when you are debugging. You can disable this by using the astro-utils integration
+
+`astro.config.mjs`
+```js
+import { defineConfig } from 'astro/config';
+import astroFormsDebug from "@astro-utils/forms/dist/integration.js";
+
+export default defineConfig({
+    output: 'server',
+    integrations: [astroFormsDebug]
+});
 ```
 
 ### Complex Form Validation
@@ -156,6 +183,6 @@ function increaseCounter() {
 <Layout/>
 ```
 
-The changing data need to be after the button.
+The `session.counter` will show the **last value** and not the **update value**. 
 
-If you want to before the button use it inside `BindForm`
+This is because the output is **not reactive**. You can use it inside `BindForm` to make it **reactive**.
