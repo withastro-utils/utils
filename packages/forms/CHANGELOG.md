@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.3.0...@astro-utils/forms@3.4.0) (2024-03-30)
+
+
+### Features
+
+* throw override response ([80862ce](https://github.com/withastro-utils/utils/commit/80862ce9c5e394947f33bf7b02eea632bd4eeec1))
+
 # [3.3.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.2.7...@astro-utils/forms@3.3.0) (2023-12-30)
 
 
