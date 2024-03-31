@@ -12,6 +12,7 @@ export type FormsSettings = {
             httpOnly: boolean
             sameSite: boolean | 'lax' | 'strict' | 'none'
             maxAge: number
+            path: string
         }
     },
     secret?: string,
