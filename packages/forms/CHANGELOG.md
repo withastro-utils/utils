@@ -1,3 +1,10 @@
+## [3.4.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.0...@astro-utils/forms@3.4.1) (2024-03-31)
+
+
+### Bug Fixes
+
+* **session:** default cookie path ([b0372e0](https://github.com/withastro-utils/utils/commit/b0372e0b7e529cd695a4fc3d71e91fa5a3b148d3))
+
 # [3.4.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.3.0...@astro-utils/forms@3.4.0) (2024-03-30)
 
 
