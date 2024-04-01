@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.1...@astro-utils/forms@3.4.2) (2024-04-01)
+
+
+### Bug Fixes
+
+* **slot:** wait for render to finish ([5deebe0](https://github.com/withastro-utils/utils/commit/5deebe07daf04c08acdb34d0ebd487e9bbb2e623))
+
 ## [3.4.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.0...@astro-utils/forms@3.4.1) (2024-03-31)
 
 
