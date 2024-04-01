@@ -9,6 +9,6 @@ export interface Props {
 const contextName = Astro.props.contextName;
 delete Astro.props.contextName;
 
-const htmlSolt = asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName});
 ---
 <Fragment set:html={htmlSolt} />    

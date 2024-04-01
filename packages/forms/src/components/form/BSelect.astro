@@ -1,6 +1,5 @@
 ---
-import getContext from '@astro-utils/context';
-import Context from '@astro-utils/context/Context.astro';
+import getContext, {asyncContext} from '@astro-utils/context';
 import {getSelectValue, validateSelect} from '../../components-control/select.js';
 import {validateFrom} from '../../form-tools/csrf.js';
 
@@ -29,9 +28,9 @@ if (isValueNotArray) {
 }
 
 const Component = asComponent as any;
+const context = {name: Astro.props.name, value, allowSelected: isValueNotArray};
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
 ---
-<Context name={Astro.props.name} value={value} allowSelected={isValueNotArray} contextName="@astro-utils/forms">
-    <Component {...props} {...componentProps}>
-        <slot/>
-    </Component>
-</Context>
+<Component {...props} {...componentProps}>
+    <Fragment set:html={htmlSolt}/>
+</Component>
