@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.8...@astro-utils/context@1.1.9) (2024-04-01)
+
+
+### Bug Fixes
+
+* **slot:** wait for render to finish ([5deebe0](https://github.com/withastro-utils/utils/commit/5deebe07daf04c08acdb34d0ebd487e9bbb2e623))
+
 ## [1.1.8](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.7...@astro-utils/context@1.1.8) (2023-12-18)
 
 
