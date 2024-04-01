@@ -1,0 +1,22 @@
+---
+import { BOption, BSelect, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title='Test Select'>
+    <BindForm>
+        <BSelect name='select' value='b'>
+            <BOption value='a'>Option A</BOption>
+            <BOption value='b'>Option B</BOption>
+            <BOption value='c'>Option C</BOption>
+        </BSelect>
+
+        <BSelect name='select2' value='2c'>
+            <BOption value='2a'>Option 2A</BOption>
+            <BOption value='2b'>Option 2B</BOption>
+            <BOption value='2c'>Option 2C</BOption>
+        </BSelect>
+
+        <button type='submit'>Submit</button>
+    </BindForm>
+</Layout>

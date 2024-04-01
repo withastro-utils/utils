@@ -29,7 +29,7 @@ if (isValueNotArray) {
 
 const Component = asComponent as any;
 const context = {name: Astro.props.name, value, allowSelected: isValueNotArray};
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "select"});
 ---
 <Component {...props} {...componentProps}>
     <Fragment set:html={htmlSolt}/>
