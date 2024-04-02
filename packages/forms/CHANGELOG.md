@@ -1,3 +1,10 @@
+## [3.4.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.3...@astro-utils/forms@3.4.4) (2024-04-02)
+
+
+### Bug Fixes
+
+* **context:** lock ([1dfdb4d](https://github.com/withastro-utils/utils/commit/1dfdb4d003af3582de117c9acad32d35d7cac831))
+
 ## [3.4.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.2...@astro-utils/forms@3.4.3) (2024-04-01)
 
 
