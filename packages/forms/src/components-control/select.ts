@@ -9,8 +9,10 @@ import {validateRequire} from './form-utils/validate.js';
 type InputTypes = 'number' | 'date' | 'text'
 
 export async function getSelectValue(astro: AstroGlobal) {
-    const {value: originalValue, name} = astro.props;
-    if (originalValue) return [originalValue];
+    const {value: originalValue, readonly, name} = astro.props;
+    if(readonly){
+        return [originalValue].flat();
+    }
     return await getFormMultiValue(astro.request, name);
 }
 

@@ -1,22 +1,27 @@
 ---
-import { BOption, BSelect, BindForm } from '@astro-utils/forms/forms.js';
+import { BButton, BOption, BSelect, Bind, BindForm } from '@astro-utils/forms/forms.js';
 import Layout from '../layouts/Layout.astro';
+
+const bind = Bind();
+function onSubmit() {
+    console.log(bind.select);
+}
 ---
 
 <Layout title='Test Select'>
-    <BindForm>
-        <BSelect name='select' value='b'>
+    <BindForm bind={bind}>
+        <BSelect name='select' value={['b', 'c']} multiple>
             <BOption value='a'>Option A</BOption>
             <BOption value='b'>Option B</BOption>
             <BOption value='c'>Option C</BOption>
         </BSelect>
 
         <BSelect name='select2' value='2c'>
-            <BOption value='2a'>Option 2A</BOption>
-            <BOption value='2b'>Option 2B</BOption>
-            <BOption value='2c'>Option 2C</BOption>
+            <BOption>2a</BOption>
+            <BOption>2b</BOption>
+            <BOption>2c</BOption>
         </BSelect>
 
-        <button type='submit'>Submit</button>
+        <BButton whenFormOK onClick={onSubmit}>Submit</BButton>
     </BindForm>
 </Layout>
