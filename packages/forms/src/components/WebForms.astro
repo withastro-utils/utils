@@ -15,7 +15,7 @@ const context = {
     },
 };
 
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "webForms"});
 
 const {webFormsSettings, tempValues, viewStates, ...props} = context;
 if (webFormsSettings.haveFileUpload) {

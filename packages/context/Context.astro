@@ -4,11 +4,13 @@ import { asyncContext } from "./dist/index.js";
 export interface Props {
     [key: string]: any
     contextName?: string
+    lock?: string
 }
 
-const contextName = Astro.props.contextName;
+const {contextName, lock, ...props} = Astro.props;
+delete Astro.props.lock;
 delete Astro.props.contextName;
 
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName, lock, context: props});
 ---
 <Fragment set:html={htmlSolt} />    
