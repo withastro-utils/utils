@@ -1,0 +1,21 @@
+---
+import { BButton, BInput, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind();
+
+function handleSubmit() {
+    console.log(bind);
+}
+---
+
+<Layout title='forms'>
+    <BindForm bind={bind}>
+        <BInput type='date' name='date' value={new Date(2013, 2, 15)} />
+        <BInput type='time' name='time' value={new Date(2013, 2, 15)} />
+        <BInput type='week' name='week' value={new Date(2013, 2, 15)} />
+        <BInput type='checkbox' name='checkbox' value={false} />
+
+        <BButton onClick={handleSubmit}>submit</BButton>
+    </BindForm>
+</Layout>

@@ -1,13 +1,14 @@
-import type {AstroGlobal} from 'astro';
-import {getFormValue} from '../form-tools/post.js';
+import type { AstroGlobal } from 'astro';
+import { getFormValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radio.js';
-import {BindForm} from './form-utils/bind-form.js';
-import {parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseNumber, parseURL} from './form-utils/parse.js';
-import {validateFunc, validateRequire, validateStringPatters} from './form-utils/validate.js';
+import { BindForm } from './form-utils/bind-form.js';
+import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseNumber, parseURL } from './form-utils/parse.js';
+import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
 
 const OK_NOT_STRING_VALUE = ['checkbox', 'file'];
 const OK_INPUT_VALUE_NULL = ['checkbox'];
+const DAY_IN_MS = 86400000;
 
 type InputTypes =
     | 'button'
@@ -33,10 +34,10 @@ type InputTypes =
     | 'url'
     | 'week';
 
-type ExtendedInputTypes = InputTypes | 'int'
+type ExtendedInputTypes = InputTypes | 'int';
 
 export async function getInputValue(astro: AstroGlobal) {
-    const {value, name, readonly} = astro.props;
+    const { value, name, readonly } = astro.props;
     if (readonly) {
         return value;
     }
@@ -45,7 +46,7 @@ export async function getInputValue(astro: AstroGlobal) {
 }
 
 export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>) {
-    const {type, value: originalValue, minlength, maxlength, pattern, required, name, errorMessage, validate} = astro.props;
+    const { type, value: originalValue, minlength, maxlength, pattern, required, name, errorMessage, validate } = astro.props;
 
     const parseValue: any = await getInputValue(astro);
     const aboutInput = new AboutFormName(bind, name, parseValue, errorMessage);
@@ -71,7 +72,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>)
 }
 
 function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind: BindForm<any>) {
-    const {type, min, max, value: originalValue, multiple, readonly} = astro.props;
+    const { type, min, max, value: originalValue, multiple, readonly } = astro.props;
 
     switch (type) {
         case 'checkbox':
@@ -85,7 +86,9 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
         case 'date':
         case 'datetime-local':
         case 'month':
-            parseDate(aboutInput, min, max);
+        case 'week':
+        case 'time':
+            parseDate(aboutInput, type, min, max);
             break;
 
         case 'email':
@@ -114,17 +117,46 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
 }
 
 export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
-    const value = bind[astro.props.name];
+    let value = bind[astro.props.name] ?? astro.props.value;
+
+    if (value instanceof Date) {
+        switch (astro.props.type as ExtendedInputTypes) {
+            case 'date':
+                value = value.toISOString().slice(0, 10);
+                break;
+            case 'datetime-local':
+                value = value.toISOString().slice(0, 16);
+                break;
+            case 'time':
+                value = value.toTimeString().slice(0, 5);
+                break;
+            case 'month':
+                value = value.toISOString().slice(0, 7);
+                break;
+            case 'week':
+                value = formatToDateWeek(value);
+                break;
+        }
+    }
+
     switch (astro.props.type as ExtendedInputTypes) {
         case 'checkbox':
-            return {checked: value};
-        default:
-            return {value};
+            return { checked: value ?? astro.props.checked };
     }
+
+    return { value };
+}
+
+function formatToDateWeek(date: Date): string {
+    const year = date.getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysSinceStartOfYear = (date.getTime() - firstDayOfYear.getTime()) / DAY_IN_MS;
+    const weekNumber = Math.ceil((daysSinceStartOfYear + firstDayOfYear.getDay() + 1) / 7);
+    return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
 }
 
 
-export function caseTypes(type: ExtendedInputTypes): { type: InputTypes } & { [key: string]: string } {
+export function caseTypes(type: ExtendedInputTypes): { type: InputTypes; } & { [key: string]: string; } {
     if (type == 'int') {
         return {
             type: 'number',
@@ -133,5 +165,5 @@ export function caseTypes(type: ExtendedInputTypes): { type: InputTypes } & { [k
         };
     }
 
-    return {type};
+    return { type };
 }
