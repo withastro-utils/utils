@@ -1,3 +1,10 @@
+## [1.1.11](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.10...@astro-utils/context@1.1.11) (2024-04-02)
+
+
+### Bug Fixes
+
+* **context:** lock ([1dfdb4d](https://github.com/withastro-utils/utils/commit/1dfdb4d003af3582de117c9acad32d35d7cac831))
+
 ## [1.1.10](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.9...@astro-utils/context@1.1.10) (2024-04-01)
 
 
