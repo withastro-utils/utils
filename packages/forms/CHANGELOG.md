@@ -1,3 +1,11 @@
+## [3.4.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.4...@astro-utils/forms@3.4.5) (2024-04-02)
+
+
+### Bug Fixes
+
+* **date:** parse & stringify forms dates input ([92997b2](https://github.com/withastro-utils/utils/commit/92997b2d4d06a05d8f0cdec9c6ab638f8108e3eb))
+* **select:** read options ([241e350](https://github.com/withastro-utils/utils/commit/241e35091183acaabec49b992b8119b4838c8eaa))
+
 ## [3.4.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.3...@astro-utils/forms@3.4.4) (2024-04-02)
 
 
