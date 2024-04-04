@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.0...@astro-utils/express-endpoints@2.1.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* min & max date ([e8a4b9b](https://github.com/withastro-utils/utils/commit/e8a4b9ba570cac5924fa3e8ebd5d0e27002f558b))
+
 # [2.1.0](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.0.0...@astro-utils/express-endpoints@2.1.0) (2023-12-24)
 
 
