@@ -1,3 +1,10 @@
+## [3.4.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.5...@astro-utils/forms@3.4.6) (2024-04-04)
+
+
+### Bug Fixes
+
+* min & max date ([e8a4b9b](https://github.com/withastro-utils/utils/commit/e8a4b9ba570cac5924fa3e8ebd5d0e27002f558b))
+
 ## [3.4.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.4...@astro-utils/forms@3.4.5) (2024-04-02)
 
 
