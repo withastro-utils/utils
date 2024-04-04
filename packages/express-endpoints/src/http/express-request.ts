@@ -51,6 +51,7 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
     public hostname: string = '';
     public ip: string = '';
     public locals: APIContext['locals'] = {};
+    public error?: Error;
 
 
     constructor(public astroContext: APIContext<Props>, private _bodyOptions: ExpressRouteBodyOptions) {
@@ -138,7 +139,7 @@ export default class ExpressRequest extends EventEmitter implements ExpressReque
                 this.filesMany[key].push(value);
             }
         } catch (error) {
-            debugger
+            this.error = error;
         }
 
     }

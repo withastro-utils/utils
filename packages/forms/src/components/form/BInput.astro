@@ -1,8 +1,8 @@
 ---
 import getContext from '@astro-utils/context';
-import {caseTypes, inputReturnValueAttr, validateFormInput} from '../../components-control/input-parse.js';
-import {validateFrom} from '../../form-tools/csrf.js';
-import {ModifyDeep} from '../../utils.js';
+import { caseTypes, inputReturnValueAttr, validateFormInput } from '../../components-control/input-parse.js';
+import { validateFrom } from '../../form-tools/csrf.js';
+import { ModifyDeep } from '../../utils.js';
 
 type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int';
 
@@ -11,7 +11,9 @@ interface ModifyInputProps {
     pattern?: RegExp;
     minlength?: number;
     maxlength?: number;
-    value?: string | string[] | number | Date | null | boolean;
+    value?: string | string[] | number | Date | null | undefined | boolean;
+    max?: number | string | undefined | null | Date;
+    min?: number | string | undefined | null | Date;
 }
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
@@ -20,20 +22,21 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     validate?: Function;
     as?: T;
     props?: React.ComponentProps<T>;
-};
+}
 
-const {bind, method, webFormsSettings} = getContext(Astro, '@astro-utils/forms');
-if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
+const { bind, method, webFormsSettings } = getContext(Astro, '@astro-utils/forms');
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
     await validateFormInput(Astro, bind);
 }
 
-const {as: asComponent = 'input', props: componentProps, type = 'text', pattern, ...props} = Astro.props;
+const { as: asComponent = 'input', props: componentProps, type = 'text', pattern, ...props } = Astro.props;
 const castProps = caseTypes(type);
 const inputValue = inputReturnValueAttr(Astro, bind);
 
-const allProps = {...props, ...inputValue, ...componentProps, pattern: pattern?.toString(), ...castProps};
+const allProps = { ...props, ...inputValue, ...componentProps, pattern: pattern?.toString(), ...castProps };
 webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 
 const Component = asComponent as any;
 ---
-<Component {...allProps}/>
+
+<Component {...allProps} />

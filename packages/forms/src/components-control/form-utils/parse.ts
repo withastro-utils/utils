@@ -32,30 +32,41 @@ export function parseNumber(about: AboutFormName, type: 'number' | 'int' | 'rang
 
 
 type DateTypes = 'date' | 'datetime-local' | 'month' | 'week' | 'time';
-export function parseDate(about: AboutFormName, type: DateTypes, min?: string, max?: string) {
-    let date = z.date();
-
-    if (min != null) {
-        date = date.min(new Date(min));
-    }
-
-    if (max != null) {
-        date = date.max(new Date(max));
+function parseFormDate(date: Date | string, type?: DateTypes) {
+    if (date instanceof Date) {
+        return date;
     }
 
     if (type === 'date' || type === 'datetime-local') {
-        about.formValue = new Date(about.formValue);
+        date = new Date(date);
     } else if (type === 'time') {
-        about.formValue = new Date(`1970-01-01T${about.formValue}:00`);
+        date = new Date(`1970-01-01T${date}:00`);
     } else if (type === 'month') {
-        about.formValue = new Date(`${about.formValue}-01`);
+        date = new Date(`${date}-01`);
     } else if (type === 'week') {
-        const year = parseInt(about.formValue.substring(0, 4), 10);
-        const week = parseInt(about.formValue.substring(6, 8), 10) - 1; // Subtract 1 to convert to 0-indexed
+        const year = parseInt(date.substring(0, 4), 10);
+        const week = parseInt(date.substring(6, 8), 10) - 1; // Subtract 1 to convert to 0-indexed
         const janFirst = new Date(year, 0, 1);
         const days = (week * 7) - janFirst.getDay() + 1;
-        about.formValue = new Date(year, 0, days);
+        date = new Date(year, 0, days);
+    } else {
+        date = new Date(date);
     }
+
+    return date;
+}
+export function parseDate(about: AboutFormName, type: DateTypes, min?: string | Date, max?: string | Date) {
+    let date = z.date();
+
+    if (min != null) {
+        date = date.min(parseFormDate(min, type));
+    }
+
+    if (max != null) {
+        date = date.max(parseFormDate(max, type));
+    }
+
+    about.formValue = parseFormDate(about.formValue, type);
     about.catchParse(date);
 }
 
