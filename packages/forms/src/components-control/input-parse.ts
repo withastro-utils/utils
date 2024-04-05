@@ -116,35 +116,39 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
     }
 }
 
-export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
-    let value = bind[astro.props.name] ?? astro.props.value;
-
-    if (value instanceof Date) {
-        switch (astro.props.type as ExtendedInputTypes) {
-            case 'date':
-                value = value.toISOString().slice(0, 10);
-                break;
-            case 'datetime-local':
-                value = value.toISOString().slice(0, 16);
-                break;
-            case 'time':
-                value = value.toTimeString().slice(0, 5);
-                break;
-            case 'month':
-                value = value.toISOString().slice(0, 7);
-                break;
-            case 'week':
-                value = formatToDateWeek(value);
-                break;
-        }
+function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
+    if (typeof date === 'string' || !date) {
+        return date;
     }
+
+    switch (type) {
+        case 'date':
+            return date.toISOString().slice(0, 10);
+        case 'datetime-local':
+            return date.toISOString().slice(0, 16);
+        case 'time':
+            return date.toTimeString().slice(0, 5);
+        case 'month':
+            return date.toISOString().slice(0, 7);
+        case 'week':
+            return formatToDateWeek(date);
+    }
+
+    return date.toISOString();
+
+}
+
+export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
+    const value = stringifyDate(bind[astro.props.name] ?? astro.props.value, astro.props.type);
+    const min = stringifyDate(astro.props.min, astro.props.type);
+    const max = stringifyDate(astro.props.max, astro.props.type);
 
     switch (astro.props.type as ExtendedInputTypes) {
         case 'checkbox':
             return { checked: value ?? astro.props.checked };
     }
 
-    return { value };
+    return { value, min, max };
 }
 
 function formatToDateWeek(date: Date): string {

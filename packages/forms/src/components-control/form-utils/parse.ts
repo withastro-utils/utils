@@ -55,6 +55,7 @@ function parseFormDate(date: Date | string, type?: DateTypes) {
 
     return date;
 }
+
 export function parseDate(about: AboutFormName, type: DateTypes, min?: string | Date, max?: string | Date) {
     let date = z.date();
 
