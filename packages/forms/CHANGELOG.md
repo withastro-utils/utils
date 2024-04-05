@@ -1,3 +1,10 @@
+## [3.4.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.6...@astro-utils/forms@3.4.7) (2024-04-05)
+
+
+### Bug Fixes
+
+* **input:** stringify min max ([33cba2d](https://github.com/withastro-utils/utils/commit/33cba2d681ebfb98207c4a0713415fd3b4cf854e))
+
 ## [3.4.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.5...@astro-utils/forms@3.4.6) (2024-04-04)
 
 
