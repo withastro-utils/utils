@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.1...@astro-utils/forms@3.5.2) (2024-04-09)
+
+
+### Bug Fixes
+
+* **bind:** astro render before bind state has loaded ([cab5cfd](https://github.com/withastro-utils/utils/commit/cab5cfdc3c5871e1b832784fba72df30c56c3cbf))
+
 ## [3.5.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.0...@astro-utils/forms@3.5.1) (2024-04-09)
 
 
