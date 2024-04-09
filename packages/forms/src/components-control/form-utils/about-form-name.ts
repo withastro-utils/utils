@@ -1,5 +1,6 @@
 import {ZodError, type ZodFirstPartySchemaTypes} from 'zod';
 import {BindForm} from './bind-form.js';
+import {setProperty} from 'dot-prop';
 
 export default class AboutFormName {
     hadError = false;
@@ -41,6 +42,6 @@ export default class AboutFormName {
 
     setValue() {
         if (this.hadError) return;
-        this.form[this.originalName] = this.formValue;
+        setProperty(this.form, this.originalName, this.formValue);
     }
 }

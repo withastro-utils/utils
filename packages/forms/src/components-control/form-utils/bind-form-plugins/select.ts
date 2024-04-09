@@ -1,3 +1,4 @@
+import { setProperty } from 'dot-prop';
 import type AboutFormName from '../about-form-name.js';
 import {IHTMLFormPlugin} from './iform-plugin.js';
 
@@ -29,7 +30,7 @@ export default class HTMLSelectPlugin extends IHTMLFormPlugin {
                 return;
             }
 
-            this.form[name] = about.formValue; // the parsed values
+            setProperty(this.form, name, about.formValue); // the parsed values
             return;
         }
 
@@ -38,7 +39,7 @@ export default class HTMLSelectPlugin extends IHTMLFormPlugin {
             return;
         }
 
-        this.form[name] = about.formValue[0]; // the parsed value
+        setProperty(this.form, name, about.formValue[0]); // the parsed value
     }
 
     private createSelectDefault(about: AboutFormName, value: string | string[], multiOptions: boolean, required: boolean): SelectObject {
