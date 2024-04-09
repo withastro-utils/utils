@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.0...@astro-utils/forms@3.5.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* **input-parse:** date ([5d70012](https://github.com/withastro-utils/utils/commit/5d700125c6e67492d6ae9d062e50867843ff892c))
+
 # [3.5.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.7...@astro-utils/forms@3.5.0) (2024-04-09)
 
 
