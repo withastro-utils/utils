@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.7...@astro-utils/forms@3.5.0) (2024-04-09)
+
+
+### Features
+
+* **forms:** nested value setters ([6debdcd](https://github.com/withastro-utils/utils/commit/6debdcda718a2a94365dbec12947f35b4b3a9bb3))
+
 ## [3.4.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.4.6...@astro-utils/forms@3.4.7) (2024-04-05)
 
 
