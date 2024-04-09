@@ -134,8 +134,7 @@ function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
             return formatToDateWeek(date);
     }
 
-    return date.toISOString();
-
+    return date;
 }
 
 export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
