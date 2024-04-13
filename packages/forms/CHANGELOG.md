@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.0...@astro-utils/forms@3.6.1) (2024-04-13)
+
+
+### Bug Fixes
+
+* **defaults:** load ([b8d8c31](https://github.com/withastro-utils/utils/commit/b8d8c31da968dbcc432c691adb1121636cb48cf7))
+
 # [3.6.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.2...@astro-utils/forms@3.6.0) (2024-04-13)
 
 
