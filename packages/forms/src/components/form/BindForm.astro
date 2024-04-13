@@ -19,7 +19,6 @@ const haveState = await viewState.loadState();
 await bind.on.stateLoaded?.();
 
 if(!haveState){
-    await bind.defaults();
     await bind.on.newState?.();
 } else {
     await bind.on.pagePostBack?.();

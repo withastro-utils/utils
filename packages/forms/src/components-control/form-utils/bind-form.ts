@@ -27,7 +27,8 @@ export class BindForm<BindValues> {
 
     private _plugins: IHTMLFormPlugin[];
 
-    constructor(private _defaults?: (BindValues | (() => BindValues | Promise<BindValues>))) {
+    constructor(private _defaults?: BindValues) {
+        this.defaults();
         this.initializePlugins();
     }
 
@@ -40,11 +41,7 @@ export class BindForm<BindValues> {
     }
 
     async defaults() {
-        if (typeof this._defaults === 'function') {
-            Object.assign(this, await (this._defaults as () => BindValues)());
-        } else if (this._defaults) {
-            Object.assign(this, this._defaults);
-        }
+        Object.assign(this, this._defaults);
     }
 
     /**
