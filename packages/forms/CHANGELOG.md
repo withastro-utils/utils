@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.2...@astro-utils/forms@3.6.0) (2024-04-13)
+
+
+### Features
+
+* **state:** lifecycle events ([03ebfb4](https://github.com/withastro-utils/utils/commit/03ebfb437f5ee7414ce3bc6b138dfa3aed795cf8))
+
 ## [3.5.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.5.1...@astro-utils/forms@3.5.2) (2024-04-09)
 
 
