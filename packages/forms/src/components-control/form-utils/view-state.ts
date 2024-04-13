@@ -71,11 +71,11 @@ export default class ViewStateManager {
         }
 
         const state: any = await this._parseState();
-        if (!state) return;
+        if (!state) return false;
 
         Object.assign(this._bind, state.bind);
         Object.assign(this._elementsState, state.elements);
-        return;
+        return true;
     }
 
     public async createViewState(): Promise<string> {

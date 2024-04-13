@@ -5,16 +5,25 @@ import ViewStateManager from '../../components-control/form-utils/view-state.js'
 import Bind from '../../components-control/form-utils/bind-form.js';
 
 export interface Props {
-    bind?: any;
+    bind?: ReturnType<typeof Bind>;
     state?: boolean | string[];
 }
 
 const {viewStates} = getContext(Astro, '@astro-utils/forms');
 const {bind = Bind()} = Astro.props;
-const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}, elementsState: {}};
+const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}, elementsState: {} as any};
 
 const viewState = new ViewStateManager(bind, context.elementsState, Astro, viewStates.counter++);
-await viewState.loadState();
+const haveState = await viewState.loadState();
+
+await bind.on.stateLoaded?.();
+
+if(!haveState){
+    await bind.defaults();
+    await bind.on.newState?.();
+} else {
+    await bind.on.pagePostBack?.();
+}
 
 // for some the first render starts before this code has run
 await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "bindForm"});

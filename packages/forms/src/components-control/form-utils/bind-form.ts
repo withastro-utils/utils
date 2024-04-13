@@ -1,24 +1,33 @@
-import {IHTMLFormPlugin} from './bind-form-plugins/iform-plugin.js';
+import { IHTMLFormPlugin } from './bind-form-plugins/iform-plugin.js';
 import HTMLInputRadioPlugin from './bind-form-plugins/input-radio.js';
 import HTMLSelectPlugin from './bind-form-plugins/select.js';
 
 const DEFAULT_PLUGINS = [HTMLInputRadioPlugin, HTMLSelectPlugin];
 type PluginsNames = 'HTMLInputRadioPlugin' | 'HTMLSelectPlugin';
 
-export class BindForm<T> {
+export class BindForm<BindValues> {
     errors: {
         name: string,
         value: string,
         issues: {
             code: string,
-            message: string
+            message: string;
         }[],
-        message: string
+        message: string;
     }[] = [];
+
+    /**
+     * Events that will be triggered when the form is in a specific state
+     */
+    public on: {
+        newState?: () => void | Promise<void>;
+        stateLoaded?: () => void | Promise<void>;
+        pagePostBack?: () => void | Promise<void>;
+    } = {};
+
     private _plugins: IHTMLFormPlugin[];
 
-    constructor(private _defaults?: T) {
-        this.defaults();
+    constructor(private _defaults?: (BindValues | (() => BindValues | Promise<BindValues>))) {
         this.initializePlugins();
     }
 
@@ -30,8 +39,12 @@ export class BindForm<T> {
         return this._plugins.find(x => x.constructor.name == name);
     }
 
-    defaults() {
-        this._defaults && Object.assign(this, this._defaults);
+    async defaults() {
+        if (typeof this._defaults === 'function') {
+            Object.assign(this, await (this._defaults as () => BindValues)());
+        } else if (this._defaults) {
+            Object.assign(this, this._defaults);
+        }
     }
 
     /**
@@ -47,15 +60,17 @@ export class BindForm<T> {
      * @internal
      */
     __getState() {
-        const state: any = {...this};
+        const state = { ...this };
         delete state._defaults;
         delete state._plugins;
         delete state.errors;
+        delete state.on;
 
-        return state;
+        return state as any;
     }
 }
 
-export default function Bind<T>(defaults?: T): BindForm<T> & T & { [key: string]: any } {
+export type BindTypes<BindValues> = BindForm<BindValues> & BindValues & { [key: string]: any; };
+export default function Bind<BindValues>(defaults?: BindValues): BindTypes<BindValues> {
     return <any>new BindForm(defaults);
 }
