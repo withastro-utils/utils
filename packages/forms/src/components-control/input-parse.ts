@@ -5,6 +5,7 @@ import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radi
 import { BindForm } from './form-utils/bind-form.js';
 import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseNumber, parseURL } from './form-utils/parse.js';
 import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
+import {getProperty} from 'dot-prop';
 
 const OK_NOT_STRING_VALUE = ['checkbox', 'file'];
 const OK_INPUT_VALUE_NULL = ['checkbox'];
@@ -138,7 +139,7 @@ function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
 }
 
 export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
-    const value = stringifyDate(bind[astro.props.name] ?? astro.props.value, astro.props.type);
+    const value = stringifyDate(getProperty(bind, astro.props.name, astro.props.value), astro.props.type);
     const min = stringifyDate(astro.props.min, astro.props.type);
     const max = stringifyDate(astro.props.max, astro.props.type);
 

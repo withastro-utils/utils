@@ -7,7 +7,7 @@ function validateEmptyFile(about: AboutFormName) {
 }
 
 export function validateRequire(about: AboutFormName, required: boolean) {
-    if (about.formValue == null || about.formValue === '' || validateEmptyFile(about)) {
+    if (about.formValue == null || about.formValue === '' || about.formValue instanceof Array && about.formValue.length === 0 || validateEmptyFile(about)) {
         if (required) {
             about.pushErrorManually('missing-require-filed', 'Missing required filed');
         }

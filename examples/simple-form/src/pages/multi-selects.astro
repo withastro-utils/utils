@@ -4,8 +4,10 @@ import Layout from '../layouts/Layout.astro';
 
 const bind = Bind();
 function onSubmit() {
-    console.log(bind.select);
+    console.log(bind);
 }
+
+const date = new Date('2021-01-01');
 ---
 
 <Layout title='Test Select'>
@@ -20,6 +22,18 @@ function onSubmit() {
             <BOption>2a</BOption>
             <BOption>2b</BOption>
             <BOption>2c</BOption>
+        </BSelect>
+
+        <BSelect name='selectNumbers' value={1} type='number'>
+            <BOption value={1}>_1_</BOption>
+            <BOption>2</BOption>
+            <BOption>3</BOption>
+        </BSelect>
+
+        <BSelect name='select3' value={[date, new Date(0)]} multiple type='date'>
+            <BOption value={date}>number 1</BOption>
+            <BOption value={0}>number 2</BOption>
+            <BOption value={1}>number 3</BOption>
         </BSelect>
 
         <BButton whenFormOK onClick={onSubmit}>Submit</BButton>

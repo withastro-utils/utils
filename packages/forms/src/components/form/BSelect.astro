@@ -1,36 +1,31 @@
 ---
-import getContext, {asyncContext} from '@astro-utils/context';
-import {getSelectValue, validateSelect} from '../../components-control/select.js';
-import {validateFrom} from '../../form-tools/csrf.js';
+import getContext, { asyncContext } from '@astro-utils/context';
+import { getSelectValueFromBind, stringifySelectValue, validateSelect } from '../../components-control/select.js';
+import { validateFrom } from '../../form-tools/csrf.js';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.SelectHTMLAttributes {
-    name: string
-    errorMessage?: string
-    type?: 'string' | 'number' | 'date',
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Omit<astroHTML.JSX.SelectHTMLAttributes, 'value'> {
+    name: string;
+    errorMessage?: string;
+    type?: 'string' | 'number' | 'date';
     as?: T;
     props?: React.ComponentProps<T>;
-};
-
-const {bind, method} = getContext(Astro, '@astro-utils/forms');
-
-const {as: asComponent = 'select', props: componentProps, value: defaultValue, ...props} = Astro.props;
-let value = bind[Astro.props.name] ?? defaultValue;
-
-if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
-    await validateSelect(Astro, bind);
-    value = await getSelectValue(Astro);
+    value?: string | number | undefined | null | Date | (Date | number | string | null | undefined)[]
 }
 
+const { bind, method } = getContext(Astro, '@astro-utils/forms');
 
-const isValueNotArray = !Array.isArray(value);
-if (isValueNotArray) {
-    value = value != null ? [value] : [];
+const { as: asComponent = 'select', value: _, props: componentProps, ...props } = Astro.props;
+let stringifySelectdOptions = getSelectValueFromBind(bind, Astro);
+
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+    stringifySelectdOptions = await validateSelect(Astro, bind);
 }
 
 const Component = asComponent as any;
-const context = {name: Astro.props.name, value, allowSelected: isValueNotArray};
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "select"});
+const context = { name: Astro.props.name, stringifySelectdOptions };
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'select' });
 ---
+
 <Component {...props} {...componentProps}>
-    <Fragment set:html={htmlSolt}/>
+    <Fragment set:html={htmlSolt} />
 </Component>

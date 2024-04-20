@@ -1,29 +1,38 @@
-import type {AstroGlobal} from 'astro';
-import {getFormMultiValue} from '../form-tools/post.js';
+import type { AstroGlobal } from 'astro';
+import { getFormMultiValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import HTMLSelectPlugin from './form-utils/bind-form-plugins/select.js';
-import {BindForm} from './form-utils/bind-form.js';
-import {parseMultiDate, parseMultiNumber} from './form-utils/parse-multi.js';
-import {validateRequire} from './form-utils/validate.js';
+import { BindForm } from './form-utils/bind-form.js';
+import { parseMultiDate, parseMultiNumber } from './form-utils/parse-multi.js';
+import { validateRequire } from './form-utils/validate.js';
+import { getProperty } from 'dot-prop';
 
-type InputTypes = 'number' | 'date' | 'text'
+type InputTypes = 'number' | 'date' | 'text';
 
-export async function getSelectValue(astro: AstroGlobal) {
-    const {value: originalValue, readonly, name} = astro.props;
-    if(readonly){
-        return [originalValue].flat();
+
+export function stringifySelectValue(value: Date | Number | string) {
+    if (value instanceof Date) {
+        value = value.getTime();
     }
-    return await getFormMultiValue(astro.request, name);
+    return String(value);
+}
+
+async function getSelectValue(astro: AstroGlobal) {
+    const { value: originalValue, readonly, name } = astro.props;
+    if (readonly) {
+        return [originalValue].flat().map(stringifySelectValue);
+    }
+    return (await getFormMultiValue(astro.request, name)).map(String);
 }
 
 export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {
-    const {type, required, name, multiple, errorMessage} = astro.props;
+    const { type, required, name, multiple, errorMessage } = astro.props;
 
-    const parseValue: any = await getSelectValue(astro);
+    const parseValue = await getSelectValue(astro);
     const aboutSelect = new AboutFormName(bind, name, parseValue, errorMessage);
 
     if (!validateRequire(aboutSelect, required)) {
-        return;
+        return [];
     }
 
     const selectPlugin = bind.getPlugin('HTMLSelectPlugin') as HTMLSelectPlugin;
@@ -38,13 +47,20 @@ export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {
             parseMultiNumber(aboutSelect);
             break;
     }
+
+    aboutSelect.setValue();
+
+    return parseValue;
 }
 
-export function validateSelectOption(astro: AstroGlobal, bind: BindForm<any>, name: string, slotValue: string) {
-    const {value, disabled} = astro.props;
-    if (disabled) return;
-
-    const realValue = value ?? slotValue;
+export function validateSelectOption(bind: BindForm<any>, name: string, stringifyValue: string) {
     const selectPlugin = bind.getPlugin('HTMLSelectPlugin') as HTMLSelectPlugin;
-    selectPlugin.addOption(name, realValue);
+    selectPlugin.addOption(name, stringifyValue);
+}
+
+
+export function getSelectValueFromBind(bind: BindForm<any>, astro: AstroGlobal) {
+    const newValue = [getProperty(bind, astro.props.name, astro.props.value)].flat();
+
+    return newValue.map(stringifySelectValue);
 }

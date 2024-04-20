@@ -11,6 +11,6 @@ export function parseMultiNumber(about: AboutFormName) {
 export function parseMultiDate(about: AboutFormName) {
     const dateArray = z.array(z.date());
 
-    about.formValue = about.formValue.map((date: string) => new Date(date));
+    about.formValue = about.formValue.map((date: string) => new Date(Number(date)));
     about.catchParse(dateArray);
 }

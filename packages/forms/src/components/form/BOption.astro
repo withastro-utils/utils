@@ -1,27 +1,31 @@
 ---
 import getContext from '@astro-utils/context';
-import {validateSelectOption} from '../../components-control/select.js';
-import {validateFrom} from '../../form-tools/csrf.js';
+import { stringifySelectValue, validateSelectOption } from '../../components-control/select.js';
+import { validateFrom } from '../../form-tools/csrf.js';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.OptionHTMLAttributes {
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Omit<astroHTML.JSX.OptionHTMLAttributes, 'value'> {
     as?: T;
     props?: React.ComponentProps<T>;
-};
-
-const {bind, name, value: selectValue, allowSelected, method} = getContext(Astro, '@astro-utils/forms');
-
-const htmlSolt = await Astro.slots.render('default');
-if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
-    validateSelectOption(Astro, bind, name, htmlSolt);
+    value?: string | number | undefined | null | Date;
 }
 
-const optionValue = Astro.props.value ?? htmlSolt;
-const {as: asComponent = 'option', props: componentProps, selected, ...props} = Astro.props;
+const { bind, name, stringifySelectdOptions, method } = getContext(Astro, '@astro-utils/forms');
 
-const isSelectedByDefault = allowSelected && selectValue.length == 0;
+let htmlSolt = await Astro.slots.render('default');
+const stringisfyOptionValue = stringifySelectValue(Astro.props.value ?? htmlSolt);
 
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+    validateSelectOption(bind, name, stringisfyOptionValue);
+}
+
+if(Astro.props.value != null){
+    Astro.props.value = stringisfyOptionValue;
+}
+
+const { as: asComponent = 'option', props: componentProps, selected, ...props } = Astro.props;
 const Component = asComponent as any;
 ---
-<Component selected={isSelectedByDefault ? selected : selectValue.includes(optionValue)} {...props} {...componentProps}>
-    <Fragment set:html={htmlSolt}/>
+
+<Component selected={!Astro.props.disabled && stringifySelectdOptions.includes(stringisfyOptionValue)} {...props} {...componentProps}>
+    <Fragment set:html={htmlSolt} />
 </Component>

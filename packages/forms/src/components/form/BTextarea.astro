@@ -3,6 +3,7 @@ import getContext from '@astro-utils/context';
 import {validateFormInput} from '../../components-control/input-parse.js';
 import {validateFrom} from '../../form-tools/csrf.js';
 import {ModifyDeep} from '../../utils.js';
+import {getProperty} from 'dot-prop';
 
 interface ModifyInputProps {
     minlength?: number;
@@ -23,7 +24,7 @@ if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
 }
 
 const {as: asComponent = 'textarea', props: componentProps, value: defaultValue, ...props} = Astro.props;
-const value = bind[Astro.props.name] ?? await Astro.slots.render('default') ?? defaultValue;
+const value = getProperty(bind, Astro.props.name, await Astro.slots.render('default') ?? defaultValue);
 
 const Component = asComponent as any;
 ---
