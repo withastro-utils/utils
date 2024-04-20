@@ -1,3 +1,10 @@
+## [3.6.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.1...@astro-utils/forms@3.6.2) (2024-04-20)
+
+
+### Bug Fixes
+
+* **BSelect:** parse date & numbers ([9b70002](https://github.com/withastro-utils/utils/commit/9b700023a0f607d6128edb1278e706b06d3483ec))
+
 ## [3.6.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.0...@astro-utils/forms@3.6.1) (2024-04-13)
 
 
