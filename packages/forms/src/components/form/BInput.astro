@@ -14,6 +14,7 @@ interface ModifyInputProps {
     value?: string | string[] | number | Date | null | undefined | boolean;
     max?: number | string | undefined | null | Date;
     min?: number | string | undefined | null | Date;
+    onEnterClick?: string
 }
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
@@ -29,7 +30,7 @@ if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
     await validateFormInput(Astro, bind);
 }
 
-const { as: asComponent = 'input', props: componentProps, type = 'text', pattern, ...props } = Astro.props;
+const { as: asComponent = 'input', props: componentProps, type = 'text', onEnterClick, pattern, ...props } = Astro.props;
 const castProps = caseTypes(type);
 const inputValue = inputReturnValueAttr(Astro, bind);
 
@@ -37,6 +38,10 @@ const allProps = { ...props, ...inputValue, ...componentProps, pattern: pattern?
 webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 
 const Component = asComponent as any;
+
+if(onEnterClick){
+    allProps.onkeypress = `__redirectEnter(event, '${onEnterClick}');${allProps.onkeypress ?? ''}`;
+}
 ---
 
 <Component {...allProps} />

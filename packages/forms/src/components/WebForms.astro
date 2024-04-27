@@ -1,13 +1,13 @@
 ---
-import {asyncContext} from '@astro-utils/context';
-import {createFormToken} from '../form-tools/csrf.js';
-import {getFormOptions} from '../settings.js';
+import { asyncContext } from '@astro-utils/context';
+import { createFormToken } from '../form-tools/csrf.js';
+import { getFormOptions } from '../settings.js';
 
 export interface Props extends astroHTML.JSX.FormHTMLAttributes {}
 
 const context = {
     ...Astro.props,
-    webFormsSettings: {haveFileUpload: false},
+    webFormsSettings: { haveFileUpload: false },
     tempValues: {},
     viewStates: {
         counter: 0,
@@ -15,9 +15,9 @@ const context = {
     },
 };
 
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "webForms"});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
 
-const {webFormsSettings, tempValues, viewStates, ...props} = context;
+const { webFormsSettings, tempValues, viewStates, ...props } = context;
 if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
@@ -27,8 +27,22 @@ const formRequestToken = useSession && (await createFormToken(Astro));
 const clientScript = Astro.locals.forms.scriptToRun;
 ---
 
-<form method="post" {...props}>
-    {formRequestToken && <input type="hidden" name={formRequestToken.filed} value={formRequestToken.token}/>}
-    <Fragment set:html={htmlSolt}/>
-    {clientScript && <script set:html={clientScript}></script>}
+<form method='post' {...props}>
+    {formRequestToken && <input type='hidden' name={formRequestToken.filed} value={formRequestToken.token} />}
+    <Fragment set:html={htmlSolt} />
+    {clientScript && <script set:html={clientScript} />}
 </form>
+<script>
+    declare global {
+        interface Window {
+            __redirectEnter: (event: KeyboardEvent, id: string) => void;
+        }
+    }
+
+    window.__redirectEnter = function(event, id) {
+        if (event.code === 'Enter') {
+            event.preventDefault();
+            document.getElementById(id)?.click();
+        }
+    }
+</script>
