@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.7.0...@astro-utils/forms@3.8.0) (2024-04-27)
+
+
+### Features
+
+* **input:** redirect onEnter to a button ([5a05302](https://github.com/withastro-utils/utils/commit/5a053025c31c429bbc604fd6a54eb4c40a530019))
+
 # [3.7.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.2...@astro-utils/forms@3.7.0) (2024-04-27)
 
 
