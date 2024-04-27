@@ -1,10 +1,10 @@
-import {AstroGlobal} from 'astro';
+import { AstroGlobal } from 'astro';
 import superjson from 'superjson';
-import {parseFormData} from '../../form-tools/post.js';
-import {FormsSettings, getFormOptions} from '../../settings.js';
-import {BindForm} from './bind-form.js';
+import { parseFormData } from '../../form-tools/post.js';
+import { FormsSettings, getFormOptions } from '../../settings.js';
+import { BindForm } from './bind-form.js';
 import snappy from 'snappy';
-import {getSomeProps} from '../props-utils.js';
+import { getSomeProps, omitProps } from '../props-utils.js';
 import crypto from 'crypto';
 
 const CRYPTO_ALGORITHM = 'aes-256-ctr';
@@ -23,6 +23,10 @@ export default class ViewStateManager {
 
     get stateProp() {
         return this._astro.props.state ?? true;
+    }
+
+    get omitProps() {
+        return this._astro.props.omitState;
     }
 
     get useState() {
@@ -51,7 +55,7 @@ export default class ViewStateManager {
     private async _parseState() {
         try {
             const state = await this._extractStateFromForm();
-            if(state == null) return;
+            if (state == null) return;
 
             const [iv, content] = state.split('.');
 
@@ -80,7 +84,9 @@ export default class ViewStateManager {
 
     public async createViewState(): Promise<string> {
         const data = {
-            bind: getSomeProps(this._bind.__getState(), this.stateProp),
+            bind: this.omitProps ?
+                omitProps(this._bind.__getState(), this.omitProps):
+                getSomeProps(this._bind.__getState(), this.stateProp),
             elements: this._elementsState
         };
 

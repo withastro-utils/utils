@@ -7,6 +7,7 @@ import Bind from '../../components-control/form-utils/bind-form.js';
 export interface Props {
     bind?: ReturnType<typeof Bind>;
     state?: boolean | string[];
+    omitState?: string[];
 }
 
 const {viewStates} = getContext(Astro, '@astro-utils/forms');
@@ -29,6 +30,7 @@ await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-ut
 
 let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "bindForm"});
 bind.__finishFormValidation();
+
 for (const func of context.executeAfter) {
     await (func as any)();
 }

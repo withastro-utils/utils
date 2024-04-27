@@ -21,3 +21,20 @@ export function getSomeProps(object: any, props: string[] | true) {
     }
     return result;
 }
+
+/**
+ * Omit properties from an object, any property that starts with an underscore or is in the props array will be omitted
+ */
+export function omitProps(object: any, props: string[] | true) {
+    if (props === true) {
+        return {};
+    }
+
+    const result = {...object};
+    for (const prop in object) {
+        if(props.includes(prop) || prop[0] === '_'){
+            delete result[prop];
+        }
+    }
+    return result;
+}
