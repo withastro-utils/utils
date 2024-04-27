@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.2...@astro-utils/forms@3.7.0) (2024-04-27)
+
+
+### Features
+
+* **form:** omit from state ([663274e](https://github.com/withastro-utils/utils/commit/663274e41927cc860332264e909d7d5782899de8))
+
 ## [3.6.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.6.1...@astro-utils/forms@3.6.2) (2024-04-20)
 
 
