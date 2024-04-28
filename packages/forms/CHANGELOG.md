@@ -1,3 +1,10 @@
+## [3.8.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.1...@astro-utils/forms@3.8.2) (2024-04-28)
+
+
+### Bug Fixes
+
+* **set:** empty input update ([b67e2fc](https://github.com/withastro-utils/utils/commit/b67e2fc1d94c15b9516805f68f232740cd22bcf2))
+
 ## [3.8.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.0...@astro-utils/forms@3.8.1) (2024-04-28)
 
 
