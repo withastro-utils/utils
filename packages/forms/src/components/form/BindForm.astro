@@ -1,5 +1,5 @@
 ---
-import {asyncContext} from '@astro-utils/context';
+import { asyncContext } from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
 import Bind from '../../components-control/form-utils/bind-form.js';
@@ -8,27 +8,49 @@ export interface Props {
     bind?: ReturnType<typeof Bind>;
     state?: boolean | string[];
     omitState?: string[];
+    defaultSubmitClick?: string | false;
 }
 
-const {viewStates} = getContext(Astro, '@astro-utils/forms');
-const {bind = Bind()} = Astro.props;
-const context = {executeAfter: [], method: Astro.request.method, bind, tempBindValues: {}, elementsState: {} as any};
+const { viewStates } = getContext(Astro, '@astro-utils/forms');
+const { bind = Bind(), defaultSubmitClick } = Astro.props;
+const context = {
+    executeAfter: [],
+    method: Astro.request.method,
+    bind,
+    tempBindValues: {},
+    elementsState: {} as any,
+    onSubmitClickGlobal: defaultSubmitClick,
+    buttonIds: [] as [string, string | null][],
+};
 
 const viewState = new ViewStateManager(bind, context.elementsState, Astro, viewStates.counter++);
 const haveState = await viewState.loadState();
 
 await bind.on.stateLoaded?.();
 
-if(!haveState){
+if (!haveState) {
     await bind.on.newState?.();
 } else {
     await bind.on.pagePostBack?.();
 }
 
-// for some the first render starts before this code has run
-await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "bindForm"});
+// Get information about the form
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
+// resert the form execution
+context.tempBindValues = {};
+context.executeAfter = [];
 
-let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "bindForm"});
+// add default submit button
+if(context.onSubmitClickGlobal == null && context.buttonIds.length > 0){
+    const [buttonFormId, HTMLButtonId] = context.buttonIds.at(-1)!;
+    const state = context.elementsState[buttonFormId] ??= {};
+
+    state.id = HTMLButtonId ?? `_${buttonFormId}`;
+    context.onSubmitClickGlobal = state.id;
+}
+
+// first 'GET' render
+let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
 bind.__finishFormValidation();
 
 for (const func of context.executeAfter) {
@@ -38,9 +60,9 @@ for (const func of context.executeAfter) {
 if (context.method == 'POST') {
     context.method = 'GET';
     context.tempBindValues = {};
-    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: '@astro-utils/forms', context, lock: "bindForm"});
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
 }
 ---
 
-{viewState.useState ? <input type="hidden" name={viewState.filedName} value={await viewState.createViewState()}/> : null}
-<Fragment set:html={htmlSolt}/>
+{viewState.useState ? <input type='hidden' name={viewState.filedName} value={await viewState.createViewState()} /> : null}
+<Fragment set:html={htmlSolt} />

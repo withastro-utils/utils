@@ -1,7 +1,8 @@
 ---
 import getContext, { asyncContext } from '@astro-utils/context';
-import { getSelectValueFromBind, stringifySelectValue, validateSelect } from '../../components-control/select.js';
+import { getSelectValueFromBind, validateSelect } from '../../components-control/select.js';
 import { validateFrom } from '../../form-tools/csrf.js';
+import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Omit<astroHTML.JSX.SelectHTMLAttributes, 'value'> {
     name: string;
@@ -10,11 +11,14 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     as?: T;
     props?: React.ComponentProps<T>;
     value?: string | number | undefined | null | Date | (Date | number | string | null | undefined)[]
+    onSubmitClick?: string;
 }
 
-const { bind, method } = getContext(Astro, '@astro-utils/forms');
+const { bind, method, onSubmitClickGlobal } = getContext(Astro, '@astro-utils/forms');
 
-const { as: asComponent = 'select', value: _, props: componentProps, ...props } = Astro.props;
+const { as: asComponent = 'select', value: _, props: componentProps, onSubmitClick = onSubmitClickGlobal, ...props } = Astro.props;
+addOnSubmitClickEvent(onSubmitClick, props);
+
 let stringifySelectdOptions = getSelectValueFromBind(bind, Astro);
 
 if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {

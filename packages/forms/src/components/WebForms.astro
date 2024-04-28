@@ -35,11 +35,11 @@ const clientScript = Astro.locals.forms.scriptToRun;
 <script>
     declare global {
         interface Window {
-            __redirectEnter: (event: KeyboardEvent, id: string) => void;
+            __CSEvent: (event: KeyboardEvent, id: string) => void;
         }
     }
 
-    window.__redirectEnter = function(event, id) {
+    window.__CSEvent = function(event, id) {
         if (event.code === 'Enter') {
             event.preventDefault();
             document.getElementById(id)?.click();

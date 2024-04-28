@@ -1,0 +1,24 @@
+---
+import { BButton, BInput, BOption, BSelect, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind();
+
+function handleSubmit() {
+    console.log(bind);
+}
+---
+
+<Layout title='forms'>
+    <BindForm bind={bind}>
+        <BInput type='text' name='query' placeholder='Enter text'/>
+        <BInput type='text' name='query2' placeholder='Input 2'/>
+        <BButton onClick={() => console.log('Do nothing')}>Do noting</BButton>
+        <BSelect name='select'>
+            <BOption value='1'>1</BOption>
+            <BOption value='2'>2</BOption>
+            <BOption value='3'>3</BOption>
+        </BSelect>
+        <BButton onClick={handleSubmit} whenFormOK>submit</BButton>
+    </BindForm>
+</Layout>
