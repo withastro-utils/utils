@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.0...@astro-utils/forms@3.8.1) (2024-04-28)
+
+
+### Bug Fixes
+
+* **submit:** default submit button ([d223c28](https://github.com/withastro-utils/utils/commit/d223c28fd29a6a3caac3ba065073d515d1f08b32))
+
 # [3.8.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.7.0...@astro-utils/forms@3.8.0) (2024-04-27)
 
 
