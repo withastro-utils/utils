@@ -32,6 +32,7 @@ export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>) {
     const aboutSelect = new AboutFormName(bind, name, parseValue, errorMessage);
 
     if (!validateRequire(aboutSelect, required)) {
+        aboutSelect.setValue();
         return [];
     }
 
