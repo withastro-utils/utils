@@ -54,6 +54,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>)
 
     // validate filed exits
     if (!OK_INPUT_VALUE_NULL.includes(type) && !validateRequire(aboutInput, required)) {
+        aboutInput.setValue();
         return;
     }
 
