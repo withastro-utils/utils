@@ -1,3 +1,10 @@
+## [3.8.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.2...@astro-utils/forms@3.8.3) (2024-04-28)
+
+
+### Bug Fixes
+
+* **select:** empty value ([5c8f6f1](https://github.com/withastro-utils/utils/commit/5c8f6f13c9b95874bf1d7f72cc01853baad50852))
+
 ## [3.8.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.1...@astro-utils/forms@3.8.2) (2024-04-28)
 
 
