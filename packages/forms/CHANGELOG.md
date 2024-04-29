@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.0...@astro-utils/forms@3.9.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* **form:** default action ([697f0b5](https://github.com/withastro-utils/utils/commit/697f0b56342f4bd186c29a22d69106047c358e2b))
+
 # [3.9.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.3...@astro-utils/forms@3.9.0) (2024-04-29)
 
 
