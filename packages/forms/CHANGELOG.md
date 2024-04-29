@@ -1,3 +1,10 @@
+# [3.9.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.3...@astro-utils/forms@3.9.0) (2024-04-29)
+
+
+### Features
+
+* **forms:** easy form submit ([4caf5de](https://github.com/withastro-utils/utils/commit/4caf5de2844eae5aeb19cc4664be87c94d3b27ec))
+
 ## [3.8.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.8.2...@astro-utils/forms@3.8.3) (2024-04-28)
 
 
