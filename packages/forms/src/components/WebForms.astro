@@ -35,14 +35,25 @@ const clientScript = Astro.locals.forms.scriptToRun;
 <script>
     declare global {
         interface Window {
-            __CSEvent: (event: KeyboardEvent, id: string) => void;
+            __enterToSubmit: (event: KeyboardEvent, id: string) => void;
+            submitForm(value: HTMLElement | string): void;
         }
     }
 
-    window.__CSEvent = function(event, id) {
+    window.__enterToSubmit = function (event) {
         if (event.code === 'Enter') {
             event.preventDefault();
-            document.getElementById(id)?.click();
+            document.getElementById((event.target as HTMLElement).getAttribute('data-submit')!)?.click();
         }
-    }
+    };
+
+    window.submitForm = function (value: any) {
+        if (typeof value !== 'string') {
+            value = value.getAttribute('data-submit');
+        }
+        if(value == null){
+            return console.warn('submitForm: value is null, make sure you pass `this` to this method or an id of the button you want to submit.');
+        }
+        document.getElementById(value)?.click();
+    };
 </script>
