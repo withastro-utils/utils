@@ -5,14 +5,14 @@ export interface Props extends astroHTML.JSX.HTMLAttributes {
     title?: string;
 };
 
-const {bind} = getContext(Astro, '@astro-utils/forms');
+const {bind, settings} = getContext(Astro, '@astro-utils/forms');
 const {title, ...props} = Astro.props;
 ---
-{bind.errors.length &&
+{bind.errors.length && settings.showValidationErrors &&
 <div {...props}>
     {title && <h4>{title}</h4>}
     <ol>
         {bind.errors.map(x =>
-                <li>{x.message}</li>)}
+                <li>{x.message}: "{x.name}"</li>)}
     </ol>
 </div> || ''}

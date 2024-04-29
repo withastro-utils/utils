@@ -15,7 +15,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 }
 
 const {as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props} = Astro.props;
-const {bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds} = getContext(Astro, '@astro-utils/forms');
+const {bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings} = getContext(Astro, '@astro-utils/forms');
 const tempCounter = tempBindValues || tempValues;
 const elementPropsState = elementsState || tempValues;
 
@@ -29,19 +29,32 @@ if (!connectId) {
 }
 
 const allProps = {...props, ...componentProps};
-buttonIds?.push([buttonUniqueId, allProps.id]);
+
+// add this button to list of button for the default submit action
+if(buttonIds && !allProps.disabled && !elementPropsState[buttonUniqueId]?.disabled) {
+    buttonIds.push([buttonUniqueId, allProps.id, whenFormOK]);
+}
 
 async function executeFormAction(callback: Function = onClick) {
+    const validAction = isPost(Astro) && await validateAction(Astro, 'button-callback', buttonUniqueId);
+
+    if(validAction && whenFormOK && settings){
+        settings.showValidationErrors = true;
+    }
+
     const checkFormValidation = (whenFormOK && !bind?.errors.length) || !whenFormOK;
-    if (checkFormValidation && isPost(Astro) && (await validateAction(Astro, 'button-callback', buttonUniqueId))) {
+    if (checkFormValidation && validAction) {
         const copyProps = structuredClone({...allProps, ...elementPropsState[buttonUniqueId]});
 
-        await callback.call(copyProps);
+        if(!copyProps.disabled){
+            await callback.call(copyProps);
+        }
         delete copyProps.extra;
 
         elementPropsState[buttonUniqueId] = diffProps(allProps, copyProps);
     }
 }
+
 
 if (executeAfter) {
     executeAfter.push(executeFormAction);
