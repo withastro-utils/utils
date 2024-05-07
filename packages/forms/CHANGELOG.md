@@ -1,3 +1,10 @@
+## [3.9.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.1...@astro-utils/forms@3.9.2) (2024-05-07)
+
+
+### Bug Fixes
+
+* **name:** the same name in different forms override one another ([1f2ebf7](https://github.com/withastro-utils/utils/commit/1f2ebf7b165ec04227af41dbf86db6f56deedede))
+
 ## [3.9.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.0...@astro-utils/forms@3.9.1) (2024-04-29)
 
 
