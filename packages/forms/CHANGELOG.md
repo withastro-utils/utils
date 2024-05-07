@@ -1,3 +1,10 @@
+## [3.9.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.2...@astro-utils/forms@3.9.3) (2024-05-07)
+
+
+### Bug Fixes
+
+* **textarea:** name ([0991b16](https://github.com/withastro-utils/utils/commit/0991b16c60cbbee20c424eca1b3a7554152a89a2))
+
 ## [3.9.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.1...@astro-utils/forms@3.9.2) (2024-05-07)
 
 
