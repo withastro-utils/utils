@@ -26,6 +26,7 @@ if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
 }
 
 const {as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, ...props} = Astro.props;
+props.name = bindCounter + props.name;
 addOnSubmitClickEvent(onSubmitClick, props);
 
 const value = getProperty(bind, Astro.props.name, await Astro.slots.render('default') ?? defaultValue);

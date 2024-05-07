@@ -37,8 +37,8 @@ const inputValue = inputReturnValueAttr(Astro, bind);
 
 const allProps = { ...props, ...inputValue, ...componentProps, pattern: pattern?.toString(), ...castProps };
 allProps.name = bindCounter + allProps.name;
-
 addOnSubmitClickEvent(onSubmitClick, allProps);
+
 webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 
 const Component = asComponent as any;

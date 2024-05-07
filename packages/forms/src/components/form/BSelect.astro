@@ -17,6 +17,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 const { bind, method, onSubmitClickGlobal, bindCounter = '' } = getContext(Astro, '@astro-utils/forms');
 
 const { as: asComponent = 'select', value: _, props: componentProps, onSubmitClick = onSubmitClickGlobal, ...props } = Astro.props;
+props.name = bindCounter + props.name;
 addOnSubmitClickEvent(onSubmitClick, props);
 
 let stringifySelectdOptions = getSelectValueFromBind(bind, Astro);
