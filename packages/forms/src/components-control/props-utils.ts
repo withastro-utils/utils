@@ -4,7 +4,7 @@
 export function diffProps(object1: any, object2: any) {
     const diff = {};
     for (const [key, value] of Object.entries(object2)) {
-        if (object1[key] !== value) {
+        if (JSON.stringify(object1[key]) !== JSON.stringify(value)) {
             diff[key] = value;
         }
     }

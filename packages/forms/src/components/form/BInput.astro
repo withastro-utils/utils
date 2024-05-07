@@ -26,9 +26,9 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     props?: React.ComponentProps<T>;
 }
 
-const { bind, method, webFormsSettings, onSubmitClickGlobal } = getContext(Astro, '@astro-utils/forms');
+const { bind, method, webFormsSettings, onSubmitClickGlobal, bindCounter = ''} = getContext(Astro, '@astro-utils/forms');
 if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    await validateFormInput(Astro, bind);
+    await validateFormInput(Astro, bind, bindCounter);
 }
 
 const { as: asComponent = 'input', props: componentProps, type = 'text', onSubmitClick = onSubmitClickGlobal, pattern, ...props } = Astro.props;
@@ -36,8 +36,9 @@ const castProps = caseTypes(type);
 const inputValue = inputReturnValueAttr(Astro, bind);
 
 const allProps = { ...props, ...inputValue, ...componentProps, pattern: pattern?.toString(), ...castProps };
-addOnSubmitClickEvent(onSubmitClick, allProps);
+allProps.name = bindCounter + allProps.name;
 
+addOnSubmitClickEvent(onSubmitClick, allProps);
 webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 
 const Component = asComponent as any;

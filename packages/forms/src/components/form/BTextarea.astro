@@ -20,9 +20,9 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     onSubmitClick?: string;
 };
 
-const {bind, method, onSubmitClickGlobal} = getContext(Astro, '@astro-utils/forms');
+const {bind, method, onSubmitClickGlobal, bindCounter = ''} = getContext(Astro, '@astro-utils/forms');
 if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
-    await validateFormInput(Astro, bind);
+    await validateFormInput(Astro, bind, bindCounter);
 }
 
 const {as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, ...props} = Astro.props;

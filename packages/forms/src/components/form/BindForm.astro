@@ -21,10 +21,11 @@ const context = {
     elementsState: {} as any,
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
-    settings: {showValidationErrors: false}
+    settings: {showValidationErrors: false},
+    bindCounter: viewStates.counter++
 };
 
-const viewState = new ViewStateManager(bind, context.elementsState, Astro, viewStates.counter++);
+const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindCounter);
 const haveState = await viewState.loadState();
 
 await bind.on.stateLoaded?.();
