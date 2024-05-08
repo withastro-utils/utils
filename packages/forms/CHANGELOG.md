@@ -1,3 +1,10 @@
+## [3.9.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.3...@astro-utils/forms@3.9.4) (2024-05-08)
+
+
+### Bug Fixes
+
+* **nested-forms:** stack loading nested forms ([b2caa6e](https://github.com/withastro-utils/utils/commit/b2caa6e06a2b3e17207572e4e1829d3757883a95))
+
 ## [3.9.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.2...@astro-utils/forms@3.9.3) (2024-05-07)
 
 
