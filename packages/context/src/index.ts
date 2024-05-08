@@ -33,8 +33,8 @@ export async function asyncContext<T>(promise: () => Promise<T>, astro: ContextA
     const contextHistory = getContextHistory(astro, name);
 
     contextHistory.push({
-        ...(context ?? astro.props),
-        ...contextHistory.at(-1)
+        ...contextHistory.at(-1),
+        ...(context ?? astro.props)
     });
 
     let resolver: () => void | null;

@@ -11,7 +11,7 @@ export interface Props {
     defaultSubmitClick?: string | false;
 }
 
-const { viewStates } = getContext(Astro, '@astro-utils/forms');
+const { viewStates, bindCounter: parantBindCounter = '' } = getContext(Astro, '@astro-utils/forms');
 const { bind = Bind(), defaultSubmitClick } = Astro.props;
 const context = {
     executeAfter: [],
@@ -22,7 +22,7 @@ const context = {
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
     settings: {showValidationErrors: false},
-    bindCounter: viewStates.counter++
+    bindCounter: viewStates.incCounter(bind)
 };
 
 const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindCounter);
@@ -37,7 +37,7 @@ if (!haveState) {
 }
 
 // Get information about the form
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 
 // resert the form execution
 context.tempBindValues = {};
@@ -45,7 +45,7 @@ context.executeAfter = [];
 
 // first 'GET' render
 context.method = Astro.request.method;
-let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
+let htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 bind.__finishFormValidation();
 
 for (const func of context.executeAfter) {
@@ -55,7 +55,7 @@ for (const func of context.executeAfter) {
 if (context.method == 'POST') {
     context.method = 'GET';
     context.tempBindValues = {};
-    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 }
 
 // Edit form render, add default submit button
@@ -67,7 +67,7 @@ if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
     context.onSubmitClickGlobal = state.id;
 
     context.tempBindValues = {};
-    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' });
+    htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 }
 ---
 
