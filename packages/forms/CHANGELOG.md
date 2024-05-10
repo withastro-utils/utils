@@ -1,3 +1,10 @@
+## [3.9.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.4...@astro-utils/forms@3.9.5) (2024-05-10)
+
+
+### Bug Fixes
+
+* **nest-formBind:** rerender only once ([520adc1](https://github.com/withastro-utils/utils/commit/520adc10280ad06a235532a72c3e65f8d6320e15))
+
 ## [3.9.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.3...@astro-utils/forms@3.9.4) (2024-05-08)
 
 
