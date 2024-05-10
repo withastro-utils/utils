@@ -4,6 +4,8 @@ import Layout from '../layouts/Layout.astro';
 
 const bind1 = Bind({ bind: 1, num: 1 });
 const bind2 = Bind({ bind: 2, num: 2 });
+const bind3 = Bind({ bind: 3, num: 3 });
+const bind4 = Bind({ bind: 4, num: 0 });
 
 function submit() {
     this.extra.num++;
@@ -20,9 +22,24 @@ function submit() {
 
         <BindForm bind={bind2}>
             <BInput type='int' name='num' />
-            <BButton onClick={submit} extra={bind2}>
-                Increase
-            </BButton>
+            <BButton onClick={submit} extra={bind2}> Increase </BButton>
         </BindForm>
+    </BindForm>
+
+    <BindForm bind={bind3}>
+        <BInput type='int' name='num' />
+        <BButton onClick={submit} extra={bind3}> Increase </BButton>
+    </BindForm>
+
+    <BindForm bind={bind4}>
+        <BInput type='int' name='num' />
+
+        {
+            bind4.num > 3 ? null : (
+                <BButton onClick={submit} extra={bind4}>
+                    Increase
+                </BButton>
+            )
+        }
     </BindForm>
 </Layout>

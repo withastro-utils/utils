@@ -39,6 +39,9 @@ if (!haveState) {
     await bind.on.pagePostBack?.();
 }
 
+// For some resone the first render, in astro appenning in the oppesit direction, memning it first return the html and than runs the logic?
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context: structuredClone(context), lock: 'bindForm' + parantBindCounter });
+
 // Get information about the form
 context.method = Astro.request.method;
 await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
