@@ -2,12 +2,14 @@
 import { BButton, BInput, Bind, BindForm } from '@astro-utils/forms/forms.js';
 import Layout from '../layouts/Layout.astro';
 
-const bind1 = Bind({bind: 1, num: 1});
-const bind2 = Bind({bind: 2, num: 2});
+const bind1 = Bind({ bind: 1, num: 1 });
+const bind2 = Bind({ bind: 2, num: 2 });
 
-function submit(){
+function submit() {
     this.extra.num++;
-    this.style = `background-color: #${Math.floor(Math.random()*16777215).toString(16)}`
+    this.style = `background-color: #${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+    console.log(this.extra.bind);
 }
 ---
 
@@ -18,7 +20,9 @@ function submit(){
 
         <BindForm bind={bind2}>
             <BInput type='int' name='num' />
-            <BButton onClick={submit} extra={bind2}>Increase</BButton>
+            <BButton onClick={submit} extra={bind2}>
+                Increase
+            </BButton>
         </BindForm>
     </BindForm>
 </Layout>

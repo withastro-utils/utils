@@ -15,6 +15,8 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 }
 
 const {as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props} = Astro.props;
+componentProps && Object.assign(props, componentProps);
+
 const {bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings, bindCounter = ''} = getContext(Astro, '@astro-utils/forms');
 const tempCounter = tempBindValues || tempValues;
 const elementPropsState = elementsState || tempValues;
@@ -28,7 +30,7 @@ if (!connectId) {
     buttonUniqueId = `${bindCounter + idBaseFunction}-${counter}`;
 }
 
-const allProps = {...props, ...componentProps, ...elementPropsState[buttonUniqueId]};
+const allProps = {...props, ...elementPropsState[buttonUniqueId]};
 
 // add this button to list of button for the default submit action
 if(buttonIds && !allProps.disabled) {
@@ -44,15 +46,13 @@ async function executeFormAction(callback: Function = onClick) {
 
     const checkFormValidation = (whenFormOK && !bind?.errors.length) || !whenFormOK;
     if (checkFormValidation && validAction) {
-        const copyProps = structuredClone({...props, ...componentProps});
-        copyProps.extra = props.extra;
+        const originalProps = structuredClone(props);
         
-        if(!copyProps.disabled){
-            await callback.call(copyProps);
+        if(!allProps.disabled){
+            await callback.call(allProps);
         }
-        delete copyProps.extra;
-
-        elementPropsState[buttonUniqueId] = diffProps(allProps, copyProps);
+        
+        elementPropsState[buttonUniqueId] = diffProps(originalProps, allProps, ["extra"]);
     }
 }
 
@@ -67,7 +67,7 @@ if (executeAfter) {
 
 const {innerText, innerHTML, remove: doNotWriteHTML, ...changedProps}: any = allProps;
 delete changedProps.extra;
-delete changedProps.state; 
+delete changedProps.state;
 
 const Component = asComponent as any;
 const slotData = innerHTML ?? (Astro.slots.has('default') ? await Astro.slots.render('default') : '');

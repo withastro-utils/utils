@@ -4,13 +4,16 @@ import Layout from '../layouts/Layout.astro';
 
 const bind = Bind();
 
+let message = '';
 function handleSubmit() {
     console.log(bind);
+    message = 'Default submit works!';
 }
 ---
 
 <Layout title='forms'>
     <BindForm bind={bind}>
+        <p>{message}</p>
         <BInput type='text' name='query' placeholder='Enter text'/>
         <BInput type='text' name='query2' placeholder='Input 2'/>
         <BButton onClick={() => console.log('Do nothing')}>Do noting</BButton>

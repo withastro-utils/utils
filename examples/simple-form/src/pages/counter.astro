@@ -1,5 +1,5 @@
 ---
-import { BButton, BindForm } from "@astro-utils/forms/forms.js";
+import { BButton, Bind, BindForm } from "@astro-utils/forms/forms.js";
 import { Button } from 'reactstrap';
 import Layout from "../layouts/Layout.astro";
 
@@ -15,4 +15,4 @@ function increaseCounter() {
         <BButton as={Button} props={{color: 'info'}} onClick={increaseCounter}>++</BButton>
         {session.counter}
     </BindForm>
-<Layout/>
+</Layout>

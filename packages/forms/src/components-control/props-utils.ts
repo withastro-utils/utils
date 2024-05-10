@@ -1,9 +1,10 @@
 /**
  * Returns the difference between two objects
  */
-export function diffProps(object1: any, object2: any) {
+export function diffProps(object1: any, object2: any, skipKeys: string[] = []) {
     const diff = {};
     for (const [key, value] of Object.entries(object2)) {
+        if(skipKeys.includes(key)) continue;
         if (JSON.stringify(object1[key]) !== JSON.stringify(value)) {
             diff[key] = value;
         }

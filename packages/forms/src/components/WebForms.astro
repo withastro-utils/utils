@@ -10,17 +10,7 @@ const context = {
     webFormsSettings: { haveFileUpload: false },
     tempValues: {},
     viewStates: {
-        counterHash: new Map<any, number>(),
-        lastCounter: 0,
-        incCounter(ref: any){
-            const haveCounter = context.viewStates.counterHash.get(ref);
-            if(haveCounter) {
-                return haveCounter;
-            }
-            
-            context.viewStates.counterHash.set(ref, context.viewStates.lastCounter);
-            return context.viewStates.lastCounter++;
-        }
+        counter: 0,
     },
 };
 
