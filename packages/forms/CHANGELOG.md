@@ -1,3 +1,10 @@
+## [3.9.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.5...@astro-utils/forms@3.9.6) (2024-05-10)
+
+
+### Bug Fixes
+
+* **astro:** first render bug ([8741184](https://github.com/withastro-utils/utils/commit/8741184e7a67e04c4243d8284598b8069ecfaf3d))
+
 ## [3.9.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.4...@astro-utils/forms@3.9.5) (2024-05-10)
 
 
