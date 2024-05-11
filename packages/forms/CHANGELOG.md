@@ -1,3 +1,10 @@
+## [3.9.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.6...@astro-utils/forms@3.9.7) (2024-05-11)
+
+
+### Bug Fixes
+
+* **props:** clone ([ad276b0](https://github.com/withastro-utils/utils/commit/ad276b027e563907201a931b0595fc7d1cb7e644))
+
 ## [3.9.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.5...@astro-utils/forms@3.9.6) (2024-05-10)
 
 
