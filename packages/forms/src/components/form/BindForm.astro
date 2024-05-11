@@ -12,7 +12,7 @@ export interface Props {
 }
 
 const { viewStates, lastRender: parantLastRender, bindCounter: parantBindCounter = '' } = getContext(Astro, '@astro-utils/forms');
-if(parantLastRender === false) {
+if (parantLastRender === false) {
     return;
 }
 
@@ -25,9 +25,15 @@ const context = {
     elementsState: {} as any,
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
-    settings: { showValidationErrors: false},
+    settings: { showValidationErrors: false },
     bindCounter: viewStates.counter++,
-    lastRender: false
+    lastRender: false,
+};
+
+const resetContext = () => {
+    context.buttonIds = [];
+    context.tempBindValues = {};
+    context.executeAfter = [];
 };
 
 const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindCounter);
@@ -40,8 +46,8 @@ if (!haveState) {
 }
 
 // For some resone the first render, in astro appenning in the oppesit direction, memning it first return the html and than runs the logic?
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context: structuredClone(context), lock: 'bindForm' + parantBindCounter });
-
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
+resetContext();
 // Get information about the form
 context.method = Astro.request.method;
 await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
@@ -53,8 +59,8 @@ if (context.method == 'POST') {
     }
 
     context.method = 'GET';
-    context.tempBindValues = {};
-    context.buttonIds = [];
+    resetContext();
+
     await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 }
 
@@ -65,9 +71,9 @@ if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
 
     state.id = HTMLButtonId ?? `_${buttonFormId}`;
     context.onSubmitClickGlobal = state.id;
-    context.tempBindValues = {};
 }
 
+resetContext();
 context.lastRender = true;
 const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
 ---

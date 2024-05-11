@@ -1,8 +1,9 @@
 ---
 import getContext from '@astro-utils/context';
-import {createUniqueContinuanceName} from '../../form-tools/connectId.js';
-import {isPost, validateAction} from '../../form-tools/post.js';
-import {diffProps} from '../../components-control/props-utils.js';
+import { createUniqueContinuanceName } from '../../form-tools/connectId.js';
+import { isPost, validateAction } from '../../form-tools/post.js';
+import { diffProps } from '../../components-control/props-utils.js';
+import deepmerge from 'deepmerge';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.ButtonHTMLAttributes {
     onClick: Function;
@@ -14,10 +15,10 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     extra?: any;
 }
 
-const {as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props} = Astro.props;
+const { as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props } = Astro.props;
 componentProps && Object.assign(props, componentProps);
 
-const {bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings, bindCounter = ''} = getContext(Astro, '@astro-utils/forms');
+const { bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings, bindCounter = '' } = getContext(Astro, '@astro-utils/forms');
 const tempCounter = tempBindValues || tempValues;
 const elementPropsState = elementsState || tempValues;
 
@@ -30,32 +31,31 @@ if (!connectId) {
     buttonUniqueId = `${bindCounter + idBaseFunction}-${counter}`;
 }
 
-const allProps = {...props, ...elementPropsState[buttonUniqueId]};
+const allProps = { ...props, ...elementPropsState[buttonUniqueId] };
 
 // add this button to list of button for the default submit action
-if(buttonIds && !allProps.disabled) {
+if (buttonIds && !allProps.disabled) {
     buttonIds.push([buttonUniqueId, allProps.id, whenFormOK]);
 }
 
 async function executeFormAction(callback: Function = onClick) {
-    const validAction = isPost(Astro) && await validateAction(Astro, 'button-callback', buttonUniqueId);
+    const validAction = isPost(Astro) && (await validateAction(Astro, 'button-callback', buttonUniqueId));
 
-    if(validAction && whenFormOK && settings){
+    if (validAction && whenFormOK && settings) {
         settings.showValidationErrors = true;
     }
 
     const checkFormValidation = (whenFormOK && !bind?.errors.length) || !whenFormOK;
     if (checkFormValidation && validAction) {
-        const originalProps = structuredClone(props);
-        
-        if(!allProps.disabled){
+        const originalProps = deepmerge({}, props);
+
+        if (!allProps.disabled) {
             await callback.call(allProps);
         }
-        
-        elementPropsState[buttonUniqueId] = diffProps(originalProps, allProps, ["extra"]);
+
+        elementPropsState[buttonUniqueId] = diffProps(originalProps, allProps, ['extra']);
     }
 }
-
 
 if (executeAfter) {
     executeAfter.push(executeFormAction);
@@ -65,7 +65,7 @@ if (executeAfter) {
     await executeFormAction();
 }
 
-const {innerText, innerHTML, remove: doNotWriteHTML, ...changedProps}: any = allProps;
+const { innerText, innerHTML, remove: doNotWriteHTML, ...changedProps }: any = allProps;
 delete changedProps.extra;
 delete changedProps.state;
 
@@ -75,9 +75,8 @@ const slotData = innerHTML ?? (Astro.slots.has('default') ? await Astro.slots.re
 
 {
     !doNotWriteHTML && (
-    <Component type="submit" name="button-callback" value={buttonUniqueId} formNoValidate={!whenFormOK} {...changedProps}>
-        {innerText ??
-                <Fragment set:html={slotData}/>}
-    </Component>
-        )
-    }
+        <Component type='submit' name='button-callback' value={buttonUniqueId} formNoValidate={!whenFormOK} {...changedProps}>
+            {innerText ?? <Fragment set:html={slotData} />}
+        </Component>
+    )
+}
