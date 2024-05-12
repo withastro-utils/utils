@@ -9,6 +9,10 @@ import Counter from '../components/Counter.astro';
 const form = Bind({age: 0, name: '', about: ''});
 let showSubmitText: string;
 
+form.on.newState = () => console.log('New state loaded');
+form.on.pagePostBack = () => console.log('pagePostBack');
+form.on.stateLoaded = () => console.log('stateLoaded');
+
 function formSubmit(){
     Astro.locals.session.counter ??= 0;
     Astro.locals.session.counter++;

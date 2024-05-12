@@ -77,18 +77,20 @@ export default class ViewStateManager {
         const state: any = await this._parseState();
         if (!state) return false;
 
-        Object.assign(this._bind, state.bind);
-        Object.assign(this._elementsState, state.elements);
+        if(state.bind && state.elements){
+            Object.assign(this._bind, state.bind);
+            Object.assign(this._elementsState, state.elements);
+        }
         return true;
     }
 
     public async createViewState(): Promise<string> {
-        const data = {
+        const data = this.useState ? {
             bind: this.omitProps ?
                 omitProps(this._bind.__getState(), this.omitProps):
                 getSomeProps(this._bind.__getState(), this.stateProp),
             elements: this._elementsState
-        };
+        }: {};
 
         const stringify = superjson.stringify(data);
         const compress = await snappy.compress(stringify, {});
