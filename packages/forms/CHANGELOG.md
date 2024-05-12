@@ -1,3 +1,10 @@
+## [3.9.8](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.7...@astro-utils/forms@3.9.8) (2024-05-12)
+
+
+### Bug Fixes
+
+* **state:** identity, know when this is new state ([a2b3900](https://github.com/withastro-utils/utils/commit/a2b390061275fab1e427ec27ad4e32bfed8c68dc))
+
 ## [3.9.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.6...@astro-utils/forms@3.9.7) (2024-05-11)
 
 
