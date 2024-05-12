@@ -1,3 +1,10 @@
+## [3.9.9](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.8...@astro-utils/forms@3.9.9) (2024-05-12)
+
+
+### Bug Fixes
+
+* **state:** build state ([902540d](https://github.com/withastro-utils/utils/commit/902540df9e58c5aca8a1ac64cdfe97936d5b94c0))
+
 ## [3.9.8](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.7...@astro-utils/forms@3.9.8) (2024-05-12)
 
 
