@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.9...@astro-utils/forms@3.10.0) (2024-05-14)
+
+
+### Features
+
+* **errors:** strict errors ([4687773](https://github.com/withastro-utils/utils/commit/4687773c12a63600109732123aa74cad8913c4a8))
+
 ## [3.9.9](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.8...@astro-utils/forms@3.9.9) (2024-05-12)
 
 
