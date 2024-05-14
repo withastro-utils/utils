@@ -3,20 +3,33 @@ import { asyncContext } from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
 import Bind from '../../components-control/form-utils/bind-form.js';
+import { MissingKeyPropError } from '../../errors/MissingKeyPropError.js';
+import { NotAUniqueKeyError } from '../../errors/NotAUniqueKeyError.js';
 
 export interface Props {
     bind?: ReturnType<typeof Bind>;
     state?: boolean | string[];
     omitState?: string[];
     defaultSubmitClick?: string | false;
+    key: string;
 }
 
-const { viewStates, lastRender: parantLastRender, bindCounter: parantBindCounter = '' } = getContext(Astro, '@astro-utils/forms');
+const { statesKey, lastRender: parantLastRender, bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
 if (parantLastRender === false) {
     return;
 }
 
-const { bind = Bind(), defaultSubmitClick } = Astro.props;
+const { bind = Bind(), defaultSubmitClick, key } = Astro.props;
+
+if (!key) {
+    throw new MissingKeyPropError();
+} else {
+    if (statesKey.has(key)) {
+        throw new NotAUniqueKeyError(key);
+    }
+    statesKey.add(key);
+}
+
 const context = {
     executeAfter: [],
     method: 'GET',
@@ -26,9 +39,9 @@ const context = {
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
     settings: { showValidationErrors: false },
-    bindCounter: viewStates.counter++,
+    bindId: key,
     lastRender: false,
-    newState: false
+    newState: false,
 };
 
 const resetContext = () => {
@@ -37,23 +50,23 @@ const resetContext = () => {
     context.executeAfter = [];
 };
 
-const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindCounter);
-context.newState = !await viewState.loadState();
+const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindId);
+context.newState = !(await viewState.loadState());
 await bind.on.stateLoaded?.();
 if (context.newState) {
     await bind.on.newState?.();
 }
 
 // For some resone the first render, in astro appenning in the oppesit direction, memning it first return the html and than runs the logic?
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
 resetContext();
 // Get information about the form
-context.method = context.newState ? 'GET': Astro.request.method;
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
+context.method = context.newState ? 'GET' : Astro.request.method;
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
 bind.__finishFormValidation();
 
 if (context.method == 'POST') {
-    if(!context.newState){
+    if (!context.newState) {
         await bind.on.pagePostBack?.();
     }
     for (const func of context.executeAfter) {
@@ -63,7 +76,7 @@ if (context.method == 'POST') {
     context.method = 'GET';
     resetContext();
 
-    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
+    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
 }
 
 // Edit form render, add default submit button
@@ -77,7 +90,7 @@ if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
 
 resetContext();
 context.lastRender = true;
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantBindCounter });
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
 ---
 
 <input type='hidden' name={viewState.filedName} value={await viewState.createViewState()} />

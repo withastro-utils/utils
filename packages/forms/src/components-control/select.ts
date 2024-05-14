@@ -17,18 +17,18 @@ export function stringifySelectValue(value: Date | Number | string) {
     return String(value);
 }
 
-async function getSelectValue(astro: AstroGlobal, bindCounter: string) {
+async function getSelectValue(astro: AstroGlobal, bindId: string) {
     const { value: originalValue, readonly, name } = astro.props;
     if (readonly) {
         return [originalValue].flat().map(stringifySelectValue);
     }
-    return (await getFormMultiValue(astro.request, bindCounter + name)).map(String);
+    return (await getFormMultiValue(astro.request, bindId + name)).map(String);
 }
 
-export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>, bindCounter: string) {
+export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>, bindId: string) {
     const { type, required, name, multiple, errorMessage } = astro.props;
 
-    const parseValue = await getSelectValue(astro, bindCounter);
+    const parseValue = await getSelectValue(astro, bindId);
     const aboutSelect = new AboutFormName(bind, name, parseValue, errorMessage);
 
     if (!validateRequire(aboutSelect, required)) {

@@ -11,7 +11,7 @@ function increaseCounter() {
 }
 ---
 <Layout title="counter">
-    <BindForm>
+    <BindForm key="page">
         <BButton as={Button} props={{color: 'info'}} onClick={increaseCounter}>++</BButton>
         {session.counter}
     </BindForm>

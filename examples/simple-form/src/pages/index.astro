@@ -31,7 +31,7 @@ function makeBackgroundRed() {
 <Layout title="Form + Session">
     <BButton props={{color: 'info'}} onClick={makeBackgroundRed} extra={1}>Should click</BButton>
 
-    <BindForm bind={form} state={['about']}>
+    <BindForm bind={form} state={['about']} key="page">
         {[1, 2, 3].map(key =>
                 <BButton props={{color: 'info'}} onClick={makeBackgroundRed} state={{counter: key}}>Should click</BButton>
         )}

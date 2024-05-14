@@ -1,10 +1,11 @@
 ---
 import getContext from '@astro-utils/context';
-import {validateFormInput} from '../../components-control/input-parse.js';
-import {validateFrom} from '../../form-tools/csrf.js';
-import {ModifyDeep} from '../../utils.js';
-import {getProperty} from 'dot-prop';
+import { validateFormInput } from '../../components-control/input-parse.js';
+import { validateFrom } from '../../form-tools/csrf.js';
+import { ModifyDeep } from '../../utils.js';
+import { getProperty } from 'dot-prop';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
+import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
 
 interface ModifyInputProps {
     minlength?: number;
@@ -18,19 +19,24 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     as?: T;
     props?: React.ComponentProps<T>;
     onSubmitClick?: string;
-};
-
-const {bind, method, onSubmitClickGlobal, bindCounter = ''} = getContext(Astro, '@astro-utils/forms');
-if (!Astro.props.disabled && method === 'POST' && await validateFrom(Astro)) {
-    await validateFormInput(Astro, bind, bindCounter);
 }
 
-const {as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, ...props} = Astro.props;
-props.name = bindCounter + props.name;
+if (!Astro.props.name) {
+    throw new MissingNamePropError('BInput');
+}
+
+const { bind, method, onSubmitClickGlobal, bindId = '' } = getContext(Astro, '@astro-utils/forms');
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+    await validateFormInput(Astro, bind, bindId);
+}
+
+const { as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, ...props } = Astro.props;
+props.name = bindId + props.name;
 addOnSubmitClickEvent(onSubmitClick, props);
 
-const value = getProperty(bind, Astro.props.name, await Astro.slots.render('default') ?? defaultValue);
+const value = getProperty(bind, Astro.props.name, (await Astro.slots.render('default')) ?? defaultValue);
 
 const Component = asComponent as any;
 ---
+
 <Component {...props} {...componentProps}>{value}</Component>

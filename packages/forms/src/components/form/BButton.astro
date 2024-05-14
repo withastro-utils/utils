@@ -3,7 +3,8 @@ import getContext from '@astro-utils/context';
 import { createUniqueContinuanceName } from '../../form-tools/connectId.js';
 import { isPost, validateAction } from '../../form-tools/post.js';
 import { diffProps } from '../../components-control/props-utils.js';
-import deepmerge from 'deepmerge';
+import objectAssignDeep from 'object-assign-deep';
+import { MissingClickActionError } from '../../errors/MissingClickActionError.js';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends astroHTML.JSX.ButtonHTMLAttributes {
     onClick: Function;
@@ -16,9 +17,13 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 }
 
 const { as: asComponent = 'button', props: componentProps, onClick, whenFormOK, connectId, ...props } = Astro.props;
+if (typeof onClick !== 'function') {
+    throw new MissingClickActionError();
+}
+
 componentProps && Object.assign(props, componentProps);
 
-const { bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings, bindCounter = '' } = getContext(Astro, '@astro-utils/forms');
+const { bind, executeAfter, elementsState, tempValues, tempBindValues, method, buttonIds, settings, bindId = '' } = getContext(Astro, '@astro-utils/forms');
 const tempCounter = tempBindValues || tempValues;
 const elementPropsState = elementsState || tempValues;
 
@@ -28,7 +33,7 @@ if (!connectId) {
     tempCounter[idBaseFunction] ??= 0;
 
     const counter = ++tempCounter[idBaseFunction];
-    buttonUniqueId = `${bindCounter + idBaseFunction}-${counter}`;
+    buttonUniqueId = `${bindId + idBaseFunction}-${counter}`;
 }
 
 const allProps = { ...props, ...elementPropsState[buttonUniqueId] };
@@ -47,7 +52,7 @@ async function executeFormAction(callback: Function = onClick) {
 
     const checkFormValidation = (whenFormOK && !bind?.errors.length) || !whenFormOK;
     if (checkFormValidation && validAction) {
-        const originalProps = deepmerge({}, props);
+        const originalProps = objectAssignDeep({}, { ...props, extra: null });
 
         if (!allProps.disabled) {
             await callback.call(allProps);

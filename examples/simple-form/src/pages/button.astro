@@ -13,13 +13,13 @@ function formSubmit() {
 }
 ---
 <Layout title="Welcome to Astro Metro.">
-    <BindForm>
-        <BindForm>
+    <BindForm key='page'>
+        <BindForm key="button">
             <BButton as={Button} props={{color: 'info'}} onClick={formSubmit}>Submit</BButton>
             {showSubmitText}
         </BindForm>
 
-        <BindForm>
+        <BindForm key='text'>
             {showSubmitText}
         </BindForm>
     </BindForm>

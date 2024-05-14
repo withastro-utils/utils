@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS as DEFAULT_SETTINGS_CSRF, ensureValidationSecret } fro
 import { JWTSession } from './jwt-session.js';
 import { FORM_OPTIONS, type FormsSettings } from './settings.js';
 import { v4 as uuid } from 'uuid';
-import deepmerge from 'deepmerge';
+import objectAssignDeep from 'object-assign-deep';
 import FormsReact from './form-tools/forms-react.js';
 import ThrowOverrideResponse from './throw-action/override-resposne-throw.js';
 
@@ -28,7 +28,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
 };
 
 export default function astroForms(settings: Partial<FormsSettings> = {}) {
-    Object.assign(FORM_OPTIONS, deepmerge(settings, DEFAULT_FORM_OPTIONS));
+    objectAssignDeep(FORM_OPTIONS, settings, DEFAULT_FORM_OPTIONS)
 
     return async function onRequest({ locals, request, cookies }: APIContext, next: MiddlewareNext) {
         const likeAstro = { locals, request, cookies };

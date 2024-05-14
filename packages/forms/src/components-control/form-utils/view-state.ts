@@ -18,7 +18,7 @@ export default class ViewStateManager {
             throw new Error('Forms options not set');
         }
 
-        return this._FORM_OPTIONS.forms.viewStateFormFiled + this._counter;
+        return this._FORM_OPTIONS.forms.viewStateFormFiled + this._bindId;
     }
 
     get stateProp() {
@@ -33,7 +33,7 @@ export default class ViewStateManager {
         return this.stateProp && this._astro.request.method === 'POST';
     }
 
-    constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _counter: number) {
+    constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string) {
         this._FORM_OPTIONS = getFormOptions(_astro);
 
         if (!this._FORM_OPTIONS.secret) {
