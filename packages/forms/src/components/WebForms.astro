@@ -38,9 +38,12 @@ const clientScript = Astro.locals.forms.scriptToRun;
     }
 
     window.__enterToSubmit = function (event) {
-        if (event.code === 'Enter') {
+        const target = event.target as HTMLElement;
+        const isMultiLine = target instanceof HTMLTextAreaElement;
+
+        if ((isMultiLine && event.ctrlKey || !isMultiLine) && event.code === 'Enter') {
             event.preventDefault();
-            document.getElementById((event.target as HTMLElement).getAttribute('data-submit')!)?.click();
+            document.getElementById(target.getAttribute('data-submit')!)?.click();
         }
     };
 
