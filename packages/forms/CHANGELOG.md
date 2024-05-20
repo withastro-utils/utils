@@ -1,3 +1,10 @@
+## [3.10.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.0...@astro-utils/forms@3.10.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* **state:** not save on first get ([e83b889](https://github.com/withastro-utils/utils/commit/e83b889cff9182289c056ec6cbe626664cc56ed9))
+
 # [3.10.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.9.9...@astro-utils/forms@3.10.0) (2024-05-14)
 
 
