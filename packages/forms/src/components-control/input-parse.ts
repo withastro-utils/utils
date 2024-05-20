@@ -37,10 +37,10 @@ type InputTypes =
 
 type ExtendedInputTypes = InputTypes | 'int';
 
-export async function getInputValue(astro: AstroGlobal, bindId: string) {
+export async function getInputValue(astro: AstroGlobal, bindId: string, bind: BindForm<any>) {
     const { value, name, readonly } = astro.props;
     if (readonly) {
-        return value;
+        return getProperty(bind, name, value);
     }
 
     return await getFormValue(astro.request, bindId + name);
@@ -49,7 +49,7 @@ export async function getInputValue(astro: AstroGlobal, bindId: string) {
 export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>, bindId: string) {
     const { type, value: originalValue, minlength, maxlength, pattern, required, name, errorMessage, validate } = astro.props;
 
-    const parseValue: any = await getInputValue(astro, bindId);
+    const parseValue: any = await getInputValue(astro, bindId, bind);
     const aboutInput = new AboutFormName(bind, name, parseValue, errorMessage);
 
     // validate filed exits
