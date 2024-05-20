@@ -1,0 +1,22 @@
+---
+import { BButton, BInput, BOption, BSelect, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind({});
+
+bind.on.newState = () => {
+    bind.num = 9;
+}
+
+
+function onSubmit() {
+    console.log(bind.num);
+}
+---
+
+<Layout title='Test Select'>
+    <BindForm bind={bind} key='page'>
+        {bind.num}
+        <BButton whenFormOK onClick={onSubmit}>Submit</BButton>
+    </BindForm>
+</Layout>
