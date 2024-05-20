@@ -1,3 +1,10 @@
+## [3.10.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.2...@astro-utils/forms@3.10.3) (2024-05-20)
+
+
+### Bug Fixes
+
+* **submit:** textarea shortcut ([06b262d](https://github.com/withastro-utils/utils/commit/06b262d1e06545470d32353cac722168e3672a99))
+
 ## [3.10.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.1...@astro-utils/forms@3.10.2) (2024-05-20)
 
 
