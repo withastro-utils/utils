@@ -1,3 +1,10 @@
+## [3.10.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.4...@astro-utils/forms@3.10.5) (2024-05-28)
+
+
+### Bug Fixes
+
+* **secret:** custom ([955f12f](https://github.com/withastro-utils/utils/commit/955f12f3fdfa3e52573e1378d61ca7e4f8b7b631))
+
 ## [3.10.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.3...@astro-utils/forms@3.10.4) (2024-05-28)
 
 
