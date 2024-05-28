@@ -28,7 +28,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
 };
 
 export default function astroForms(settings: Partial<FormsSettings> = {}) {
-    objectAssignDeep(FORM_OPTIONS, settings, DEFAULT_FORM_OPTIONS)
+    objectAssignDeep(FORM_OPTIONS, DEFAULT_FORM_OPTIONS, settings);
 
     return async function onRequest({ locals, request, cookies }: APIContext, next: MiddlewareNext) {
         const likeAstro = { locals, request, cookies };
