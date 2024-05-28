@@ -1,3 +1,10 @@
+## [3.10.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.3...@astro-utils/forms@3.10.4) (2024-05-28)
+
+
+### Bug Fixes
+
+* **settings:** default ([04613aa](https://github.com/withastro-utils/utils/commit/04613aad93ab95f4d2636c61a354b4bff9a4f25c))
+
 ## [3.10.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.2...@astro-utils/forms@3.10.3) (2024-05-20)
 
 
