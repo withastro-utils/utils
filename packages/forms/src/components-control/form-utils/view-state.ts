@@ -43,7 +43,7 @@ export default class ViewStateManager {
     }
 
     private _initKey() {
-        const repeat = Math.ceil(this._FORM_OPTIONS.secret.length / 32);
+        const repeat = Math.ceil(32 / this._FORM_OPTIONS.secret.length);
         this._VALID_KEY = this._FORM_OPTIONS.secret.repeat(repeat).slice(0, 32);
     }
 
