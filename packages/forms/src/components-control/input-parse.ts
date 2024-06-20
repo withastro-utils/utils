@@ -118,6 +118,17 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
     }
 }
 
+function toDateTimeLocal(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+
 function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
     if (typeof date === 'string' || !date) {
         return date;
@@ -125,13 +136,13 @@ function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
 
     switch (type) {
         case 'date':
-            return date.toISOString().slice(0, 10);
+            return toDateTimeLocal(date).slice(0, 10);
         case 'datetime-local':
-            return date.toISOString().slice(0, 16);
+            return toDateTimeLocal(date).slice(0, 16);
         case 'time':
             return date.toTimeString().slice(0, 5);
         case 'month':
-            return date.toISOString().slice(0, 7);
+            return toDateTimeLocal(date).slice(0, 7);
         case 'week':
             return formatToDateWeek(date);
     }
