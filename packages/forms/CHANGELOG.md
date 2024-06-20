@@ -1,3 +1,10 @@
+## [3.10.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.5...@astro-utils/forms@3.10.6) (2024-06-20)
+
+
+### Bug Fixes
+
+* **dates:** stringify ([a4aa9f3](https://github.com/withastro-utils/utils/commit/a4aa9f3c709e803b8cc1d9b107df7a1d70c0129b))
+
 ## [3.10.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.4...@astro-utils/forms@3.10.5) (2024-05-28)
 
 
