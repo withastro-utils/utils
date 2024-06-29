@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.6...@astro-utils/forms@3.11.0) (2024-06-29)
+
+
+### Features
+
+* **BInput:** support json value ([16701d6](https://github.com/withastro-utils/utils/commit/16701d6115fcb661deceaae229ad430422a8a95d))
+
 ## [3.10.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.5...@astro-utils/forms@3.10.6) (2024-06-20)
 
 
