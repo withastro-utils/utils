@@ -3,9 +3,10 @@ import { getFormValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radio.js';
 import { BindForm } from './form-utils/bind-form.js';
-import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseNumber, parseURL } from './form-utils/parse.js';
+import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseJSON, parseNumber, parseURL } from './form-utils/parse.js';
 import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
 import {getProperty} from 'dot-prop';
+import { ZodType } from 'zod';
 
 const OK_NOT_STRING_VALUE = ['checkbox', 'file'];
 const OK_INPUT_VALUE_NULL = ['checkbox'];
@@ -35,7 +36,7 @@ type InputTypes =
     | 'url'
     | 'week';
 
-type ExtendedInputTypes = InputTypes | 'int';
+type ExtendedInputTypes = InputTypes | 'int' | 'json';
 
 export async function getInputValue(astro: AstroGlobal, bindId: string, bind: BindForm<any>) {
     const { value, name, readonly } = astro.props;
@@ -66,8 +67,12 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
 
     // specific validation by type / function
     validateByInputType(astro, aboutInput, bind);
-    if (!aboutInput.hadError && typeof validate == 'function') {
-        await validateFunc(aboutInput, validate);
+    if (!aboutInput.hadError) {
+        if(typeof validate == 'function'){
+            await validateFunc(aboutInput, validate);
+        } else if(validate instanceof ZodType){
+            aboutInput.catchParse(validate);
+        }
     }
 
     aboutInput.setValue();
@@ -112,6 +117,10 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
             parseURL(aboutInput);
             break;
 
+        case 'json':
+            parseJSON(aboutInput);
+            break;
+
         case 'file':
             parseFiles(aboutInput, astro, multiple, readonly);
             break;
@@ -129,7 +138,7 @@ function toDateTimeLocal(date: Date) {
 }
 
 
-function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
+function stringifyCustomValue(date?: Date | string, type?: ExtendedInputTypes) {
     if (typeof date === 'string' || !date) {
         return date;
     }
@@ -145,15 +154,17 @@ function stringifyDate(date?: Date | string, type?: ExtendedInputTypes) {
             return toDateTimeLocal(date).slice(0, 7);
         case 'week':
             return formatToDateWeek(date);
+        case 'json':
+            return JSON.stringify(date);
     }
 
     return date;
 }
 
 export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
-    const value = stringifyDate(getProperty(bind, astro.props.name, astro.props.value), astro.props.type);
-    const min = stringifyDate(astro.props.min, astro.props.type);
-    const max = stringifyDate(astro.props.max, astro.props.type);
+    const value = stringifyCustomValue(getProperty(bind, astro.props.name, astro.props.value), astro.props.type);
+    const min = stringifyCustomValue(astro.props.min, astro.props.type);
+    const max = stringifyCustomValue(astro.props.max, astro.props.type);
 
     switch (astro.props.type as ExtendedInputTypes) {
         case 'checkbox':
@@ -174,7 +185,7 @@ function formatToDateWeek(date: Date): string {
 }
 
 
-export function caseTypes(type: ExtendedInputTypes): { type: InputTypes; } & { [key: string]: string; } {
+export function caseTypes(type: ExtendedInputTypes): { type: ExtendedInputTypes; } & { [key: string]: string; } {
     if (type == 'int') {
         return {
             type: 'number',

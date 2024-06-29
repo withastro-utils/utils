@@ -6,6 +6,7 @@ import { ModifyDeep } from '../../utils.js';
 import { getProperty } from 'dot-prop';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
+import { ZodType } from 'zod';
 
 interface ModifyInputProps {
     minlength?: number;
@@ -15,7 +16,7 @@ interface ModifyInputProps {
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttributes, ModifyInputProps>> {
     name: string;
     errorMessage?: string;
-    validate?: Function;
+    validate?: Function | ZodType;
     as?: T;
     props?: React.ComponentProps<T>;
     onSubmitClick?: string;

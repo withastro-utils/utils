@@ -5,8 +5,9 @@ import { validateFrom } from '../../form-tools/csrf.js';
 import { ModifyDeep } from '../../utils.js';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
+import { ZodType } from 'zod';
 
-type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int';
+type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int' | 'json';
 
 interface ModifyInputProps {
     type?: inputTypes;
@@ -22,7 +23,7 @@ interface ModifyInputProps {
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
     name: string;
     errorMessage?: string;
-    validate?: Function;
+    validate?: Function | ZodType;
     as?: T;
     props?: React.ComponentProps<T>;
 }

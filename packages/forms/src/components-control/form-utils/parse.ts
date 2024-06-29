@@ -1,5 +1,5 @@
 import type { AstroGlobal } from 'astro';
-import { z } from 'zod';
+import { ZodIssueCode, z } from 'zod';
 import { getFormMultiValue } from '../../form-tools/post.js';
 import AboutFormName from './about-form-name.js';
 
@@ -69,6 +69,25 @@ export function parseDate(about: AboutFormName, type: DateTypes, min?: string | 
 
     about.formValue = parseFormDate(about.formValue, type);
     about.catchParse(date);
+}
+
+export function parseJSON(about: AboutFormName) {
+    const EMPTY_OBJECT = {};
+
+    about.catchParse(z.string()
+        .transform((str, ctx): z.infer<ReturnType<any>> => {
+            try {
+                return JSON.parse(str, (key: string, value: any) => {
+                    if (EMPTY_OBJECT[key] !== undefined) {
+                        return;
+                    }
+                    return value;
+                });
+            } catch (e) {
+                ctx.addIssue({ code: ZodIssueCode.custom, message: 'Invalid JSON' });
+                return z.NEVER;
+            }
+        }));
 }
 
 export function parseEmail(about: AboutFormName) {
