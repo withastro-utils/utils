@@ -1,8 +1,9 @@
 ---
 import { BButton, BInput, Bind, BindForm } from '@astro-utils/forms/forms.js';
 import Layout from '../layouts/Layout.astro';
+import { ReactComponent } from '../components/ReactComponent.tsx';
 
-const bind = Bind({json: {a: 2}});
+const bind = Bind({ json: { a: 2 } });
 
 function onSubmit() {
     console.log(bind.json);
@@ -11,7 +12,8 @@ function onSubmit() {
 
 <Layout title='Test Select'>
     <BindForm bind={bind} key='page'>
-        <BInput type='json' name=`json`/>
+        <ReactComponent client:only="react"/>
+        <BInput type='json' name=`json` />
         <BButton onClick={onSubmit}>Submit</BButton>
     </BindForm>
 </Layout>

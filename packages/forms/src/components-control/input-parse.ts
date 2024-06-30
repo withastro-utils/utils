@@ -5,7 +5,7 @@ import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radi
 import { BindForm } from './form-utils/bind-form.js';
 import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseJSON, parseNumber, parseURL } from './form-utils/parse.js';
 import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
-import {getProperty} from 'dot-prop';
+import { getProperty } from 'dot-prop';
 import { ZodType } from 'zod';
 
 const OK_NOT_STRING_VALUE = ['checkbox', 'file'];
@@ -68,9 +68,9 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
     // specific validation by type / function
     validateByInputType(astro, aboutInput, bind);
     if (!aboutInput.hadError) {
-        if(typeof validate == 'function'){
+        if (typeof validate == 'function') {
             await validateFunc(aboutInput, validate);
-        } else if(validate instanceof ZodType){
+        } else if (validate instanceof ZodType) {
             aboutInput.catchParse(validate);
         }
     }
@@ -133,7 +133,7 @@ function toDateTimeLocal(date: Date) {
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
@@ -170,7 +170,9 @@ export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
         case 'checkbox':
             return { checked: value ?? astro.props.checked };
         case 'file':
-            return {}
+            return {};
+        case 'json':
+            return { type: 'text', min, max };
     }
 
     return { value, min, max };
