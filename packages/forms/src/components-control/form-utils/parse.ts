@@ -40,7 +40,7 @@ function parseFormDate(date: Date | string, type?: DateTypes) {
     if (type === 'date' || type === 'datetime-local') {
         date = new Date(date);
     } else if (type === 'time') {
-        date = new Date(`1970-01-01T${date}:00`);
+        date = new Date(`1970-01-01T${date}`);
     } else if (type === 'month') {
         date = new Date(`${date}-01`);
     } else if (type === 'week') {
