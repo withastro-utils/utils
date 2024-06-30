@@ -171,8 +171,6 @@ export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
             return { checked: value ?? astro.props.checked };
         case 'file':
             return {};
-        case 'json':
-            return { type: 'text', min, max };
     }
 
     return { value, min, max };
@@ -193,6 +191,10 @@ export function caseTypes(type: ExtendedInputTypes): { type: ExtendedInputTypes;
             type: 'number',
             pattern: '\\d+',
             step: '1'
+        };
+    } else if (type == 'json') {
+        return {
+            type: 'text'
         };
     }
 

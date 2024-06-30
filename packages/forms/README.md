@@ -185,4 +185,4 @@ function increaseCounter() {
 
 The `session.counter` will show the **last value** and not the **update value**. 
 
-This is because the output is **not reactive**. You can use it inside `BindForm` to make it **reactive**. 
+This is because the output is **not reactive**. You can use it inside `BindForm` to make it **reactive**.
