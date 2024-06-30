@@ -1,3 +1,10 @@
+## [3.11.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.2...@astro-utils/forms@3.11.3) (2024-06-30)
+
+
+### Bug Fixes
+
+* **json:** cast value ([cb853b9](https://github.com/withastro-utils/utils/commit/cb853b978a8ed159d752a7cc63e13b8a1b8a5e7d))
+
 ## [3.11.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.1...@astro-utils/forms@3.11.2) (2024-06-30)
 
 
