@@ -1,3 +1,11 @@
+## [3.11.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.0...@astro-utils/forms@3.11.1) (2024-06-30)
+
+
+### Bug Fixes
+
+* **time:** parse ([f51281d](https://github.com/withastro-utils/utils/commit/f51281d30a5bf7cb2f4cd41aa6ceaea8e9c23978))
+* **json:** stringify ([c3b1cb4](https://github.com/withastro-utils/utils/commit/c3b1cb4e7af2736216a211ed1394cb3cab344eb1))
+
 # [3.11.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.10.6...@astro-utils/forms@3.11.0) (2024-06-29)
 
 
