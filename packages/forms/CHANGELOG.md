@@ -1,3 +1,10 @@
+## [3.11.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.4...@astro-utils/forms@3.11.5) (2024-07-01)
+
+
+### Bug Fixes
+
+* update context ([b06538d](https://github.com/withastro-utils/utils/commit/b06538dedea3f93d869dd3acb8e32a163b0dc2a6))
+
 ## [3.11.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.3...@astro-utils/forms@3.11.4) (2024-07-01)
 
 
