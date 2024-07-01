@@ -16,58 +16,48 @@ type ContextAstro = AstroGlobal | {
 
 type AMContext = {
     lock: Map<string, any>;
-    history: Map<string, any[]>;
+    history: any[];
 };
 
-function getAMContextFromAstro(astro: ContextAstro, name: string) {
-    const amContext = astro.locals.amContext ??= {
-        lock: new Map(),
-        history: new Map()
-    };
+function getAMContextFromAstro(astro: ContextAstro, name: string): AMContext {
+    const amContext = astro.locals.amContext ??= { lock: new Map(), historyCollection: new Map()};
 
-    amContext.history.set(name, amContext.history.get(name) ?? []);
-    return amContext;
-}
-
-async function getContextHistoryAfterLock(astro: ContextAstro, name: string, lock?: string) {
-    const contexts: AMContext = getAMContextFromAstro(astro, name);
-
-    while (contexts.lock.get(lock)) {
-        await contexts.lock.get(lock);
-    }
+    const history = amContext.historyCollection.get(name) ?? [];
+    amContext.historyCollection.set(name, history);
 
     return {
-        value: contexts.history.get(name),
-        lock: contexts.lock
-    };
+        lock: amContext.lock,
+        history
+    }
 }
 
 export default function getContext(astro: ContextAstro, name = "default") {
     const contexts: AMContext = getAMContextFromAstro(astro, name);
-    return contexts.history.get(name).at(-1) ?? {};
+    return contexts.history.at(-1) ?? {};
 }
 
 type AsyncContextOptions = { name?: string, context?: any, lock?: string; };
 
 export async function asyncContext<T>(promise: () => Promise<T>, astro: ContextAstro, { name = "default", context = null, lock }: AsyncContextOptions = {}): Promise<T> {
-    const contextHistory = await getContextHistoryAfterLock(astro, name);
+    const contextState = getAMContextFromAstro(astro, name);
 
-    contextHistory.value.push({
-        ...contextHistory.value.at(-1),
+    while (contextState.lock.get(lock)) {
+        await contextState.lock.get(lock);
+    }
+
+    contextState.history.push({
+        ...contextState.history.at(-1),
         ...(context ?? astro.props)
     });
 
     let resolver: () => void | null;
-    if (lock) {
-        contextHistory.lock.set(lock, new Promise<void>(resolve => resolver = resolve));
-    }
+    if (lock) contextState.lock.set(lock, new Promise<void>(resolve => resolver = resolve));
 
     try {
-        const response = await promise();
-        contextHistory.value.pop();
-        return response;
+        return await promise();
     } finally {
-        contextHistory.lock.delete(lock);
+        contextState.history.pop();
+        contextState.lock.delete(lock);
         resolver?.();
     }
 }
