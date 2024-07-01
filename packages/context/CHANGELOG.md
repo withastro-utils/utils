@@ -1,3 +1,10 @@
+## [1.1.14](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.13...@astro-utils/context@1.1.14) (2024-07-01)
+
+
+### Bug Fixes
+
+* **context:** astro state ([c3c8bf4](https://github.com/withastro-utils/utils/commit/c3c8bf4c99aff7dd2a3eeabef77fca6349f794a8))
+
 ## [1.1.13](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.12...@astro-utils/context@1.1.13) (2024-06-30)
 
 
