@@ -2,13 +2,17 @@
 import { BButton, Bind, BindForm } from "@astro-utils/forms/forms.js";
 import { Button } from 'reactstrap';
 import Layout from "../layouts/Layout.astro";
+import sleep from "sleep-promise";
 
 const { session } = Astro.locals;
 
-function increaseCounter() {
+async function increaseCounter() {
     session.counter ??= 0
-    session.counter++
+    session.counter++;
+    console.log(session.counter)
+    await sleep(1000 * 5);
 }
+
 ---
 <Layout title="counter">
     <BindForm key="page">

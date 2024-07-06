@@ -3,7 +3,9 @@ import { asyncContext } from '@astro-utils/context';
 import { createFormToken } from '../form-tools/csrf.js';
 import { getFormOptions } from '../settings.js';
 
-export interface Props extends astroHTML.JSX.FormHTMLAttributes {}
+export interface Props extends astroHTML.JSX.FormHTMLAttributes {
+    loadingClassName?: string;
+}
 
 const context = {
     ...Astro.props,
@@ -14,7 +16,7 @@ const context = {
 
 const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
 
-const { webFormsSettings, tempValues, statesKey, ...props } = context;
+const { webFormsSettings, tempValues, statesKey, loadingClassName = 'loading', ...props } = context;
 if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
@@ -22,6 +24,8 @@ if (webFormsSettings.haveFileUpload) {
 const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
 const formRequestToken = useSession && (await createFormToken(Astro));
 const clientScript = Astro.locals.forms.scriptToRun;
+
+const clientWFS = { loadingClassName };
 ---
 
 <form method='post' {...props}>
@@ -29,11 +33,20 @@ const clientScript = Astro.locals.forms.scriptToRun;
     <Fragment set:html={htmlSolt} />
     {clientScript && <script set:html={clientScript} />}
 </form>
+
+<script define:vars={{ clientWFS }} is:inline>
+    window.clientWFS = clientWFS;
+</script>
+
 <script>
     declare global {
         interface Window {
             __enterToSubmit: (event: KeyboardEvent, id: string) => void;
             submitForm(value: HTMLElement | string): void;
+
+            clientWFS: {
+                loadingClassName: string;
+            };
         }
     }
 
@@ -41,7 +54,7 @@ const clientScript = Astro.locals.forms.scriptToRun;
         const target = event.target as HTMLElement;
         const isMultiLine = target instanceof HTMLTextAreaElement;
 
-        if ((isMultiLine && event.ctrlKey || !isMultiLine) && event.code === 'Enter') {
+        if (((isMultiLine && event.ctrlKey) || !isMultiLine) && event.code === 'Enter') {
             event.preventDefault();
             document.getElementById(target.getAttribute('data-submit')!)?.click();
         }
@@ -51,9 +64,25 @@ const clientScript = Astro.locals.forms.scriptToRun;
         if (typeof value !== 'string') {
             value = value.getAttribute('data-submit');
         }
-        if(value == null){
+        if (value == null) {
             return console.warn('submitForm: value is null, make sure you pass `this` to this method or an id of the button you want to submit.');
         }
         document.getElementById(value)?.click();
     };
+
+    const form = document.querySelector('form');
+    form?.querySelectorAll('button[type="submit"]').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.add(window.clientWFS.loadingClassName);
+            document.dispatchEvent(new CustomEvent('WFSubmitting', { detail: { button } }));
+        });
+    });
+
+    form?.addEventListener('submit', () => {
+        setTimeout(() => {
+            form.querySelectorAll('button[type="submit"]').forEach(button => {
+                (button as HTMLButtonElement).disabled = true;
+            });
+        }, 0);
+    });
 </script>
