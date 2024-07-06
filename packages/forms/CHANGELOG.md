@@ -1,3 +1,10 @@
+# [3.12.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.5...@astro-utils/forms@3.12.0) (2024-07-06)
+
+
+### Features
+
+* **button:** disable button while submitting ([53e0fe5](https://github.com/withastro-utils/utils/commit/53e0fe517e746bc1ffa1f95019fee4f15f5a00cf))
+
 ## [3.11.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.4...@astro-utils/forms@3.11.5) (2024-07-01)
 
 
