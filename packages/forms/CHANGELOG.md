@@ -1,3 +1,10 @@
+## [3.12.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.12.0...@astro-utils/forms@3.12.1) (2024-07-07)
+
+
+### Bug Fixes
+
+* **render:** race conditioning when rendering ([f442303](https://github.com/withastro-utils/utils/commit/f44230330935a1cf4bab315cc808f3803c97f329))
+
 # [3.12.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.11.5...@astro-utils/forms@3.12.0) (2024-07-06)
 
 
