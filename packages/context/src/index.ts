@@ -14,25 +14,25 @@ type ContextAstro = AstroGlobal | {
     props: any;
 };
 
-type AMContext = {
-    lock: Map<string, any>;
-    history: any[];
+type ContextHistory = {
+    history: any[],
+    lock: Map<string, Promise<void>>;
 };
 
-function getAMContextFromAstro(astro: ContextAstro, name: string): AMContext {
-    const amContext = astro.locals.amContext ??= { lock: new Map(), historyCollection: new Map()};
+function getAMContextFromAstro(astro: ContextAstro, name: string): ContextHistory {
+    const amContext = astro.locals.amContext ??= new Map();
 
-    const history = amContext.historyCollection.get(name) ?? [];
-    amContext.historyCollection.set(name, history);
+    const namedContext = amContext.get(name) ?? {
+        history: [],
+        lock: new Map(),
+    };
 
-    return {
-        lock: amContext.lock,
-        history
-    }
+    amContext.set(name, namedContext);
+    return namedContext;
 }
 
 export default function getContext(astro: ContextAstro, name = "default") {
-    const contexts: AMContext = getAMContextFromAstro(astro, name);
+    const contexts = getAMContextFromAstro(astro, name);
     return contexts.history.at(-1) ?? {};
 }
 
