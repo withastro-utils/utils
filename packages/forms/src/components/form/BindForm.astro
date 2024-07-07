@@ -3,32 +3,20 @@ import { asyncContext } from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
 import Bind from '../../components-control/form-utils/bind-form.js';
-import { MissingKeyPropError } from '../../errors/MissingKeyPropError.js';
-import { NotAUniqueKeyError } from '../../errors/NotAUniqueKeyError.js';
 
 export interface Props {
     bind?: ReturnType<typeof Bind>;
     state?: boolean | string[];
     omitState?: string[];
     defaultSubmitClick?: string | false;
-    key: string;
 }
 
-const { statesKey, lastRender: parantLastRender, bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
+const { lastRender: parantLastRender, bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
 if (parantLastRender === false) {
     return;
 }
 
-const { bind = Bind(), defaultSubmitClick, key } = Astro.props;
-
-if (!key) {
-    throw new MissingKeyPropError();
-} else {
-    if (statesKey.has(key)) {
-        throw new NotAUniqueKeyError(key);
-    }
-    statesKey.add(key);
-}
+const { bind = Bind(), defaultSubmitClick } = Astro.props;
 
 const context = {
     executeAfter: [],
@@ -39,7 +27,7 @@ const context = {
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
     settings: { showValidationErrors: false },
-    bindId: key,
+    bindId: Astro.locals.__formsInternalUtils.bindFormCounter++,
     lastRender: false,
     newState: false,
 };

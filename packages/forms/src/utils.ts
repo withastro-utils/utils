@@ -33,6 +33,7 @@ declare global {
            */
           __formsInternalUtils: {
               FORM_OPTIONS: FormsSettings;
+              bindFormCounter: number;
           };
           forms: FormsReact;
           webFormOff?: boolean;

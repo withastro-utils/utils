@@ -18,6 +18,7 @@ interface ModifyInputProps {
     max?: number | string | undefined | null | Date;
     min?: number | string | undefined | null | Date;
     onSubmitClick?: string;
+    [key: `data-${string}`]: any;
 }
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {

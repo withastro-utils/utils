@@ -11,12 +11,11 @@ const context = {
     ...Astro.props,
     webFormsSettings: { haveFileUpload: false },
     tempValues: {},
-    statesKey: new Set<string>(),
 };
 
 const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
 
-const { webFormsSettings, tempValues, statesKey, loadingClassName = 'loading', ...props } = context;
+const { webFormsSettings, tempValues, loadingClassName = 'loading', ...props } = context;
 if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }

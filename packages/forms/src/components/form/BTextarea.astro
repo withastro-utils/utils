@@ -11,6 +11,7 @@ import { ZodType } from 'zod';
 interface ModifyInputProps {
     minlength?: number;
     maxlength?: number;
+    [key: `data-${string}`]: any;
 }
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttributes, ModifyInputProps>> {
@@ -20,6 +21,7 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     as?: T;
     props?: React.ComponentProps<T>;
     onSubmitClick?: string;
+    [key: `data-${string}`]: any;
 }
 
 if (!Astro.props.name) {

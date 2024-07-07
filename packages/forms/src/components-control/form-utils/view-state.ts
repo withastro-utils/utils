@@ -33,7 +33,7 @@ export default class ViewStateManager {
         return this.stateProp && this._astro.request.method === 'POST';
     }
 
-    constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string) {
+    constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string | number) {
         this._FORM_OPTIONS = getFormOptions(_astro);
 
         if (!this._FORM_OPTIONS.secret) {

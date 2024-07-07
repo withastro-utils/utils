@@ -37,7 +37,8 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
         locals.forms = new FormsReact(likeAstro);
 
         locals.__formsInternalUtils = {
-            FORM_OPTIONS: FORM_OPTIONS
+            FORM_OPTIONS: FORM_OPTIONS,
+            bindFormCounter: 0
         };
 
         await ensureValidationSecret(likeAstro);

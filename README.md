@@ -86,16 +86,16 @@ import {WebForms} from '@astro-utils/forms/forms.js';
 </WebForms>
 ```
 
-### Easy debugging
-When vite reloads the page, the browser will popup confirmation dialog. This is annoying when you are debugging. You can disable this by using the astro-utils integration
+### Code Integration
+This changes astro behavior to allow the form to work, it ensure the components render by the order they are in the file.
 
 `astro.config.mjs`
 ```js
 import { defineConfig } from 'astro/config';
-import astroFormsDebug from "@astro-utils/forms/dist/integration.js";
+import astroForms from "@astro-utils/forms/dist/integration.js";
 
 export default defineConfig({
     output: 'server',
-    integrations: [astroFormsDebug]
+    integrations: [astroForms]
 });
 ```
