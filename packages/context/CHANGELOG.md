@@ -1,3 +1,10 @@
+## [1.1.15](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.14...@astro-utils/context@1.1.15) (2024-07-07)
+
+
+### Bug Fixes
+
+* **context:** name based ([3e99189](https://github.com/withastro-utils/utils/commit/3e991896f61ca6128d6b284f0ac87b5eeefadb13))
+
 ## [1.1.14](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.13...@astro-utils/context@1.1.14) (2024-07-01)
 
 
