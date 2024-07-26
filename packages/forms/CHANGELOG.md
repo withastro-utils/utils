@@ -1,3 +1,10 @@
+## [3.13.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.3...@astro-utils/forms@3.13.4) (2024-07-26)
+
+
+### Bug Fixes
+
+* **bigFile:** calc directory size ([4ab5311](https://github.com/withastro-utils/utils/commit/4ab5311aacf7268dce5866580ad6d44a5c680e04))
+
 ## [3.13.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.2...@astro-utils/forms@3.13.3) (2024-07-26)
 
 
