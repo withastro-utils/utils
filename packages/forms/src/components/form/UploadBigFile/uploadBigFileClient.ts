@@ -60,7 +60,7 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
     const activeLoads = new Map<number, number>();
     let finishedSize = 0;
 
-    for (let i = 0; i < totalChunks; i++) {
+    const uploadChunk = async (i: number) => {
         while (activeChunks.size >= options.parallelChunks) {
             await Promise.race(activeChunks);
         }
@@ -90,6 +90,10 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
 
             try {
                 const response: any = await upload;
+                if(response?.missingChunk){
+                    await uploadChunk(response?.missingChunk - 1);
+                }
+
                 if (!response?.ok) {
                     throw new Error(response.error);
                 }
@@ -106,6 +110,10 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
         });
 
         activeChunks.add(uploadPromiseWithRetry);
+    }
+
+    for (let i = 0; i < totalChunks; i++) {
+        await uploadChunk(i);
     }
 
     await Promise.all(activeChunks);

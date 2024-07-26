@@ -68,13 +68,15 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     const uploadDir = path.join(tempDirectory, 'chunks_' + uploadId);
     await fsExtra.ensureDir(uploadDir);
 
-    const sendError = async (errorMessage: string) => {
-        await fsExtra.emptyDir(uploadDir);
+    const sendError = async (errorMessage: string, emptyDir = true, extraInfo?: any) => {
+        if(emptyDir){
+            await fsExtra.emptyDir(uploadDir);
+        }
         const errorPath = path.join(uploadDir, 'error.txt');
         if (!await checkIfFileExists(errorPath)) {
             await fs.writeFile(path.join(uploadDir, 'error.txt'), errorMessage);
         }
-        return Response.json({ ok: false, error: errorMessage });
+        return Response.json({ ok: false, error: errorMessage, ...extraInfo });
     };
 
     if (typeof allowUpload === "function") {
@@ -105,7 +107,8 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
 
     const chunkSavePath = path.join(uploadDir, `${part}-${total}`);
     if (!await checkIfFileExists(chunkSavePath)) {
-        await fs.writeFile(chunkSavePath, uploadFile.stream() as any);
+        const buffer = await uploadFile.arrayBuffer();
+        await fs.writeFile(chunkSavePath, Buffer.from(buffer));
     }
 
     if (part !== total) {
@@ -115,7 +118,7 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     const files = await fs.readdir(uploadDir);
     for (let i = 1; i <= total; i++) {
         if (!files.includes(`${i}-${total}`)) {
-            return await sendError(`Missing chunk ${i}, upload failed`);
+            return await sendError(`Missing chunk ${i}, upload failed`, false, { missingChunk: i });
         }
     }
 
