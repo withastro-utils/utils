@@ -40,11 +40,11 @@ async function uploadChunkWithXHR(file: Blob, info: Record<string, any>, progres
             if (xhr.status >= 200 && xhr.status < 300) {
                 resolve(JSON.parse(xhr.responseText));
             } else {
-                reject(new Error('Upload failed'));
+                reject({ok: false, error: xhr.responseText});
             }
         };
         xhr.onerror = () => {
-            reject(new Error('Upload failed'));
+            reject({ok: false, error: xhr.responseText});
         };
 
         xhr.open('POST', location.href, true);
@@ -97,7 +97,7 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
                 if (retry === 0) {
                     throw error;
                 }
-                return uploadPromise(retry - 1);
+                return await uploadPromise(retry - 1);
             }
         })().then(() => {
             activeLoads.delete(i);

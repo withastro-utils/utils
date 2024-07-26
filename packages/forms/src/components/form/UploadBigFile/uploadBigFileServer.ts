@@ -70,7 +70,10 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
 
     const sendError = async (errorMessage: string) => {
         await fsExtra.emptyDir(uploadDir);
-        await fs.writeFile(path.join(uploadDir, 'error.txt'), errorMessage);
+        const errorPath = path.join(uploadDir, 'error.txt');
+        if (!await checkIfFileExists(errorPath)) {
+            await fs.writeFile(path.join(uploadDir, 'error.txt'), errorMessage);
+        }
         return Response.json({ ok: false, error: errorMessage });
     };
 
@@ -89,7 +92,7 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
         return await sendError("Directory size exceeded");
     }
 
-    const newTotalSize = (await totalDirectorySize(tempDirectory)) + uploadSize;
+    const newTotalSize = (await totalDirectorySize(uploadDir)) + uploadSize;
     if (newTotalSize > maxUploadSize) {
         return await sendError("Upload size exceeded");
     }

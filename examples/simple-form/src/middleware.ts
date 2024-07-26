@@ -6,6 +6,7 @@ export const onRequest = sequence(astroForms({
         bigFilesUpload: {
             bigFileServerOptions: {
                 maxUploadSize: 1024 * 1024 * 1024, // 1GB
+                maxDirectorySize: 1024 * 1024 * 1024 * 10, // 10GB
             }
         }
     }
