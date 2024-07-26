@@ -14,7 +14,7 @@ function onSubmit() {
 ---
 
 <Layout title='Test Select'>
-    <BindForm bind={bind} key='page'>
+    <BindForm bind={bind}>
         {bind.num?.map((value, index) => <BInput name={`num[${index}]`} placeholder={value} />)}
         <BButton whenFormOK onClick={onSubmit}>Submit</BButton>
     </BindForm>

@@ -16,22 +16,22 @@ function submit() {
 ---
 
 <Layout title='Multiforms'>
-    <BindForm bind={bind1} key="bind1">
+    <BindForm bind={bind1}>
         <BInput type='int' name='num' />
         <BButton onClick={submit} extra={bind1}>Increase</BButton>
 
-        <BindForm bind={bind2} key="bind2">
+        <BindForm bind={bind2}>
             <BInput type='int' name='num' />
             <BButton onClick={submit} extra={bind2}> Increase </BButton>
         </BindForm>
     </BindForm>
 
-    <BindForm bind={bind3} key="bind3">
+    <BindForm bind={bind3}>
         <BInput type='int' name='num' />
         <BButton onClick={submit} extra={bind3}> Increase </BButton>
     </BindForm>
 
-    <BindForm bind={bind4} key="bind4">
+    <BindForm bind={bind4}>
         <BInput type='int' name='num' />
 
         {

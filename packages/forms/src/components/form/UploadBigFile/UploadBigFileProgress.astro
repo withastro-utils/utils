@@ -1,0 +1,13 @@
+---
+import getContext from '../../../../../context/dist/index.js';
+
+interface Props extends astroHTML.JSX.ProgressHTMLAttributes {
+    for: string;
+    onActiveClass?: string;
+};
+    
+const { bindId = ''} = getContext(Astro, '@astro-utils/forms');
+const { for: forName, onActiveClass, ...props } = Astro.props;
+const fullForName = bindId + forName;
+---
+<progress data-onactive-class={onActiveClass} value="0" max="100" data-for={fullForName} {...props} />

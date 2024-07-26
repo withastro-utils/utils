@@ -1,18 +1,24 @@
+import { BigFileUploadOptions } from './components/form/UploadBigFile/uploadBigFileClient.js';
+import { LoadUploadFilesOptions } from './components/form/UploadBigFile/uploadBigFileServer.js';
 import type {CSRFSettings} from './form-tools/csrf.js';
 import {AstroLinkHTTP} from './utils.js';
 
 export type FormsSettings = {
     csrf?: CSRFSettings
     forms?: {
-        viewStateFormFiled: string
+        viewStateFormFiled?: string
+        bigFilesUpload?: {
+            bigFileClientOptions?: Partial<BigFileUploadOptions>;
+            bigFileServerOptions?:  Partial<LoadUploadFilesOptions>;
+        }
     }
     session?: {
-        cookieName: string
-        cookieOptions: {
-            httpOnly: boolean
-            sameSite: boolean | 'lax' | 'strict' | 'none'
-            maxAge: number
-            path: string
+        cookieName?: string
+        cookieOptions?: {
+            httpOnly?: boolean
+            sameSite?: boolean | 'lax' | 'strict' | 'none'
+            maxAge?: number
+            path?: string
         }
     },
     secret?: string,

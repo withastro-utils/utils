@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {BButton, Bind, BindForm, BInput, FormErrors, UploadBigFile, UploadBigFileProgress} from '@astro-utils/forms/forms.js';
+import {Button} from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import type { BigFile } from '../../../../packages/forms/dist/components/form/UploadBigFile/BigFile.ts';
+
+type Form = {
+    file: BigFile;
+}
+
+const form = Bind<Form>();
+let showSubmitText: string;
+
+function formSubmit() {
+    showSubmitText = `you upload "${form.file.name}"`;
+}
+---
+<Layout title="Upload file">
+    <BindForm bind={form}>
+        <FormErrors/>
+        {showSubmitText}
+
+        <h4>File to upload*</h4>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+            <UploadBigFile name='file' required/>
+            <UploadBigFileProgress for='file' />
+        </div>
+
+        <BButton as={Button} props={{color: 'success'}} onClick={formSubmit} whenFormOK>Submit</BButton>
+    </BindForm>
+</Layout>

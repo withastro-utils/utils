@@ -5,12 +5,16 @@ import { FORM_OPTIONS, type FormsSettings } from './settings.js';
 import { v4 as uuid } from 'uuid';
 import objectAssignDeep from 'object-assign-deep';
 import FormsReact from './form-tools/forms-react.js';
-import ThrowOverrideResponse from './throw-action/override-resposne-throw.js';
+import ThrowOverrideResponse from './throw-action/throwOverrideResponse.js';
+import { DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER } from './components/form/UploadBigFile/uploadBigFileServer.js';
 
 const DEFAULT_FORM_OPTIONS: FormsSettings = {
     csrf: DEFAULT_SETTINGS_CSRF,
     forms: {
         viewStateFormFiled: '__view-state',
+        bigFilesUpload: {
+            bigFileServerOptions: DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER
+        }
     },
     session: {
         cookieName: 'session',

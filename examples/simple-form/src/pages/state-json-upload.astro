@@ -11,7 +11,7 @@ function onSubmit() {
 ---
 
 <Layout title='Test Select'>
-    <BindForm bind={bind} key='page'>
+    <BindForm bind={bind}>
         <ReactComponent client:only="react"/>
         <BInput type='json' name=`json` />
         <BButton onClick={onSubmit}>Submit</BButton>

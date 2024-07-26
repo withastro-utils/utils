@@ -1,0 +1,45 @@
+---
+import type { ComponentProps } from 'astro/types';
+import ThrowOverrideResponse from '../../../throw-action/throwOverrideResponse.js';
+import BInput from '../BInput.astro';
+import { loadUploadFiles } from './uploadBigFileServer.js';
+
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends ComponentProps<typeof BInput<T>> {
+}
+
+const { class: className, tempDirectory, name, ...props } = Astro.props;
+const bigFileServerOptions = Astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions;
+
+const uploadFilesResponse = await loadUploadFiles(Astro, bigFileServerOptions);
+if (uploadFilesResponse) {
+    throw new ThrowOverrideResponse(uploadFilesResponse);
+}
+---
+
+<BInput type='file' {...props} name={name} class:list={[className, 'big-upload']} />
+
+<script>
+    import { countTotalUploads, finishFormSubmission, uploadAllFiles } from './uploadBigFileClient.js';
+
+    const form = document.querySelector('form') as HTMLFormElement;
+    form?.addEventListener('submit', event => {
+        const allBigUploads = document.querySelectorAll('input[name].big-upload') as NodeListOf<HTMLInputElement>;
+        const { count } = countTotalUploads(allBigUploads);
+        if (count === 0) return;
+
+        let buttonCallback = "";
+        if(document.activeElement instanceof HTMLButtonElement && document.activeElement.name === "button-callback") {
+            buttonCallback = document.activeElement.value;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        handleUploads(allBigUploads, buttonCallback);
+    });
+
+    async function handleUploads(allBigUploads: NodeListOf<HTMLInputElement>, clickAfter?: string) {
+        await uploadAllFiles(allBigUploads);
+        finishFormSubmission(form, clickAfter);
+    }
+</script>

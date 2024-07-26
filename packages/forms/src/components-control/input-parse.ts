@@ -66,7 +66,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
     }
 
     // specific validation by type / function
-    validateByInputType(astro, aboutInput, bind);
+    await validateByInputType(astro, aboutInput, bind);
     if (!aboutInput.hadError) {
         if (typeof validate == 'function') {
             await validateFunc(aboutInput, validate);
@@ -78,7 +78,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
     aboutInput.setValue();
 }
 
-function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind: BindForm<any>) {
+async function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind: BindForm<any>) {
     const { type, min, max, value: originalValue, multiple, readonly } = astro.props;
 
     switch (type) {
@@ -122,7 +122,7 @@ function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind
             break;
 
         case 'file':
-            parseFiles(aboutInput, astro, multiple, readonly);
+            await parseFiles(aboutInput, astro, multiple, readonly);
             break;
     }
 }
