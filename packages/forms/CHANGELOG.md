@@ -1,3 +1,10 @@
+## [3.13.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.2...@astro-utils/forms@3.13.3) (2024-07-26)
+
+
+### Bug Fixes
+
+* **bigFile:** write error ([a04bef8](https://github.com/withastro-utils/utils/commit/a04bef80f680fdba46aaca040e747742b8adbf55))
+
 ## [3.13.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.1...@astro-utils/forms@3.13.2) (2024-07-26)
 
 
