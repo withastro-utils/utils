@@ -69,6 +69,7 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     await fsExtra.ensureDir(uploadDir);
 
     const sendError = async (errorMessage: string) => {
+        await fsExtra.emptyDir(uploadDir);
         await fs.writeFile(path.join(uploadDir, 'error.txt'), errorMessage);
         return Response.json({ ok: false, error: errorMessage });
     };
@@ -90,7 +91,6 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
 
     const newTotalSize = (await totalDirectorySize(tempDirectory)) + uploadSize;
     if (newTotalSize > maxUploadSize) {
-        await fsExtra.remove(uploadDir);
         return await sendError("Upload size exceeded");
     }
 
