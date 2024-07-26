@@ -40,11 +40,11 @@ async function uploadChunkWithXHR(file: Blob, info: Record<string, any>, progres
             if (xhr.status >= 200 && xhr.status < 300) {
                 resolve(JSON.parse(xhr.responseText));
             } else {
-                reject({ok: false, error: xhr.responseText});
+                reject({ ok: false, error: xhr.responseText });
             }
         };
         xhr.onerror = () => {
-            reject({ok: false, error: xhr.responseText});
+            reject({ ok: false, error: xhr.responseText });
         };
 
         xhr.open('POST', location.href, true);
@@ -90,8 +90,13 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
 
             try {
                 const response: any = await upload;
-                if(response?.missingChunk){
-                    await uploadChunk(response?.missingChunk - 1);
+                if (response?.missingChunks && activeChunks.size < options.parallelChunks) {
+                    const promises: Promise<any>[] = [];
+                    for (const chunk of response.missingChunks) {
+                        const {promise} = await uploadChunk(chunk - 1);
+                        promises.push(promise);
+                    }
+                    await Promise.all(promises);
                 }
 
                 if (!response?.ok) {
@@ -110,7 +115,8 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
         });
 
         activeChunks.add(uploadPromiseWithRetry);
-    }
+        return { promise: uploadPromiseWithRetry };
+    };
 
     for (let i = 0; i < totalChunks; i++) {
         await uploadChunk(i);
@@ -155,7 +161,7 @@ export async function uploadAllFiles(els: NodeListOf<HTMLInputElement>, options:
             }
 
             const fileId = uuid();
-            if(failed){
+            if (failed) {
                 onUploadFinished(el, file, fileId, true);
                 continue;
             }
@@ -181,7 +187,7 @@ function onUploadFinished(el: HTMLInputElement, file: File, id: string, failed?:
     const inputElement = document.createElement('input');
     inputElement.type = 'hidden';
     inputElement.name = el.name;
-    inputElement.value = `big-file:${JSON.stringify({ id, name: file.name, failed})}`;
+    inputElement.value = `big-file:${JSON.stringify({ id, name: file.name, failed })}`;
     el.required = false;
     el.removeAttribute('name');
     el.after(inputElement);

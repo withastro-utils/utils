@@ -69,7 +69,7 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     await fsExtra.ensureDir(uploadDir);
 
     const sendError = async (errorMessage: string, emptyDir = true, extraInfo?: any) => {
-        if(emptyDir){
+        if (emptyDir) {
             await fsExtra.emptyDir(uploadDir);
         }
         const errorPath = path.join(uploadDir, 'error.txt');
@@ -116,10 +116,14 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     }
 
     const files = await fs.readdir(uploadDir);
+    const missingChunks = [];
     for (let i = 1; i <= total; i++) {
         if (!files.includes(`${i}-${total}`)) {
-            return await sendError(`Missing chunk ${i}, upload failed`, false, { missingChunk: i });
+            missingChunks.push(i);
         }
+    }
+    if (missingChunks.length > 0) {
+        return await sendError(`Missing chunks ${missingChunks}, upload failed`, false, { missingChunks });
     }
 
     const outputStream = oldFs.createWriteStream(uploadFilePath, { flags: 'a' });
