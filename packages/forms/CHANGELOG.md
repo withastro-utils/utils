@@ -1,3 +1,10 @@
+## [3.13.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.4...@astro-utils/forms@3.13.5) (2024-07-26)
+
+
+### Bug Fixes
+
+* **bigFile:** auto fix missing chunks ([6fb76d5](https://github.com/withastro-utils/utils/commit/6fb76d5442cc7f51245b04f9f1e1da8547661c30))
+
 ## [3.13.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.3...@astro-utils/forms@3.13.4) (2024-07-26)
 
 
