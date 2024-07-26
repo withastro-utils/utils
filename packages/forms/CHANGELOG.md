@@ -1,3 +1,10 @@
+## [3.13.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.1...@astro-utils/forms@3.13.2) (2024-07-26)
+
+
+### Bug Fixes
+
+* **bigFile:** connecting chunks ([6caa768](https://github.com/withastro-utils/utils/commit/6caa768fc01e15e1af23b136aaf4054d818a84a9))
+
 ## [3.13.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.0...@astro-utils/forms@3.13.1) (2024-07-26)
 
 
