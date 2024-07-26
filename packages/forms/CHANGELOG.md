@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.0...@astro-utils/forms@3.13.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* **bigFile:** export type ([27d3438](https://github.com/withastro-utils/utils/commit/27d3438fd265524b0384556294c0938bc5ac48c5))
+
 # [3.13.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.12.1...@astro-utils/forms@3.13.0) (2024-07-26)
 
 
