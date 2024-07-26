@@ -1,5 +1,5 @@
 import { createReadStream } from "fs";
-import { CreateReadStreamOptions, stat, copyFile } from "fs/promises";
+import { type CreateReadStreamOptions, stat, copyFile } from "fs/promises";
 
 export class BigFile {
     /**

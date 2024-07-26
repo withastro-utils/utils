@@ -117,8 +117,8 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
     }
 
     const outputStream = oldFs.createWriteStream(uploadFilePath, { flags: 'a' });
-    for (const file of files) {
-        const fileFullPath = path.join(uploadDir, file);
+    for (let i = 1; i <= total; i++) {
+        const fileFullPath = path.join(uploadDir, `${i}-${total}`);
         const inputStream = oldFs.createReadStream(fileFullPath);
         await new Promise((resolve, reject) => {
             inputStream.on("data", (chunk) => {
