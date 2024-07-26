@@ -6,11 +6,11 @@ import BTextarea from './dist/components/form/BTextarea.astro';
 import BOption from './dist/components/form/BOption.astro';
 import BSelect from './dist/components/form/BSelect.astro';
 import WebForms from './dist/components/WebForms.astro';
-import Bind, {BindTypes} from './dist/components-control/form-utils/bind-form.js';
+import Bind, {type BindTypes} from './dist/components-control/form-utils/bind-form.js';
 import ThrowOverrideResponse from "./dist/throw-action/throwOverrideResponse.js";
 import UploadBigFile from './dist/components/form/UploadBigFile/UploadBigFile.astro';
 import UploadBigFileProgress from './dist/components/form/UploadBigFile/UploadBigFileProgress.astro';
-import BigFile from './dist/components/form/UploadBigFile/BigFile.js';
+import {BigFile} from './dist/components/form/UploadBigFile/BigFile.js';
 
 export {
     Bind,
