@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.12.1...@astro-utils/forms@3.13.0) (2024-07-26)
+
+
+### Features
+
+* **bigFile:** built in component for big files uploads ([ceb9b4d](https://github.com/withastro-utils/utils/commit/ceb9b4d23641bf0229a4be98ef51710254298934))
+
 ## [3.12.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.12.0...@astro-utils/forms@3.12.1) (2024-07-07)
 
 
