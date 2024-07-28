@@ -1,3 +1,10 @@
+## [3.13.8](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.7...@astro-utils/forms@3.13.8) (2024-07-28)
+
+
+### Bug Fixes
+
+* **bigFile:** max upload size ([0abe5da](https://github.com/withastro-utils/utils/commit/0abe5da629fa35ddb52fb8a71a2785434a12fc3e))
+
 ## [3.13.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.6...@astro-utils/forms@3.13.7) (2024-07-28)
 
 
