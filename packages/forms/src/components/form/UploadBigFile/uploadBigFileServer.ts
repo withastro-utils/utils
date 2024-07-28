@@ -149,9 +149,16 @@ async function deleteOldUploads(tempDirectory: string, maxUploadTime: number) {
     const files = await fs.readdir(tempDirectory);
     for (const file of files) {
         const fullPath = path.join(tempDirectory, file);
-        const stat = await fs.stat(fullPath);
-        if (Date.now() - stat.mtime.getTime() > maxUploadTime) {
-            await fsExtra.remove(fullPath);
+
+        try {
+            const stat = await fs.stat(fullPath);
+            if (Date.now() - stat.mtime.getTime() > maxUploadTime) {
+                await fsExtra.remove(fullPath);
+            }
+        } catch (error) {
+            if (error.code !== "ENOENT") {
+                throw error;
+            }
         }
     }
 }
@@ -163,12 +170,18 @@ async function totalDirectorySize(directory: string) {
     const promises = [];
     for (const file of files) {
         const fullPath = path.join(directory, file);
-        const stat = await fs.stat(fullPath);
+        try {
+            const stat = await fs.stat(fullPath);
 
-        if (stat.isDirectory()) {
-            promises.push(totalDirectorySize(fullPath));
-        } else {
-            totalSize += stat.size;
+            if (stat.isDirectory()) {
+                promises.push(totalDirectorySize(fullPath));
+            } else {
+                totalSize += stat.size;
+            }
+        } catch (error) {
+            if (error.code !== "ENOENT") {
+                throw error;
+            }
         }
     }
 
