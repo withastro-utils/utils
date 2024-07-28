@@ -4,6 +4,7 @@ type ProgressCallback = (progress: number, total: number) => void;
 
 export type BigFileUploadOptions = {
     retryChunks: number;
+    retryDelay?: number;
     chunkSize: number;
     parallelChunks: number;
     parallelUploads: number;
@@ -11,6 +12,7 @@ export type BigFileUploadOptions = {
 
 const UPLOAD_BIG_FILE_OPTIONS: BigFileUploadOptions = {
     retryChunks: 5,
+    retryDelay: 1000,
     chunkSize: 1024 * 1024 * 5,
     parallelChunks: 3,
     parallelUploads: 3,
@@ -81,38 +83,32 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
             total: totalChunks,
         };
 
-        const uploadPromiseWithRetry = (async function uploadPromise(retry = options.retryChunks) {
-            const upload = uploadChunkWithXHR(chunk, info, (loaded) => {
+        const uploadPromiseWithRetry = retry(async () => {
+            const upload = await uploadChunkWithXHR(chunk, info, (loaded) => {
                 activeLoads.set(i, loaded);
                 const loadedSize = Array.from(activeLoads.values()).reduce((a, b) => a + b, 0);
                 progressCallback(finishedSize + loadedSize, totalSize);
             });
 
-            try {
-                const response: any = await upload;
-                if (response?.missingChunks && activeChunks.size < options.parallelChunks) {
-                    const promises: Promise<any>[] = [];
-                    for (const chunk of response.missingChunks) {
-                        const {promise} = await uploadChunk(chunk - 1);
-                        promises.push(promise);
-                    }
-                    await Promise.all(promises);
+            const response: any = await upload;
+            if (response?.missingChunks && activeChunks.size < options.parallelChunks) {
+                const promises: Promise<any>[] = [];
+                for (const chunk of response.missingChunks) {
+                    const { promise } = await uploadChunk(chunk - 1);
+                    promises.push(promise);
                 }
-
-                if (!response?.ok) {
-                    throw new Error(response.error);
-                }
-            } catch (error) {
-                if (retry === 0) {
-                    throw error;
-                }
-                return await uploadPromise(retry - 1);
+                await Promise.all(promises);
             }
-        })().then(() => {
-            activeLoads.delete(i);
-            activeChunks.delete(uploadPromiseWithRetry);
-            finishedSize += chunk.size;
-        });
+
+            if (!response?.ok) {
+                throw new Error(response.error);
+            }
+        }, { retries: options.retryChunks, delay: options.retryDelay })
+            .then(() => {
+                activeLoads.delete(i);
+                activeChunks.delete(uploadPromiseWithRetry);
+                finishedSize += chunk.size;
+            });
 
         activeChunks.add(uploadPromiseWithRetry);
         return { promise: uploadPromiseWithRetry };
@@ -222,4 +218,20 @@ export function finishFormSubmission(form: HTMLFormElement, onClick?: string) {
     }
 
     form.submit();
+}
+
+async function retry(fn: () => Promise<void>, options: { retries: number, delay: number; } = { retries: 5, delay: 1000 }) {
+    let attempts = 0;
+    while (attempts < options.retries) {
+        try {
+            await fn();
+            return;
+        } catch (error) {
+            attempts++;
+            if (attempts >= options.retries) {
+                throw error;
+            }
+            await new Promise(res => setTimeout(res, options.delay));
+        }
+    }
 }

@@ -89,12 +89,12 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
         return await sendError("File size exceeded");
     }
 
-    const totalDirectorySizeWithNewUpload = (await totalDirectorySize(tempDirectory)) + Math.max(uploadSize, uploadFile.size);
+    const totalDirectorySizeWithNewUpload = (await totalDirectorySize(tempDirectory)) + part === 1 ? uploadSize : uploadFile.size;
     if (totalDirectorySizeWithNewUpload > maxDirectorySize) {
         return await sendError("Directory size exceeded");
     }
 
-    const newTotalSize = (await totalDirectorySize(uploadDir)) + uploadSize;
+    const newTotalSize = (await totalDirectorySize(uploadDir)) + uploadFileMayBe.size;
     if (newTotalSize > maxUploadSize) {
         return await sendError("Upload size exceeded");
     }
