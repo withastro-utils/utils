@@ -1,3 +1,10 @@
+## [3.13.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.6...@astro-utils/forms@3.13.7) (2024-07-28)
+
+
+### Bug Fixes
+
+* **bigFile:** race condition ([10a7121](https://github.com/withastro-utils/utils/commit/10a7121a756dee79ff3d57d8b95fe981f37e7a46))
+
 ## [3.13.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.5...@astro-utils/forms@3.13.6) (2024-07-26)
 
 
