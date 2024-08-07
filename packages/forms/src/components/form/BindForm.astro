@@ -9,9 +9,10 @@ export interface Props {
     state?: boolean | string[];
     omitState?: string[];
     defaultSubmitClick?: string | false;
+    key?: string
 }
 
-const { lastRender: parantLastRender, bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
+const { lastRender: parantLastRender, key = '', bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
 if (parantLastRender === false) {
     return;
 }
@@ -27,7 +28,7 @@ const context = {
     onSubmitClickGlobal: defaultSubmitClick,
     buttonIds: [] as [string, string | null, boolean][],
     settings: { showValidationErrors: false },
-    bindId: Astro.locals.__formsInternalUtils.bindFormCounter++,
+    bindId: key + (Astro.locals.__formsInternalUtils.bindFormCounter++),
     lastRender: false,
     newState: false,
 };
@@ -80,6 +81,5 @@ resetContext();
 context.lastRender = true;
 const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
 ---
-
 <input type='hidden' name={viewState.filedName} value={await viewState.createViewState()} />
 <Fragment set:html={htmlSolt} />
