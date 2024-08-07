@@ -1,3 +1,10 @@
+## [3.13.9](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.8...@astro-utils/forms@3.13.9) (2024-08-07)
+
+
+### Bug Fixes
+
+* **state:** disable state ([c1c497d](https://github.com/withastro-utils/utils/commit/c1c497da578dd7168dd15ad1cf22f33af2003aad))
+
 ## [3.13.8](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.7...@astro-utils/forms@3.13.8) (2024-07-28)
 
 
