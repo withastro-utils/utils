@@ -1,3 +1,10 @@
+## [3.13.10](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.9...@astro-utils/forms@3.13.10) (2024-08-13)
+
+
+### Bug Fixes
+
+* **BinForm:** map, unique 'key' ([ab49a83](https://github.com/withastro-utils/utils/commit/ab49a8311f86df1d0b6d8ba63900690e4968336f))
+
 ## [3.13.9](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.8...@astro-utils/forms@3.13.9) (2024-08-07)
 
 
