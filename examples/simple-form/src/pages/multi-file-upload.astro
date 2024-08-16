@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {BButton, Bind, BindForm, BInput, FormErrors} from '@astro-utils/forms/forms.js';
+import {Button} from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+
+type Form = {
+    files: File[];
+}
+
+const form = Bind<Form>();
+let showSubmitText: string;
+
+function formSubmit() {
+    showSubmitText = `You upload "${form.files.map(file => file.name).join(', ')}"`;
+}
+---
+<Layout title="Upload file">
+    <BindForm bind={form}>
+        <FormErrors/>
+        {showSubmitText}
+
+        <h4>File to upload*</h4>
+        <BInput type="file" name="files" multiple/>
+
+        <BButton as={Button} props={{color: 'success'}} onClick={formSubmit} whenFormOK>Submit</BButton>
+    </BindForm>
+</Layout>

@@ -163,12 +163,12 @@ async function isBigFile(value: string) {
 export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multiple: boolean, readonly: boolean) {
     if (readonly) return;
 
-    const { disposeFiles } = getContext(astro, '@astro-utils/forms');
+    const { disposeFiles, bindId = '' } = getContext(astro, '@astro-utils/forms');
     let values = [about.formValue];
 
     let hasFailed = false;
     if (multiple) {
-        values = about.formValue = await getFormMultiValue(astro.request, about.originalName);
+        values = about.formValue = await getFormMultiValue(astro.request, bindId + about.originalName);
 
         const promises: Promise<any>[] = [];
         for (let i = 0; i < values.length; i++) {
