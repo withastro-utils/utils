@@ -3,7 +3,7 @@ import { getFormValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radio.js';
 import { BindForm } from './form-utils/bind-form.js';
-import { parseCheckbox, parseColor, parseDate, parseEmail, parseFiles, parseJSON, parseNumber, parseURL } from './form-utils/parse.js';
+import { parseCheckbox, parseColor, parseDate, parseEmail, parseEmptyFiles, parseFiles, parseJSON, parseNumber, parseURL } from './form-utils/parse.js';
 import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
 import { getProperty } from 'dot-prop';
 import { ZodType } from 'zod';
@@ -55,6 +55,9 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
 
     // validate filed exits
     if (!OK_INPUT_VALUE_NULL.includes(type) && !validateRequire(aboutInput, required)) {
+        if(type === 'file') {
+            parseEmptyFiles(aboutInput, astro);
+        }
         aboutInput.setValue();
         return;
     }

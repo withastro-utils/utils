@@ -141,7 +141,7 @@ async function isBigFile(value: string) {
         return;
     }
 
-    if(data.failed){
+    if (data.failed) {
         const chunksDir = path.join(tempDirectory, "chunks_" + data.id);
         const errorMessage = path.join(chunksDir, "error.txt");
         try {
@@ -161,7 +161,7 @@ async function isBigFile(value: string) {
 }
 
 export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multiple: boolean, readonly: boolean) {
-    if(readonly) return;
+    if (readonly) return;
 
     const { disposeFiles } = getContext(astro, '@astro-utils/forms');
     let values = [about.formValue];
@@ -177,7 +177,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
                     return;
                 }
 
-                if(typeof bigFile === "string"){
+                if (typeof bigFile === "string") {
                     hasFailed = true;
                     about.pushErrorManually('upload-failed', bigFile);
                     return;
@@ -192,7 +192,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
     } else {
         const bigFile = await isBigFile(about.formValue);
         if (bigFile) {
-            if(typeof bigFile === "string"){
+            if (typeof bigFile === "string") {
                 about.pushErrorManually('upload-failed', bigFile);
                 return;
             }
@@ -207,5 +207,18 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
             about.pushErrorManually('upload-not-file', 'The upload value is not a file');
             break;
         }
+    }
+}
+
+
+export function parseEmptyFiles(about: AboutFormName, astro: AstroGlobal) {
+    if(astro.props.readonly) return;
+
+    if (about.formValue.size === 0) {
+        about.formValue = null;
+    }
+
+    if (astro.props.multiple) {
+        about.formValue = [];
     }
 }
