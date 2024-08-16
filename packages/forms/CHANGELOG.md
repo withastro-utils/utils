@@ -1,3 +1,10 @@
+## [3.13.12](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.11...@astro-utils/forms@3.13.12) (2024-08-16)
+
+
+### Bug Fixes
+
+* **files:** parse multi file upload ([0a5c0db](https://github.com/withastro-utils/utils/commit/0a5c0dbf49fef4b75a8ea3c4a2a25241ffa726b0))
+
 ## [3.13.11](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.10...@astro-utils/forms@3.13.11) (2024-08-16)
 
 
