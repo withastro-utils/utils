@@ -1,3 +1,10 @@
+## [3.13.11](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.10...@astro-utils/forms@3.13.11) (2024-08-16)
+
+
+### Bug Fixes
+
+* **file:** parse empty files ([a88f4a6](https://github.com/withastro-utils/utils/commit/a88f4a6b07771d2f76ef81f6ff3058c42a16a30c))
+
 ## [3.13.10](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.9...@astro-utils/forms@3.13.10) (2024-08-13)
 
 
