@@ -30,7 +30,7 @@ export default class ViewStateManager {
     }
 
     get useState() {
-        return this.stateProp && this._astro.request.method === 'POST';
+        return this.stateProp;
     }
 
     constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string | number) {
@@ -70,14 +70,14 @@ export default class ViewStateManager {
     }
 
     public async loadState() {
-        if (!this.useState) {
+        if (!this.useState || this._astro.request.method !== 'POST') {
             return false;
         }
 
         const state: any = await this._parseState();
         if (!state) return false;
 
-        if(state.bind && state.elements){
+        if (state.bind && state.elements) {
             Object.assign(this._bind, state.bind);
             Object.assign(this._elementsState, state.elements);
         }
@@ -85,12 +85,12 @@ export default class ViewStateManager {
     }
 
     public async createViewState(): Promise<string> {
-        const data = this.useState ?{
+        const data = this.useState ? {
             bind: this.omitProps ?
-                omitProps(this._bind.__getState(), this.omitProps):
+                omitProps(this._bind.__getState(), this.omitProps) :
                 getSomeProps(this._bind.__getState(), this.stateProp),
             elements: this._elementsState
-        }: {};
+        } : {};
 
         const stringify = superjson.stringify(data);
         const compress = await snappy.compress(stringify, {});
