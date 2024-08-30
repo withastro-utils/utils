@@ -1,12 +1,21 @@
-import {VolatileFile} from 'formidable';
+import {VolatileFile, PersistentFile} from 'formidable';
 
-export type FormDataValue = string | typeof VolatileFile;
+export type FormFile = typeof PersistentFile & {
+    filepath: string;
+    lastModifiedDate: Date;
+    mimetype: string;
+    newFilename: string;
+    originalFilename: string;
+    size: number;
+}
+
+export type FormDataValue = string | FormFile;
 
 export default class ExtendedFormData {
     #data = new Map<string, FormDataValue[]>();
 
     #validateFileType(value: FormDataValue) {
-        if (typeof value != 'string' && !(value instanceof VolatileFile)) {
+        if (typeof value != 'string' && !ExtendedFormData.isFormidableFile(value)) {
             return String(value);
         }
         return value;
@@ -43,13 +52,13 @@ export default class ExtendedFormData {
         return this.getAll(name).filter(value => typeof value == 'string') as string[];
     }
 
-    getFile(name: string): typeof VolatileFile | null {
+    getFile(name: string): FormFile | null {
         const value = this.get(name);
-        return value instanceof VolatileFile ? value as typeof VolatileFile : null;
+        return ExtendedFormData.isFormidableFile(value) ? value as FormFile : null;
     }
 
-    getAllFiles(name: string): (typeof VolatileFile)[] {
-        return this.getAll(name).filter(value => value instanceof File) as (typeof VolatileFile)[];
+    getAllFiles(name: string): (FormFile)[] {
+        return this.getAll(name).filter(value => ExtendedFormData.isFormidableFile(value)) as FormFile[];
     }
 
     has(name: string): boolean {
@@ -80,5 +89,9 @@ export default class ExtendedFormData {
 
     [Symbol.iterator](): IterableIterator<[string, FormDataValue[]]> {
         return this.#data[Symbol.iterator]();
+    }
+
+    static isFormidableFile(object: any) {
+        return object instanceof VolatileFile || object instanceof PersistentFile;
     }
 }
