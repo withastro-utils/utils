@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.2...@astro-utils/formidable@2.0.3) (2024-08-30)
+
+
+### Bug Fixes
+
+* **README:**  docs ([e8bdd0e](https://github.com/withastro-utils/utils/commit/e8bdd0e3d89932c555e57768719e43bec06584e6))
+
 ## [2.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.1...@astro-utils/formidable@2.0.2) (2024-08-30)
 
 
