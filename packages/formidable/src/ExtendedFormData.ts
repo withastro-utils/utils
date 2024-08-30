@@ -1,6 +1,6 @@
 import {VolatileFile, PersistentFile} from 'formidable';
 
-export type FormFile = typeof PersistentFile & {
+export type FormFile = {
     filepath: string;
     lastModifiedDate: Date;
     mimetype: string;
