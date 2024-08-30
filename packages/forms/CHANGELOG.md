@@ -1,3 +1,10 @@
+## [3.13.14](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.13...@astro-utils/forms@3.13.14) (2024-08-30)
+
+
+### Bug Fixes
+
+* **cookie:** default settings ([9c2a83b](https://github.com/withastro-utils/utils/commit/9c2a83ba76f9cf7e12b39e864b0a86ecabfe8540))
+
 ## [3.13.13](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.12...@astro-utils/forms@3.13.13) (2024-08-28)
 
 
