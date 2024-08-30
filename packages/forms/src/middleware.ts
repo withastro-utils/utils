@@ -20,7 +20,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
         cookieName: 'session',
         cookieOptions: {
             httpOnly: true,
-            sameSite: true,
+            sameSite: "lax",
             maxAge: 1000 * 60 * 60 * 24 * 7,
             path: '/'
         }
