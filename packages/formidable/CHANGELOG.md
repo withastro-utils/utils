@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.1...@astro-utils/formidable@2.0.2) (2024-08-30)
+
+
+### Bug Fixes
+
+* **formidable:** parse files ([6bb8c34](https://github.com/withastro-utils/utils/commit/6bb8c3414c47fbe86d071d18e5663f1e68917806))
+
 ## [2.0.1](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.0...@astro-utils/formidable@2.0.1) (2023-12-18)
 
 
