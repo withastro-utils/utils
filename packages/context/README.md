@@ -23,7 +23,7 @@ function consoleIt(){
 `components/LayoutTitle.astro`
 ```astro
 ---
-import getContextProps from '@astro-utils';
+import getContextProps from '@astro-utils/context';
 
 const {title, consoleIt} = getContextProps(Astro);
 consoleIt();
