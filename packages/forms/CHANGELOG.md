@@ -1,3 +1,10 @@
+## [3.13.16](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.15...@astro-utils/forms@3.13.16) (2024-09-12)
+
+
+### Bug Fixes
+
+* **bigFileUpload:** process ([1278672](https://github.com/withastro-utils/utils/commit/127867252abd6f63d2ac3dc1acf04f327fe87e89))
+
 ## [3.13.15](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.14...@astro-utils/forms@3.13.15) (2024-09-12)
 
 
