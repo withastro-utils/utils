@@ -7,7 +7,7 @@ import os from "os";
 import { validateFrom } from "../../../form-tools/csrf.js";
 import { AstroGlobal } from "astro";
 import { getFormValue } from "../../../form-tools/post.js";
-import ThrowOverrideResponse from "src/throw-action/throwOverrideResponse.js";
+import ThrowOverrideResponse from '../../../throw-action/throwOverrideResponse.js';
 
 const zodValidationInfo =
     z.preprocess((str: any, ctx) => {
