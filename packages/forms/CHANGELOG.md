@@ -1,3 +1,10 @@
+## [3.13.15](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.14...@astro-utils/forms@3.13.15) (2024-09-12)
+
+
+### Bug Fixes
+
+* **bigFileUpload:** export processBigFileUpload ([d5b87d3](https://github.com/withastro-utils/utils/commit/d5b87d3fdb995df279ad4760910c3f426731e3ae))
+
 ## [3.13.14](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.13...@astro-utils/forms@3.13.14) (2024-08-30)
 
 
