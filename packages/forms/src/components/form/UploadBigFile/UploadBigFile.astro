@@ -1,19 +1,13 @@
 ---
 import type { ComponentProps } from 'astro/types';
-import ThrowOverrideResponse from '../../../throw-action/throwOverrideResponse.js';
 import BInput from '../BInput.astro';
-import { loadUploadFiles } from './uploadBigFileServer.js';
+import { processBigFileUpload } from './uploadBigFileServer.js';
 
 export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends ComponentProps<typeof BInput<T>> {
 }
 
 const { class: className, tempDirectory, name, ...props } = Astro.props;
-const bigFileServerOptions = Astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions;
-
-const uploadFilesResponse = await loadUploadFiles(Astro, bigFileServerOptions);
-if (uploadFilesResponse) {
-    throw new ThrowOverrideResponse(uploadFilesResponse);
-}
+await processBigFileUpload(Astro);
 ---
 
 <BInput type='file' {...props} name={name} class:list={[className, 'big-upload']} />

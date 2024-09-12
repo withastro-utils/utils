@@ -7,6 +7,7 @@ import os from "os";
 import { validateFrom } from "../../../form-tools/csrf.js";
 import { AstroGlobal } from "astro";
 import { getFormValue } from "../../../form-tools/post.js";
+import ThrowOverrideResponse from "src/throw-action/throwOverrideResponse.js";
 
 const zodValidationInfo =
     z.preprocess((str: any, ctx) => {
@@ -42,7 +43,7 @@ export const DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER: LoadUploadFilesOptions = {
     tempDirectory: path.join(os.tmpdir(), "astro_forms_big_files_uploads"),
 };
 
-export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = {}) {
+async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = {}) {
     const { allowUpload, onFinished, maxUploadTime, maxUploadSize, maxDirectorySize, tempDirectory } = { ...DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER, ...options };
     if (astro.request.method !== "POST" || !await validateFrom(astro)) {
         return false;
@@ -94,7 +95,7 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
         return await sendError("Directory size exceeded");
     }
 
-    const newTotalSize = (await totalDirectorySize(uploadDir)) + uploadFileMayBe.size;
+    const newTotalSize = (await totalDirectorySize(uploadDir)) + uploadFile.size;
     if (newTotalSize > maxUploadSize) {
         return await sendError("Upload size exceeded");
     }
@@ -143,6 +144,13 @@ export async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadU
 
     await onFinished?.(uploadId, files.length);
     return Response.json({ ok: true, finished: true });
+}
+
+export async function processBigFileUpload(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions) {
+    const haveFileUpload = await loadUploadFiles(astro, options);
+    if(haveFileUpload) {
+        throw new ThrowOverrideResponse(haveFileUpload);
+    }
 }
 
 async function deleteOldUploads(tempDirectory: string, maxUploadTime: number) {

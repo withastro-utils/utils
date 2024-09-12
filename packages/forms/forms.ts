@@ -11,6 +11,7 @@ import ThrowOverrideResponse from "./dist/throw-action/throwOverrideResponse.js"
 import UploadBigFile from './dist/components/form/UploadBigFile/UploadBigFile.astro';
 import UploadBigFileProgress from './dist/components/form/UploadBigFile/UploadBigFileProgress.astro';
 import {BigFile} from './dist/components/form/UploadBigFile/BigFile.js';
+import { processBigFileUpload } from './dist/components/form/UploadBigFile/uploadBigFileServer.js';
 
 export {
     Bind,
@@ -25,7 +26,8 @@ export {
     BigFile,
     UploadBigFile,
     UploadBigFileProgress,
-    ThrowOverrideResponse
+    ThrowOverrideResponse,
+    processBigFileUpload
 }
 
 export type {
