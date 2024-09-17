@@ -43,6 +43,8 @@ export const DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER: LoadUploadFilesOptions = {
     tempDirectory: path.join(os.tmpdir(), "astro_forms_big_files_uploads"),
 };
 
+const ACTIVE_FINISHED_UPLOADS = new Set<string>();
+
 async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = {}) {
     const { allowUpload, onFinished, maxUploadTime, maxUploadSize, maxDirectorySize, tempDirectory } = { ...DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER, ...options };
     if (astro.request.method !== "POST" || !await validateFrom(astro)) {
@@ -52,6 +54,13 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
     if (await getFormValue(astro.request, "astroBigFileUpload") !== "true") {
         return false;
     }
+
+    const hasWait = await getFormValue(astro.request, "wait");
+    if (hasWait) {
+        const thisWait = String(hasWait);
+        return Response.json({ ok: true, wait: ACTIVE_FINISHED_UPLOADS.has(thisWait) });
+    }
+
 
     await fsExtra.ensureDir(tempDirectory);
     await deleteOldUploads(tempDirectory, maxUploadTime);
@@ -127,28 +136,36 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
         return await sendError(`Missing chunks ${missingChunks}, upload failed`, false, { missingChunks });
     }
 
-    const outputStream = oldFs.createWriteStream(uploadFilePath, { flags: 'a' });
-    for (let i = 1; i <= total; i++) {
-        const fileFullPath = path.join(uploadDir, `${i}-${total}`);
-        const inputStream = oldFs.createReadStream(fileFullPath);
-        await new Promise((resolve, reject) => {
-            inputStream.on("data", (chunk) => {
-                outputStream.write(chunk);
-            });
-            inputStream.on("end", resolve);
-            inputStream.on("error", reject);
-        });
-        await fsExtra.remove(fileFullPath);
-    }
-    await fsExtra.remove(uploadDir);
+    (async () => {
+        try {
+            ACTIVE_FINISHED_UPLOADS.add(uploadId);
+            const outputStream = oldFs.createWriteStream(uploadFilePath, { flags: 'a' });
+            for (let i = 1; i <= total; i++) {
+                const fileFullPath = path.join(uploadDir, `${i}-${total}`);
+                const inputStream = oldFs.createReadStream(fileFullPath);
+                await new Promise((resolve, reject) => {
+                    inputStream.on("data", (chunk) => {
+                        outputStream.write(chunk);
+                    });
+                    inputStream.on("end", resolve);
+                    inputStream.on("error", reject);
+                });
+                await fsExtra.remove(fileFullPath);
+            }
+            await fsExtra.remove(uploadDir);
 
-    await onFinished?.(uploadId, files.length);
+            await onFinished?.(uploadId, files.length);
+        } finally {
+            ACTIVE_FINISHED_UPLOADS.delete(uploadId);
+        }
+    })();
+
     return Response.json({ ok: true, finished: true });
 }
 
 export async function processBigFileUpload(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions) {
     const haveFileUpload = await loadUploadFiles(astro, options);
-    if(haveFileUpload) {
+    if (haveFileUpload) {
         throw new ThrowOverrideResponse(haveFileUpload);
     }
 }

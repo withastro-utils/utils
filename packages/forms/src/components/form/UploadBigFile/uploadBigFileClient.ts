@@ -1,5 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
+const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 type ProgressCallback = (progress: number, total: number) => void;
 
 export type BigFileUploadOptions = {
@@ -8,6 +10,7 @@ export type BigFileUploadOptions = {
     chunkSize: number;
     parallelChunks: number;
     parallelUploads: number;
+    waitFinishDelay?: number;
 };
 
 const UPLOAD_BIG_FILE_OPTIONS: BigFileUploadOptions = {
@@ -16,6 +19,7 @@ const UPLOAD_BIG_FILE_OPTIONS: BigFileUploadOptions = {
     chunkSize: 1024 * 1024 * 5,
     parallelChunks: 3,
     parallelUploads: 3,
+    waitFinishDelay: 1000,
 };
 
 const clientWFS = (window as any).clientWFS;
@@ -52,6 +56,52 @@ async function uploadChunkWithXHR(file: Blob, info: Record<string, any>, progres
         xhr.open('POST', location.href, true);
         xhr.send(formData);
     });
+}
+
+async function finishUpload(uploadId: string, options: BigFileUploadOptions) {
+    let maxError = options.retryChunks;
+    while (true) {
+        try {
+            const response = await new Promise<any>((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                xhr.responseType = "text";
+
+                formData.append('wait', uploadId);
+                formData.append("astroBigFileUpload", "true");
+
+                if (clientWFS.csrf) {
+                    formData.append(clientWFS.csrf.filed, clientWFS.csrf.token);
+                }
+
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve(JSON.parse(xhr.responseText));
+                    } else {
+                        reject({ ok: false, error: xhr.responseText });
+                    }
+                };
+                xhr.onerror = () => {
+                    reject({ ok: false, error: xhr.responseText });
+                };
+
+                xhr.open('POST', location.href, true);
+                xhr.send(formData);
+            });
+
+            if (!response.wait) {
+                break;
+            }
+
+            await sleep(options.waitFinishDelay);
+        } catch (error) {
+            if(maxError === 0){
+                throw error;
+            }
+            maxError--;
+            await sleep(options.retryChunks);
+        }
+    }
 }
 
 async function uploadBigFile(fileId: string, file: File, progressCallback: ProgressCallback, options: BigFileUploadOptions) {
@@ -119,6 +169,7 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
     }
 
     await Promise.all(activeChunks);
+    await finishUpload(fileId, options);
 }
 
 export async function uploadAllFiles(els: NodeListOf<HTMLInputElement>, options: BigFileUploadOptions = { ...UPLOAD_BIG_FILE_OPTIONS, ...clientWFS.bigFileUploadOptions }) {
@@ -231,7 +282,7 @@ async function retry(fn: () => Promise<void>, options: { retries: number, delay:
             if (attempts >= options.retries) {
                 throw error;
             }
-            await new Promise(res => setTimeout(res, options.delay));
+            await sleep(options.delay);
         }
     }
 }
