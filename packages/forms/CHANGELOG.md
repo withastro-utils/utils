@@ -1,3 +1,10 @@
+## [3.13.17](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.16...@astro-utils/forms@3.13.17) (2024-09-17)
+
+
+### Bug Fixes
+
+* **uploadBigFile:** workaround timeouts when closing big file ([25f28fc](https://github.com/withastro-utils/utils/commit/25f28fc1b8daf85b9d51abf7508c171d94cf12d0))
+
 ## [3.13.16](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.15...@astro-utils/forms@3.13.16) (2024-09-12)
 
 
