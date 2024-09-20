@@ -214,7 +214,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
 export function parseEmptyFiles(about: AboutFormName, astro: AstroGlobal) {
     if(astro.props.readonly) return;
 
-    if (about.formValue.size === 0) {
+    if (!about.formValue || about.formValue.size === 0) {
         about.formValue = null;
     }
 
