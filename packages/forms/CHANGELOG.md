@@ -1,3 +1,10 @@
+## [3.13.18](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.17...@astro-utils/forms@3.13.18) (2024-09-20)
+
+
+### Bug Fixes
+
+* **uploadFile:** null ref ([e06368a](https://github.com/withastro-utils/utils/commit/e06368af25684b58a567d782a8578d8162e67d27))
+
 ## [3.13.17](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.16...@astro-utils/forms@3.13.17) (2024-09-17)
 
 
