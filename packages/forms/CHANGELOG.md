@@ -1,3 +1,10 @@
+## [3.13.19](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.18...@astro-utils/forms@3.13.19) (2024-11-17)
+
+
+### Bug Fixes
+
+* **cookie:** secure type ([697340a](https://github.com/withastro-utils/utils/commit/697340a9901ad1196f8cee2eae925a8cf4b061b0))
+
 ## [3.13.18](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.17...@astro-utils/forms@3.13.18) (2024-09-20)
 
 
