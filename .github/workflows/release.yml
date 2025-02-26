@@ -12,7 +12,7 @@ jobs:
   release:
     name: Build & Release
     runs-on: ubuntu-latest
-
+    environment: npm
     concurrency: release-${{ github.ref }}
     permissions:
       id-token: write
