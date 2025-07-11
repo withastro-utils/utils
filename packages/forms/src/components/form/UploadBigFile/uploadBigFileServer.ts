@@ -1,12 +1,12 @@
-import fsExtra from "fs-extra/esm";
-import fs from "fs/promises";
-import oldFs from "fs";
-import path from "path";
-import z from "zod";
-import os from "os";
-import { validateFrom } from "../../../form-tools/csrf.js";
-import { AstroGlobal } from "astro";
-import { getFormValue } from "../../../form-tools/post.js";
+import fsExtra from 'fs-extra/esm';
+import fs from 'fs/promises';
+import oldFs from 'fs';
+import path from 'path';
+import z from 'zod';
+import os from 'os';
+import {validateFrom} from '../../../form-tools/csrf.js';
+import {AstroGlobal} from 'astro';
+import {getFormValue} from '../../../form-tools/post.js';
 import ThrowOverrideResponse from '../../../throw-action/throwOverrideResponse.js';
 
 const zodValidationInfo =
@@ -91,12 +91,12 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
 
     if (typeof allowUpload === "function") {
         if (!await allowUpload(uploadFile, data)) {
-            return await sendError("File not allowed");
+            return await sendError('File not allowed', true, {retry: false});
         }
     }
 
     if (uploadSize > maxUploadSize) {
-        return await sendError("File size exceeded");
+        return await sendError('File size exceeded', true, {retry: false});
     }
 
     const totalDirectorySizeWithNewUpload = (await totalDirectorySize(tempDirectory)) + part === 1 ? uploadSize : uploadFile.size;

@@ -25,5 +25,5 @@ for (const exp of this.expressions) {
 `;
 
 export function refactorCodeInlineRenderComponent(sourceCode: string): string {
-    return sourceCode.replace(ASYNC_RENDERS_REGEX, SYNC_RENDERS_CODE);
+  return sourceCode.replace(ASYNC_RENDERS_REGEX, SYNC_RENDERS_CODE);
 }

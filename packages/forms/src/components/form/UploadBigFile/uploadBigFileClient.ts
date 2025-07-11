@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
 
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -95,7 +95,7 @@ async function finishUpload(uploadId: string, options: BigFileUploadOptions) {
 
             await sleep(options.waitFinishDelay);
         } catch (error) {
-            if(maxError === 0){
+            if (maxError === 0) {
                 throw error;
             }
             maxError--;
@@ -133,6 +133,7 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
             total: totalChunks,
         };
 
+        const stopRetrying = new AbortController();
         const uploadPromiseWithRetry = retry(async () => {
             const upload = await uploadChunkWithXHR(chunk, info, (loaded) => {
                 activeLoads.set(i, loaded);
@@ -151,9 +152,12 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
             }
 
             if (!response?.ok) {
+                if (response.retry === false) {
+                    stopRetrying.abort('Not retryable error');
+                }
                 throw new Error(response.error);
             }
-        }, { retries: options.retryChunks, delay: options.retryDelay })
+        }, {retries: options.retryChunks, delay: options.retryDelay, stopRetying: stopRetrying.signal})
             .then(() => {
                 activeLoads.delete(i);
                 activeChunks.delete(uploadPromiseWithRetry);
@@ -271,7 +275,13 @@ export function finishFormSubmission(form: HTMLFormElement, onClick?: string) {
     form.submit();
 }
 
-async function retry(fn: () => Promise<void>, options: { retries: number, delay: number; } = { retries: 5, delay: 1000 }) {
+type RetryOptions = {
+    retries: number,
+    delay: number;
+    stopRetying?: AbortSignal;
+};
+
+async function retry(fn: () => Promise<void>, options: RetryOptions = {retries: 5, delay: 1000}) {
     let attempts = 0;
     while (attempts < options.retries) {
         try {
@@ -279,7 +289,7 @@ async function retry(fn: () => Promise<void>, options: { retries: number, delay:
             return;
         } catch (error) {
             attempts++;
-            if (attempts >= options.retries) {
+            if (attempts >= options.retries || options.stopRetying?.aborted) {
                 throw error;
             }
             await sleep(options.delay);
