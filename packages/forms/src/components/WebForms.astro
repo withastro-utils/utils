@@ -22,9 +22,8 @@ if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
 
-await Promise.all(
-    disposeFiles.map(file => fs.unlink(file).catch(() => {}))
-);
+await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {
+})));
 
 const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
 const formRequestToken = useSession && (await createFormToken(Astro));
@@ -45,7 +44,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
 </script>
 
 <script>
-    import { BigFileUploadOptions, countTotalUploads } from './form/UploadBigFile/uploadBigFileClient.js';
+import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAllFiles } from './form/UploadBigFile/uploadBigFileClient.js';
 
     declare global {
         interface Window {
@@ -82,7 +81,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
     const form = document.querySelector('form') as HTMLFormElement;
     form?.querySelectorAll('button[type="submit"]').forEach(button => {
         button.addEventListener('click', () => {
-            if (button instanceof HTMLButtonElement === false || !button.formNoValidate && !form.checkValidity()) return;
+            if (button instanceof HTMLButtonElement === false || (!button.formNoValidate && !form.checkValidity())) return;
 
             if (window.clientWFS.loadingClassName) {
                 button.classList.add(window.clientWFS.loadingClassName);
@@ -94,11 +93,31 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
         });
     });
 
-    form?.addEventListener('submit', () => {
+form?.addEventListener('submit', event => {
         setTimeout(() => {
             form.querySelectorAll('button[type="submit"]').forEach(button => {
                 (button as HTMLButtonElement).disabled = true;
             });
         }, 0);
+
+    // big files upload
+        const allBigUploads = document.querySelectorAll('input[name].big-upload') as NodeListOf<HTMLInputElement>;
+    const { count } = countTotalUploads(allBigUploads);
+    if (count === 0) return;
+
+    let buttonCallback = '';
+    if (document.activeElement instanceof HTMLButtonElement && document.activeElement.name === 'button-callback') {
+    buttonCallback = document.activeElement.value;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    handleUploads(allBigUploads, buttonCallback);
     });
+
+async function handleUploads(allBigUploads: NodeListOf<HTMLInputElement>, clickAfter?: string) {
+    await uploadAllFiles(allBigUploads);
+    finishFormSubmission(form, clickAfter);
+    }
 </script>
