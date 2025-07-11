@@ -16,7 +16,8 @@
       "main",
       {
         "name": "beta",
-        "prerelease": true
+        "prerelease": true,
+        "range": "4.x"
       }
     ]
   },
