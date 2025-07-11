@@ -1,22 +1,29 @@
 {
-    "name": "astro-utils",
-    "workspaces": [
-        "packages/*",
-        "examples/*"
+  "name": "astro-utils",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "workspaceRelease": {
+    "npmRelease": true,
+    "extendsReleaseRules": [
+      {
+        "type": "bump",
+        "release": "patch"
+      }
     ],
-    "workspaceRelease": {
-        "npmRelease": true,
-        "extendsReleaseRules": [
-            {
-                "type": "bump",
-                "release": "patch"
-            }
-        ]
-    },
-    "scripts": {
-        "create-release": "semantic-release-npm-workspaces-monorepo"
-    },
-    "devDependencies": {
-        "semantic-release-npm-workspaces-monorepo": "^2.2.2"
-    }
+    "branches": [
+      "main",
+      {
+        "name": "beta",
+        "prerelease": true
+      }
+    ]
+  },
+  "scripts": {
+    "create-release": "semantic-release-npm-workspaces-monorepo"
+  },
+  "devDependencies": {
+    "semantic-release-npm-workspaces-monorepo": "^3.1.0"
+  }
 }
