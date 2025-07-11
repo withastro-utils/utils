@@ -1,3 +1,10 @@
+## [3.13.20](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.19...@astro-utils/forms@3.13.20) (2025-07-11)
+
+
+### Bug Fixes
+
+* **bigFileUpload:** do not retry on validation errors ([66d3ad9](https://github.com/withastro-utils/utils/commit/66d3ad9f51028416c95809303c6597682746b4b9))
+
 ## [3.13.19](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.18...@astro-utils/forms@3.13.19) (2024-11-17)
 
 
