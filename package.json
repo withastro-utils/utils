@@ -19,7 +19,12 @@
         "prerelease": true,
         "range": "4.x"
       }
-    ]
+    ],
+    "perPackageConfig": {
+      "examples/*": {
+        "npmRelease": false
+      }
+    }
   },
   "scripts": {
     "create-release": "semantic-release-npm-workspaces-monorepo"
