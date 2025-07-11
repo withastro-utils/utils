@@ -1,3 +1,15 @@
+# [4.0.0-beta.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.19...@astro-utils/forms@4.0.0-beta.1) (2025-07-11)
+
+
+### Features
+
+* support for astro v5 ([8c8818d](https://github.com/withastro-utils/utils/commit/8c8818d9ee196c7bce4ebca223dc18b72c77d482))
+
+
+### BREAKING CHANGES
+
+* Support for astro v5
+
 ## [3.13.19](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.18...@astro-utils/forms@3.13.19) (2024-11-17)
 
 
