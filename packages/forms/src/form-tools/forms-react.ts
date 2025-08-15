@@ -45,8 +45,22 @@ export default class FormsReact {
 
         return {
             search,
-            redirect(status?: ValidRedirectStatus) {
-                const pathWithSearch = url.pathname.split('/').pop() + search.toString();
+            redirect(status?: ValidRedirectStatus, removeEmptyParams = true) {
+                const copySearch = new URLSearchParams(search);
+                if (removeEmptyParams) {
+                    for (const [key, value] of copySearch.entries()) {
+                        if (value === '' || value == null) {
+                            copySearch.delete(key);
+                        }
+                    }
+                }
+
+                const searchString = copySearch.toString();
+                let pathWithSearch = url.pathname.split('/').pop();
+                if (searchString) {
+                    pathWithSearch += '?' + searchString;
+                }
+
                 self.overrideResponse = new Response(null, {
                     status: status || 302,
                     headers: {
