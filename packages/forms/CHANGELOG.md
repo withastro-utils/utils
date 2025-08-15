@@ -1,3 +1,10 @@
+## [3.13.21](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.20...@astro-utils/forms@3.13.21) (2025-08-15)
+
+
+### Bug Fixes
+
+* **utils:** fix redirect search params ([21cc53d](https://github.com/withastro-utils/utils/commit/21cc53d833c98247289369ef38b4e327fb81f8fc))
+
 ## [3.13.20](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.19...@astro-utils/forms@3.13.20) (2025-07-11)
 
 
