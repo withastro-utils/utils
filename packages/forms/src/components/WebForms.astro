@@ -22,8 +22,7 @@ if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
 
-await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {
-})));
+await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {})));
 
 const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
 const formRequestToken = useSession && (await createFormToken(Astro));
@@ -44,7 +43,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
 </script>
 
 <script>
-import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAllFiles } from './form/UploadBigFile/uploadBigFileClient.js';
+    import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAllFiles } from './form/UploadBigFile/uploadBigFileClient.js';
 
     declare global {
         interface Window {
@@ -64,7 +63,7 @@ import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAl
 
         if (((isMultiLine && event.ctrlKey) || !isMultiLine) && event.code === 'Enter') {
             event.preventDefault();
-            document.getElementById(target.getAttribute('data-submit')!)?.click();
+            submitByButton(target.getAttribute('data-submit')!);
         }
     };
 
@@ -75,10 +74,28 @@ import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAl
         if (value == null) {
             return console.warn('submitForm: value is null, make sure you pass `this` to this method or an id of the button you want to submit.');
         }
-        document.getElementById(value)?.click();
+        submitByButton(value);
     };
 
     const form = document.querySelector('form') as HTMLFormElement;
+    function submitByButton(id: string){
+        if(id === 'state'){
+            if(form instanceof HTMLFormElement){
+                form.submit();
+                return;
+            }
+            console.error('Error submitting form by event: form not found');
+            return;
+        }
+
+        const element = document.getElementById(id);
+        if(element instanceof HTMLButtonElement){
+            element.click();
+        }
+
+        console.error(`Submitting form event by button: element with id ${id} is not a button`);
+    }
+
     form?.querySelectorAll('button[type="submit"]').forEach(button => {
         button.addEventListener('click', () => {
             if (button instanceof HTMLButtonElement === false || (!button.formNoValidate && !form.checkValidity())) return;
@@ -93,31 +110,31 @@ import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAl
         });
     });
 
-form?.addEventListener('submit', event => {
+    form?.addEventListener('submit', event => {
         setTimeout(() => {
             form.querySelectorAll('button[type="submit"]').forEach(button => {
                 (button as HTMLButtonElement).disabled = true;
             });
         }, 0);
 
-    // big files upload
+        // big files upload
         const allBigUploads = document.querySelectorAll('input[name].big-upload') as NodeListOf<HTMLInputElement>;
-    const { count } = countTotalUploads(allBigUploads);
-    if (count === 0) return;
+        const { count } = countTotalUploads(allBigUploads);
+        if (count === 0) return;
 
-    let buttonCallback = '';
-    if (document.activeElement instanceof HTMLButtonElement && document.activeElement.name === 'button-callback') {
-    buttonCallback = document.activeElement.value;
-    }
+        let buttonCallback = '';
+        if (document.activeElement instanceof HTMLButtonElement && document.activeElement.name === 'button-callback') {
+            buttonCallback = document.activeElement.value;
+        }
 
-    event.preventDefault();
-    event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
 
-    handleUploads(allBigUploads, buttonCallback);
+        handleUploads(allBigUploads, buttonCallback);
     });
 
-async function handleUploads(allBigUploads: NodeListOf<HTMLInputElement>, clickAfter?: string) {
-    await uploadAllFiles(allBigUploads);
-    finishFormSubmission(form, clickAfter);
+    async function handleUploads(allBigUploads: NodeListOf<HTMLInputElement>, clickAfter?: string) {
+        await uploadAllFiles(allBigUploads);
+        finishFormSubmission(form, clickAfter);
     }
 </script>
