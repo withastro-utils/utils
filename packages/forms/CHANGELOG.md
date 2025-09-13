@@ -1,3 +1,10 @@
+## [3.14.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.14.0...@astro-utils/forms@3.14.1) (2025-09-13)
+
+
+### Bug Fixes
+
+* **middleware:** type build ([86af21b](https://github.com/withastro-utils/utils/commit/86af21ba44c304fd450d12c0b1840a94ea9489f5))
+
 # [3.14.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.13.21...@astro-utils/forms@3.14.0) (2025-09-11)
 
 
