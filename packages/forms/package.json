@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "watch": "onchange 'src/**/*' -- npm run build",
-    "build": "rm -r dist/*; tsc; mkdir dist/components; cp -r src/components/* dist/components/; find  dist/components/ -name '*.ts' -delete ",
+    "build": "rm -r dist/*; tsc; mkdir dist/components; cp -r src/components/* dist/components/; find dist/components/ -type f -name '*.ts' ! -name '*.d.ts' -delete",
     "prepack": "npm run build"
   },
   "keywords": [
