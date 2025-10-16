@@ -26,7 +26,7 @@ type CacheControlOptions = {
 
 export default class ExpressResponse extends Headers {
     private _responseClosed = false;
-    public responseBody: string | Buffer | Uint8Array = '';
+    public responseBody: BodyInit | string | null | Buffer | Uint8Array = null;
     public statusCode: number = 200;
 
     public constructor(public astroContext: APIContext<Props>) {
@@ -158,7 +158,7 @@ export default class ExpressResponse extends Headers {
      * @internal
      */
     public _createResponseNativeObject() {
-        return new Response(this.responseBody, {
+        return new Response(this.responseBody as any, {
             headers: this,
             status: this.statusCode
         });
