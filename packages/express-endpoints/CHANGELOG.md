@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.1...@astro-utils/express-endpoints@2.1.2) (2025-10-16)
+
+
+### Bug Fixes
+
+* **express-endpoint:** body response type ([f951d51](https://github.com/withastro-utils/utils/commit/f951d51334047910fd7030bed065587b757ab65b))
+
 ## [2.1.1](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.0...@astro-utils/express-endpoints@2.1.1) (2024-04-04)
 
 
