@@ -32,7 +32,7 @@ export function omitProps(object: any, props: string[] | true) {
     }
 
     const result = {...object};
-    for (const prop in object) {
+    for (const prop of Object.keys(object)) {
         if(props.includes(prop) || prop[0] === '_'){
             delete result[prop];
         }

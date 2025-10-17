@@ -1,0 +1,22 @@
+---
+import {BButton, BindForm} from '@astro-utils/forms/forms.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import {Button} from 'reactstrap';
+import Layout from '../layouts/Layout.astro';
+
+
+function formSubmit() {
+    Astro.locals.session.counter ??= 0;
+    Astro.locals.session.counter++;
+    this.innerText = `Clicked ${Astro.locals.session.counter} times`;
+
+    if (Astro.locals.session.counter % 10 === 0) {
+        this.reset();
+    }
+}
+---
+<Layout title="Welcome to Astro Metro.">
+    <BindForm>
+        <BButton as={Button} props={{color: 'info'}} onClick={formSubmit}>Submit</BButton>
+    </BindForm>
+</Layout>

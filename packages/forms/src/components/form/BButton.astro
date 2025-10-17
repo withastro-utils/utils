@@ -2,7 +2,7 @@
 import getContext from '@astro-utils/context';
 import { createUniqueContinuanceName } from '../../form-tools/connectId.js';
 import { isPost, validateAction } from '../../form-tools/post.js';
-import { diffProps } from '../../components-control/props-utils.js';
+import { diffProps, omitProps } from '../../components-control/props-utils.js';
 import objectAssignDeep from 'object-assign-deep';
 import { MissingClickActionError } from '../../errors/MissingClickActionError.js';
 
@@ -36,7 +36,17 @@ if (!connectId) {
     buttonUniqueId = `${bindId + idBaseFunction}-${counter}`;
 }
 
-const allProps = { ...props, ...elementPropsState[buttonUniqueId] };
+const allProps = {
+    ...props,
+    ...elementPropsState[buttonUniqueId],
+    defaults: props,
+    reset() {
+        for (const key of Object.keys(allProps)) {
+            delete allProps[key];
+        }
+        Object.assign(allProps, props);
+    },
+};
 
 // add this button to list of button for the default submit action
 if (buttonIds && !allProps.disabled) {
@@ -58,7 +68,7 @@ async function executeFormAction(callback: Function = onClick) {
             await callback.call(allProps);
         }
 
-        elementPropsState[buttonUniqueId] = diffProps(originalProps, allProps, ['extra']);
+        elementPropsState[buttonUniqueId] = diffProps(originalProps, allProps, ['extra', 'reset', 'defaults']);
     }
 }
 
@@ -70,9 +80,7 @@ if (executeAfter) {
     await executeFormAction();
 }
 
-const { innerText, innerHTML, remove: doNotWriteHTML, ...changedProps }: any = allProps;
-delete changedProps.extra;
-delete changedProps.state;
+const { innerText, innerHTML, remove: doNotWriteHTML, ...changedProps }: any = omitProps(allProps, ['extra', 'state', 'reset', 'defaults']);
 
 const Component = asComponent as any;
 const slotData = innerHTML ?? (Astro.slots.has('default') ? await Astro.slots.render('default') : '');
