@@ -1,3 +1,11 @@
+# [3.15.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.14.1...@astro-utils/forms@3.15.0) (2025-10-17)
+
+
+### Features
+
+* full page reload ([12a0b5e](https://github.com/withastro-utils/utils/commit/12a0b5eab20370a45fbca6114fc0be7bcd24e28a))
+* **button:** reset state ([f0d3882](https://github.com/withastro-utils/utils/commit/f0d388209a7135004d5e8c208e68521c243fe35a))
+
 ## [3.14.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.14.0...@astro-utils/forms@3.14.1) (2025-09-13)
 
 
