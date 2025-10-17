@@ -3,7 +3,7 @@ import { asyncContext } from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
 import { BindContext } from '../../components-control/types.js';
-import Bind from '../../components-control/form-utils/bind-form.js';
+import Bind, { type BindTypes } from '../../components-control/form-utils/bind-form.js';
 
 export interface Props {
     bind?: ReturnType<typeof Bind>;
@@ -21,7 +21,7 @@ if (!renderForm || Astro.locals.forms._stopRendering) {
 const { bind = Bind(), defaultSubmitClick, key = '' } = Astro.props;
 
 const bindId = key + Astro.locals.__formsInternalUtils.bindFormCounter++;
-const context: BindContext = Astro.locals.__formsInternalUtils.bindGlobalState[bindId] ?? {
+const context: BindContext = Astro.locals.__formsInternalUtils.bindGlobalState[bindId] ??= {
     executeAfter: [],
     method: 'GET',
     bind,
@@ -42,8 +42,11 @@ const resetContext = () => {
 };
 
 if (context.viewState) {
-    context.bind = Object.assign(bind, context.bind.__getState())
-    context.viewState._bind = context.bind;
+    const originalBind = context.bind;
+    const newBind: BindTypes<{}> = (context.bind = Object.assign(bind, originalBind.__getState()));
+    newBind.errors = originalBind.errors;
+    newBind._plugins = originalBind._plugins;
+    context.viewState._bind = newBind;
 
     if (bind.on.stateLoaded) {
         await bind.on.stateLoaded?.();
@@ -69,46 +72,46 @@ if (context.viewState) {
     }
 }
 
-// For some reason the first render, in astro appending in the opposite direction, meaning it first return the html and than runs the logic?
-resetContext();
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
+if (Astro.locals.__formsInternalUtils.firstRender) {
+    // For some reason the first render, in astro appending in the opposite direction, meaning it first return the html and than runs the logic?
+    resetContext();
+    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
 
-// Get information about the form
-context.method = context.newState ? 'GET' : Astro.request.method;
+    // Get information about the form
+    context.method = context.newState ? 'GET' : Astro.request.method;
 
-resetContext();
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
-bind.__finishFormValidation();
+    resetContext();
+    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
+    bind.__finishFormValidation();
 
-if (context.method == 'POST') {
-    if (!context.newState && bind.on.pagePostBack) {
-        await bind.on.pagePostBack?.();
-        if (Astro.locals.forms._stopRendering) {
-            return;
+    if (context.method == 'POST') {
+        if (!context.newState && bind.on.pagePostBack) {
+            await bind.on.pagePostBack?.();
+            if (Astro.locals.forms._stopRendering) {
+                return;
+            }
         }
-    }
 
-    if (Astro.locals.__formsInternalUtils.firstRender) {
         for (const func of context.executeAfter) {
             await func();
             if (Astro.locals.forms._stopRendering) {
                 return;
             }
         }
+
+        context.method = 'GET';
+        resetContext();
+        await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
     }
 
-    context.method = 'GET';
-    resetContext();
-    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
-}
+    // Edit form render, add default submit button
+    if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
+        const [buttonFormId, HTMLButtonId] = context.buttonIds.findLast(([, , whenFormOk]) => whenFormOk) ?? context.buttonIds.at(-1)!;
+        const state = (context.elementsState[buttonFormId] ??= {});
 
-// Edit form render, add default submit button
-if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
-    const [buttonFormId, HTMLButtonId] = context.buttonIds.findLast(([, , whenFormOk]) => whenFormOk) ?? context.buttonIds.at(-1)!;
-    const state = (context.elementsState[buttonFormId] ??= {});
-
-    state.id = HTMLButtonId ?? `_${buttonFormId}`;
-    context.onSubmitClickGlobal = state.id;
+        state.id = HTMLButtonId ?? `_${buttonFormId}`;
+        context.onSubmitClickGlobal = state.id;
+    }
 }
 
 resetContext();

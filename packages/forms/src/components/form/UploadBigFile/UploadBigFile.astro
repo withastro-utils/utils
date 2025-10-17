@@ -7,6 +7,8 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
 }
 
 const { class: className, tempDirectory, name, ...props } = Astro.props;
-await processBigFileUpload(Astro);
+if(Astro.locals.__formsInternalUtils.firstRender){
+    await processBigFileUpload(Astro);
+}
 ---
 <BInput type='file' {...props} name={name} class:list={[className, 'big-upload']} />

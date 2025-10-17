@@ -38,6 +38,7 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
         const likeAstro = { locals, request, cookies };
         const session = new JWTSession(cookies);
         locals.session = session.sessionData;        
+        const forms = locals.forms = new FormsReact(likeAstro);
         await ensureValidationSecret(likeAstro);
 
         locals.__formsInternalUtils = {
@@ -52,9 +53,6 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
             let newResponse: Response | null = null;
 
             while (reloadPage) {
-                locals.forms = new FormsReact(likeAstro);
-                locals.__formsInternalUtils.bindFormCounter = 0;
-
                 const response = await next();
                 const isHTML = response.headers.get('Content-Type')?.includes('text/html');
                 if (locals.webFormOff || !isHTML) {
@@ -62,9 +60,12 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
                 }
 
                 const content = await response.text();
-                newResponse = locals.forms.overrideResponse || new Response(content, response);
-                reloadPage = locals.forms._reloadState;
+                newResponse = forms.overrideResponse || new Response(content, response);
+                reloadPage = forms._reloadState;
+                locals.__formsInternalUtils.bindFormCounter = 0;
                 locals.__formsInternalUtils.firstRender = false;
+                forms._reloadState = false;
+                forms._stopRendering = false;
             }
 
             if(!(newResponse instanceof Response)) {

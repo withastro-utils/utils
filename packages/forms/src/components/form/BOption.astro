@@ -9,23 +9,23 @@ export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementC
     value?: string | number | undefined | null | Date;
 }
 
-const { bind, name, stringifySelectdOptions, method } = getContext(Astro, '@astro-utils/forms');
+const { bind, name, stringifySelectedOptions, method } = getContext(Astro, '@astro-utils/forms');
 
-let htmlSolt = await Astro.slots.render('default');
-const stringisfyOptionValue = stringifySelectValue(Astro.props.value ?? htmlSolt);
+let htmlSlot = await Astro.slots.render('default');
+const stringifyOptionValue = stringifySelectValue(Astro.props.value ?? htmlSlot);
 
-if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    validateSelectOption(bind, name, stringisfyOptionValue);
+if (Astro.locals.__formsInternalUtils.firstRender && !Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+    validateSelectOption(bind, name, stringifyOptionValue);
 }
 
-if(Astro.props.value != null){
-    Astro.props.value = stringisfyOptionValue;
+if (Astro.props.value != null) {
+    Astro.props.value = stringifyOptionValue;
 }
 
 const { as: asComponent = 'option', props: componentProps, selected, ...props } = Astro.props;
 const Component = asComponent as any;
 ---
 
-<Component selected={!Astro.props.disabled && stringifySelectdOptions.includes(stringisfyOptionValue)} {...props} {...componentProps}>
-    <Fragment set:html={htmlSolt} />
+<Component selected={!Astro.props.disabled && stringifySelectedOptions.includes(stringifyOptionValue)} {...props} {...componentProps}>
+    <Fragment set:html={htmlSlot} />
 </Component>

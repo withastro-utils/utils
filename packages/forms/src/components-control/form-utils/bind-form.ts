@@ -25,7 +25,10 @@ export class BindForm<BindValues> {
         pagePostBack?: () => void | Promise<void>;
     } = {};
 
-    private _plugins: IHTMLFormPlugin[];
+    /**
+     * @internal
+     */
+    _plugins: IHTMLFormPlugin[];
 
     constructor(private _defaults?: BindValues) {
         this.defaults();

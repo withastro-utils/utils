@@ -25,17 +25,17 @@ const { as: asComponent = 'select', value: _, props: componentProps, onSubmitCli
 props.name = bindId + props.name;
 addOnSubmitClickEvent(onSubmitClick, props);
 
-let stringifySelectdOptions = getSelectValueFromBind(bind, Astro);
+let stringifySelectedOptions = getSelectValueFromBind(bind, Astro);
 
-if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    stringifySelectdOptions = await validateSelect(Astro, bind, bindId);
+if (Astro.locals.__formsInternalUtils.firstRender && !Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+    stringifySelectedOptions = await validateSelect(Astro, bind, bindId);
 }
 
 const Component = asComponent as any;
-const context = { name: Astro.props.name, stringifySelectdOptions };
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'select' });
+const context = { name: Astro.props.name, stringifySelectedOptions };
+const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'select' });
 ---
 
 <Component {...props} {...componentProps}>
-    <Fragment set:html={htmlSolt} />
+    <Fragment set:html={htmlSlot} />
 </Component>
