@@ -20,7 +20,7 @@ export type ExtendedRequest = AstroGlobal['request'] & {
 }
 
 export interface AstroLinkHTTP {
-    request: ExtendedRequest;
+  request: ExtendedRequest;
   cookies: AstroGlobal['cookies']
   locals: AstroGlobal['locals'];
 }
@@ -34,6 +34,8 @@ declare global {
           __formsInternalUtils: {
               FORM_OPTIONS: FormsSettings;
               bindFormCounter: number;
+              bindGlobalState: Record<string, any>;
+              firstRender: boolean;
           };
           forms: FormsReact;
           webFormOff?: boolean;

@@ -4,7 +4,6 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noImplicitAny": false,
-    "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": false,
     "forceConsistentCasingInFileNames": true,

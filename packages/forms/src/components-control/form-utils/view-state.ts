@@ -12,6 +12,10 @@ const CRYPTO_ALGORITHM = 'aes-256-ctr';
 export default class ViewStateManager {
     private readonly _FORM_OPTIONS: FormsSettings;
     private _VALID_KEY: string;
+    /**
+     * @internal
+     */
+    _bind: BindForm<any>;
 
     get filedName() {
         if (!this._FORM_OPTIONS.forms) {
@@ -33,7 +37,8 @@ export default class ViewStateManager {
         return this.stateProp;
     }
 
-    constructor(private _bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string | number) {
+    constructor(_bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string | number) {
+        this._bind = _bind;
         this._FORM_OPTIONS = getFormOptions(_astro);
 
         if (!this._FORM_OPTIONS.secret) {

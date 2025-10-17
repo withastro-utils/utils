@@ -2,6 +2,7 @@
 import { asyncContext } from '@astro-utils/context';
 import getContext from '@astro-utils/context';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
+import { BindContext } from '../../components-control/types.js';
 import Bind from '../../components-control/form-utils/bind-form.js';
 
 export interface Props {
@@ -9,27 +10,28 @@ export interface Props {
     state?: boolean | string[];
     omitState?: string[];
     defaultSubmitClick?: string | false;
-    key?: string
+    key?: string;
 }
 
-const { lastRender: parantLastRender, bindId: parantbindId = '' } = getContext(Astro, '@astro-utils/forms');
-if (parantLastRender === false) {
+const { renderForm = true, bindId: parentBindId = '' } = getContext(Astro, '@astro-utils/forms');
+if (!renderForm || Astro.locals.forms._stopRendering) {
     return;
 }
 
 const { bind = Bind(), defaultSubmitClick, key = '' } = Astro.props;
 
-const context = {
+const bindId = key + Astro.locals.__formsInternalUtils.bindFormCounter++;
+const context: BindContext = Astro.locals.__formsInternalUtils.bindGlobalState[bindId] ?? {
     executeAfter: [],
     method: 'GET',
     bind,
     tempBindValues: {},
     elementsState: {} as any,
-    onSubmitClickGlobal: defaultSubmitClick,
+    onSubmitClickGlobal: defaultSubmitClick as string,
     buttonIds: [] as [string, string | null, boolean][],
     settings: { showValidationErrors: false },
-    bindId: key + (Astro.locals.__formsInternalUtils.bindFormCounter++),
-    lastRender: false,
+    bindId,
+    renderForm: false,
     newState: false,
 };
 
@@ -39,33 +41,65 @@ const resetContext = () => {
     context.executeAfter = [];
 };
 
-const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindId);
-context.newState = !(await viewState.loadState());
-await bind.on.stateLoaded?.();
-if (context.newState) {
-    await bind.on.newState?.();
+if (context.viewState) {
+    context.bind = Object.assign(bind, context.bind.__getState())
+    context.viewState._bind = context.bind;
+
+    if (bind.on.stateLoaded) {
+        await bind.on.stateLoaded?.();
+        if (Astro.locals.forms._stopRendering) {
+            return;
+        }
+    }
+} else {
+    const viewState = new ViewStateManager(bind, context.elementsState, Astro, context.bindId);
+    context.viewState = viewState;
+    context.newState = !(await viewState.loadState());
+    if (bind.on.stateLoaded) {
+        await bind.on.stateLoaded?.();
+        if (Astro.locals.forms._stopRendering) {
+            return;
+        }
+    }
+    if (context.newState) {
+        await bind.on.newState?.();
+        if (Astro.locals.forms._stopRendering) {
+            return;
+        }
+    }
 }
 
-// For some resone the first render, in astro appenning in the oppesit direction, memning it first return the html and than runs the logic?
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
+// For some reason the first render, in astro appending in the opposite direction, meaning it first return the html and than runs the logic?
 resetContext();
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
+
 // Get information about the form
 context.method = context.newState ? 'GET' : Astro.request.method;
-await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
+
+resetContext();
+await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
 bind.__finishFormValidation();
 
 if (context.method == 'POST') {
-    if (!context.newState) {
+    if (!context.newState && bind.on.pagePostBack) {
         await bind.on.pagePostBack?.();
+        if (Astro.locals.forms._stopRendering) {
+            return;
+        }
     }
-    for (const func of context.executeAfter) {
-        await (func as any)();
+
+    if (Astro.locals.__formsInternalUtils.firstRender) {
+        for (const func of context.executeAfter) {
+            await func();
+            if (Astro.locals.forms._stopRendering) {
+                return;
+            }
+        }
     }
 
     context.method = 'GET';
     resetContext();
-
-    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
+    await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
 }
 
 // Edit form render, add default submit button
@@ -78,8 +112,9 @@ if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
 }
 
 resetContext();
-context.lastRender = true;
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parantbindId });
+context.renderForm = true;
+const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'bindForm' + parentBindId });
 ---
-<input type='hidden' name={viewState.filedName} value={await viewState.createViewState()} />
-<Fragment set:html={htmlSolt} />
+
+<input type='hidden' name={context.viewState.filedName} value={await context.viewState.createViewState()} />
+<Fragment set:html={htmlSlot} />

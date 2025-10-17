@@ -15,14 +15,16 @@ const context = {
     disposeFiles: [],
 };
 
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
+const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
 
 const { webFormsSettings, tempValues, disposeFiles, loadingClassName = '', ...props } = context;
 if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
 
-await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {})));
+if(disposeFiles.length > 0){
+    await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {})));
+}
 
 const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
 const formRequestToken = useSession && (await createFormToken(Astro));
@@ -34,7 +36,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
 
 <form method='post' {...props}>
     {formRequestToken && <input type='hidden' name={formRequestToken.filed} value={formRequestToken.token} />}
-    <Fragment set:html={htmlSolt} />
+    <Fragment set:html={htmlSlot} />
     {clientScript && <script set:html={clientScript} />}
 </form>
 

@@ -37,25 +37,36 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
     return async function onRequest({ locals, request, cookies }: APIContext, next: MiddlewareNext) {
         const likeAstro = { locals, request, cookies };
         const session = new JWTSession(cookies);
-        locals.session = session.sessionData;
-        locals.forms = new FormsReact(likeAstro);
+        locals.session = session.sessionData;        
+        await ensureValidationSecret(likeAstro);
 
         locals.__formsInternalUtils = {
             FORM_OPTIONS: FORM_OPTIONS,
-            bindFormCounter: 0
+            bindFormCounter: 0,
+            bindGlobalState: {},
+            firstRender: true,
         };
 
-        await ensureValidationSecret(likeAstro);
         try {
-            const response = await next();
+            let reloadPage = true;
+            let newResponse: Response | null = null;
 
-            const isHTML = response.headers.get('Content-Type')?.includes('text/html');
-            if (locals.webFormOff || !isHTML) {
-                return response;
+            while (reloadPage) {
+                locals.forms = new FormsReact(likeAstro);
+                locals.__formsInternalUtils.bindFormCounter = 0;
+
+                const response = await next();
+                const isHTML = response.headers.get('Content-Type')?.includes('text/html');
+                if (locals.webFormOff || !isHTML) {
+                    return response;
+                }
+
+                const content = await response.text();
+                newResponse = locals.forms.overrideResponse || new Response(content, response);
+                reloadPage = locals.forms._reloadState;
+                locals.__formsInternalUtils.firstRender = false;
             }
 
-            const content = await response.text();
-            const newResponse = locals.forms.overrideResponse || new Response(content, response);
             if(!(newResponse instanceof Response)) {
                 throw new Error('Astro.locals.forms.overrideResponse must be a Response instance');
             }

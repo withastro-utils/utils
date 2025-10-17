@@ -8,13 +8,16 @@ bind.on.newState = () => {
     bind.num = [1, 2, 3, 9];
 };
 
+let message = '';
 function onSubmit() {
+    message = 'Check the console!'
     console.log(bind.num);
 }
 ---
 
 <Layout title='Test Select'>
     <BindForm bind={bind}>
+        <p>{message}</p>
         {bind.num?.map((value, index) => <BInput name={`num[${index}]`} placeholder={value} />)}
         <BButton whenFormOK onClick={onSubmit}>Submit</BButton>
     </BindForm>

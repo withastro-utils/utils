@@ -1,11 +1,29 @@
-import type {ValidRedirectStatus} from 'astro';
-import {AstroLinkHTTP} from 'src/utils.js';
+import type { AstroGlobal, ValidRedirectStatus } from 'astro';
+import { AstroLinkHTTP } from 'src/utils.js';
 
 export default class FormsReact {
     public scriptToRun = '';
     public overrideResponse: Response | null = null;
+    /**
+     * @internal
+     */
+    _reloadState = false;
+    /**
+     * @internal
+     */
+    _stopRendering = false;
+
 
     public constructor(private _astro: AstroLinkHTTP) {
+    }
+
+    /**
+     * Reload the page with the current state (BindForm) without client redirect. If that a POST request, buttons will not be invoked again.
+     * @param immediate true by default - If true, will stop rendering all BindForm components and their children and immediately reload the page.
+     */
+    public reloadState(immediate: boolean = true) {
+        this._reloadState = true;
+        this._stopRendering = immediate;
     }
 
     /**
@@ -78,7 +96,7 @@ export default class FormsReact {
      * @param status - redirect status code
      */
     public updateOneSearchParam(key: string, value?: string, status?: ValidRedirectStatus) {
-        const {search, redirect} = this.updateSearchParams();
+        const { search, redirect } = this.updateSearchParams();
 
         if (value == null) {
             search.delete(key);
