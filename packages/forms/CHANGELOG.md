@@ -1,3 +1,10 @@
+## [3.15.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.0...@astro-utils/forms@3.15.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* lean state reload ([d3533b6](https://github.com/withastro-utils/utils/commit/d3533b6c86121411123d2c3ff193336f6e343d09))
+
 # [3.15.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.14.1...@astro-utils/forms@3.15.0) (2025-10-17)
 
 
