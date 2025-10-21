@@ -1,3 +1,10 @@
+## [3.15.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.1...@astro-utils/forms@3.15.2) (2025-10-21)
+
+
+### Bug Fixes
+
+* **reloadState:** stabilize render edge cases ([2bb9349](https://github.com/withastro-utils/utils/commit/2bb93499dbac4f16de17282633918e934603433f))
+
 ## [3.15.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.0...@astro-utils/forms@3.15.1) (2025-10-17)
 
 
