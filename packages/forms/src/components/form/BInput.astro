@@ -34,7 +34,7 @@ if (!Astro.props.name) {
 }
 
 const { bind, method, webFormsSettings, onSubmitClickGlobal, bindId = '' } = getContext(Astro, '@astro-utils/forms');
-if (Astro.locals.__formsInternalUtils.firstRender && !Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
     await validateFormInput(Astro, bind, bindId);
 }
 

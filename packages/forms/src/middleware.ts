@@ -34,41 +34,30 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
 export default function astroForms(settings: Partial<FormsSettings> = {}) {
     objectAssignDeep(FORM_OPTIONS, DEFAULT_FORM_OPTIONS, settings);
 
-    return async function onRequest({ locals, request, cookies }: APIContext, next: MiddlewareNext) {
-        const likeAstro = { locals, request, cookies };
+    return async function onRequest({ locals, request, cookies, props }: APIContext, next: MiddlewareNext) {
+        const likeAstro = { locals, request, cookies, props };
         const session = new JWTSession(cookies);
-        locals.session = session.sessionData;        
+        locals.session = session.sessionData;
         const forms = locals.forms = new FormsReact(likeAstro);
         await ensureValidationSecret(likeAstro);
 
         locals.__formsInternalUtils = {
             FORM_OPTIONS: FORM_OPTIONS,
             bindFormCounter: 0,
-            bindGlobalState: {},
-            firstRender: true,
+            bindGlobalState: {}
         };
 
         try {
-            let reloadPage = true;
-            let newResponse: Response | null = null;
-
-            while (reloadPage) {
-                const response = await next();
-                const isHTML = response.headers.get('Content-Type')?.includes('text/html');
-                if (locals.webFormOff || !isHTML) {
-                    return response;
-                }
-
-                const content = await response.text();
-                newResponse = forms.overrideResponse || new Response(content, response);
-                reloadPage = forms._reloadState;
-                locals.__formsInternalUtils.bindFormCounter = 0;
-                locals.__formsInternalUtils.firstRender = false;
-                forms._reloadState = false;
-                forms._stopRendering = false;
+            const response = await next();
+            const isHTML = response.headers.get('Content-Type')?.includes('text/html');
+            if (locals.webFormOff || !isHTML) {
+                return response;
             }
 
-            if(!(newResponse instanceof Response)) {
+            const content = await response.text();
+            const newResponse = forms.overrideResponse || new Response(content, response);
+
+            if (!(newResponse instanceof Response)) {
                 throw new Error('Astro.locals.forms.overrideResponse must be a Response instance');
             }
 
@@ -81,7 +70,7 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
             }
 
             const newResponse = error.response ?? locals.forms.overrideResponse ?? new Response(error.message, { status: 500 });
-            if(!(newResponse instanceof Response)) {
+            if (!(newResponse instanceof Response)) {
                 throw new Error('ThrowOverrideResponse.response must be a Response instance');
             }
 

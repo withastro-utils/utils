@@ -27,7 +27,7 @@ addOnSubmitClickEvent(onSubmitClick, props);
 
 let stringifySelectedOptions = getSelectValueFromBind(bind, Astro);
 
-if (Astro.locals.__formsInternalUtils.firstRender && !Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
     stringifySelectedOptions = await validateSelect(Astro, bind, bindId);
 }
 

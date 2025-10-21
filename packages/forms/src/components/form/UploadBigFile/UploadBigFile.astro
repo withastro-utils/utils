@@ -3,12 +3,9 @@ import type { ComponentProps } from 'astro/types';
 import BInput from '../BInput.astro';
 import { processBigFileUpload } from './uploadBigFileServer.js';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends ComponentProps<typeof BInput<T>> {
-}
+export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends ComponentProps<typeof BInput<T>> {}
 
 const { class: className, tempDirectory, name, ...props } = Astro.props;
-if(Astro.locals.__formsInternalUtils.firstRender){
-    await processBigFileUpload(Astro);
-}
+await processBigFileUpload(Astro);
 ---
 <BInput type='file' {...props} name={name} class:list={[className, 'big-upload']} />

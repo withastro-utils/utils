@@ -14,7 +14,7 @@ const { bind, name, stringifySelectedOptions, method } = getContext(Astro, '@ast
 let htmlSlot = await Astro.slots.render('default');
 const stringifyOptionValue = stringifySelectValue(Astro.props.value ?? htmlSlot);
 
-if (Astro.locals.__formsInternalUtils.firstRender && !Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
+if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
     validateSelectOption(bind, name, stringifyOptionValue);
 }
 

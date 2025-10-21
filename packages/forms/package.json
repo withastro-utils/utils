@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "watch": "onchange 'src/**/*' -- npm run build",
-    "build": "rm -r dist/*; tsc; mkdir dist/components; cp -r src/components/* dist/components/; find dist/components/ -type f -name '*.ts' ! -name '*.d.ts' -delete",
+    "build": "rm -r dist/*; tsc; mkdir dist/components; mkdir -p dist/integration/render; cp -r src/components/* dist/components/; cp -r src/integration/render/* dist/integration/render/; find dist/components/ -type f -name '*.ts' ! -name '*.d.ts' -delete",
     "prepack": "npm run build"
   },
   "keywords": [
@@ -81,6 +81,6 @@
     "zod": "^3.19.1"
   },
   "peerDependencies": {
-    "astro": "^4.0.6"
+    "astro": "^4.16.19"
   }
 }

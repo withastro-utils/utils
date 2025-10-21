@@ -2,6 +2,7 @@ import type {AstroGlobal} from 'astro';
 import {FormsSettings} from './settings.js';
 import AwaitLockDefault from 'await-lock';
 import FormsReact from './form-tools/forms-react.js';
+import { BindContext } from './components-control/types.js';
 
 export function createLock(): InstanceType<typeof AwaitLockDefault['default']> {
     if ('default' in AwaitLockDefault) {
@@ -34,8 +35,7 @@ declare global {
           __formsInternalUtils: {
               FORM_OPTIONS: FormsSettings;
               bindFormCounter: number;
-              bindGlobalState: Record<string, any>;
-              firstRender: boolean;
+              bindGlobalState: Record<string | number, BindContext>;
           };
           forms: FormsReact;
           webFormOff?: boolean;

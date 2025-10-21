@@ -1,17 +1,23 @@
 ---
 import { BButton, Bind, BindForm } from "@astro-utils/forms/forms.js";
 
-const bind = Bind();
-const { session, forms } = Astro.locals;
+interface Props {
+    incParentCounter: () => void;
+    debugParam?: string;
+}
+
+const { incParentCounter, debugParam } = Astro.props;
+const bind = Bind({counter: 0, debugParam});
+const { forms } = Astro.locals;
 
 async function onSubmit(){
-    session.counter ??= 0;
-    session.counter++;
+    bind.counter++;
+    incParentCounter();
     forms.reloadState();
 }
 
 ---
 <BindForm {bind}>
-    <p>Counter of sub-state: {session.counter}</p>
+    <p>Counter of sub-state: {bind.counter}</p>
     <BButton onClick={onSubmit}>Button From Sub-State</BButton>
 </BindForm>

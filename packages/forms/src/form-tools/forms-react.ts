@@ -1,29 +1,22 @@
-import type { AstroGlobal, ValidRedirectStatus } from 'astro';
+import getContext from '@astro-utils/context';
+import type { ValidRedirectStatus } from 'astro';
 import { AstroLinkHTTP } from 'src/utils.js';
 
 export default class FormsReact {
     public scriptToRun = '';
     public overrideResponse: Response | null = null;
-    /**
-     * @internal
-     */
-    _reloadState = false;
-    /**
-     * @internal
-     */
-    _stopRendering = false;
 
 
-    public constructor(private _astro: AstroLinkHTTP) {
+    public constructor(private _astro: AstroLinkHTTP & { props: any }) {
     }
 
     /**
-     * Reload the page with the current state (BindForm) without client redirect. If that a POST request, buttons will not be invoked again.
-     * @param immediate true by default - If true, will stop rendering all BindForm components and their children and immediately reload the page.
+     * Reload the state (BindForm) without client redirect. If that a POST request, buttons will not be invoked again.
+     * Call BindForm.on.reloadState() to reload the state of every form relevant to this reload.
      */
-    public reloadState(immediate: boolean = true) {
-        this._reloadState = true;
-        this._stopRendering = immediate;
+    public reloadState() {
+        const { settings } = getContext(this._astro, '@astro-utils/forms');
+        settings.reloadState = true;
     }
 
     /**

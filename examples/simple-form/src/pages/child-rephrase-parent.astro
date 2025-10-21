@@ -1,29 +1,37 @@
 ---
-import { BButton, Bind, BindForm, BInput } from "@astro-utils/forms/forms.js";
+import { BButton, Bind, BindForm, BInput } from '@astro-utils/forms/forms.js';
 import { Button } from 'reactstrap';
-import Layout from "../layouts/Layout.astro";
-import SubState from "../components/SubState.astro";
+import Layout from '../layouts/Layout.astro';
+import SubState from '../components/SubState.astro';
 
-const { session } = Astro.locals;
-const bind = Bind();
+const bind = Bind({counter: 0});
 
 async function increaseCounter() {
-    session.counter ??= 0
-    session.counter++;
+    bind.counter++;
 }
-
 ---
-<Layout title="counter">
+
+<Layout title='counter'>
     <p>
         The inner state reload the parent state, so the parent state will show the new date from the child. <br />
         In this example when you click on the inner-state counter, it will reload the parent counter as well.
     </p>
     <BindForm {bind}>
-        <BInput name="name" />
-        <BButton as={Button} onClick={increaseCounter}>++</BButton>
-        {session.counter}
+        <BindForm>
+            <BInput name='name' />
+            <BButton as={Button} onClick={increaseCounter}>++</BButton>
+            {bind.counter}
 
-        <p>Sub-state</p>
-        <SubState />
+            <p>Sub-state1</p>
+            {[<SubState incParentCounter={increaseCounter} debugParam='1' />, <SubState incParentCounter={increaseCounter} debugParam='2' />]}
+
+        </BindForm>
+
+        <BindForm>
+            <BInput name='name' />
+            <p>Sub-state2</p>
+            {[<SubState incParentCounter={increaseCounter} debugParam='3' />, <SubState incParentCounter={increaseCounter} debugParam='4' />]}
+
+        </BindForm>
     </BindForm>
 </Layout>

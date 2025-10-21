@@ -23,6 +23,10 @@ export class BindForm<BindValues> {
         newState?: () => void | Promise<void>;
         stateLoaded?: () => void | Promise<void>;
         pagePostBack?: () => void | Promise<void>;
+        /**
+         * When `Astro.locals.forms.reloadState()` is triggered, this function will be called.
+         */
+        reloadState?: () => void | Promise<void>;
     } = {};
 
     /**
