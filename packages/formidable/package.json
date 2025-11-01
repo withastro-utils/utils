@@ -38,8 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "formidable": "^3.2.5",
-    "semantic-release-npm-workspaces-monorepo": "^3.1.0-beta.4"
+    "formidable": "^3.2.5"
   },
   "devDependencies": {
     "@types/formidable": "^2.0.5",
