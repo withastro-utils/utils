@@ -1,4 +1,4 @@
-import {VolatileFile, PersistentFile} from 'formidable';
+import {PersistentFile, VolatileFile} from 'formidable';
 
 export type FormFile = {
     filepath: string;
@@ -81,9 +81,9 @@ export default class ExtendedFormData {
         return this.#data.values();
     }
 
-    forEach(callbackfn: (value: FormDataValue[], key: string, parent: ExtendedFormData) => void, thisArg?: any) {
+    forEach(callback: (value: FormDataValue[], key: string, parent: ExtendedFormData) => void, thisArg?: any) {
         for (const [key, value] of this.entries()) {
-            callbackfn(value, key, thisArg ?? this);
+            callback(value, key, thisArg ?? this);
         }
     }
 
