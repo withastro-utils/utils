@@ -1,3 +1,11 @@
+## [2.0.4](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.3...@astro-utils/formidable@2.0.4) (2025-11-01)
+
+
+### Bug Fixes
+
+* **ExtendedFormData:** typo ([c797ec8](https://github.com/withastro-utils/utils/commit/c797ec8f10a41927622640d4f04e06d7c2f97fe3))
+* **ci:** versions ([f6f3032](https://github.com/withastro-utils/utils/commit/f6f3032d50b5dbe8d6b2f915fb2f62aab72a5c42))
+
 ## [2.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.2...@astro-utils/formidable@2.0.3) (2024-08-30)
 
 
