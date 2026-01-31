@@ -14,9 +14,7 @@
         ],
         "perPackageConfig": {
             "examples/**": {
-                "release": {
-                    "plugins": []
-                }
+                "skip": true
             }
         }
     },
@@ -24,6 +22,6 @@
         "create-release": "semantic-release-npm-workspaces-monorepo"
     },
     "devDependencies": {
-        "semantic-release-npm-workspaces-monorepo": "^3.1.1"
+        "semantic-release-npm-workspaces-monorepo": "^3.2.0"
     }
 }
