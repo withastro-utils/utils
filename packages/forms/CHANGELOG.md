@@ -1,3 +1,10 @@
+## [3.15.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.2...@astro-utils/forms@3.15.3) (2026-01-31)
+
+
+### Bug Fixes
+
+* **session:** cookie types ([87032c0](https://github.com/withastro-utils/utils/commit/87032c09933ab83e6a126c2d363fd7aead3bf4c9))
+
 ## [3.15.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.1...@astro-utils/forms@3.15.2) (2025-10-21)
 
 
