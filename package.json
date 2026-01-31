@@ -17,6 +17,6 @@
         "create-release": "semantic-release-npm-workspaces-monorepo"
     },
     "devDependencies": {
-      "semantic-release-npm-workspaces-monorepo": "^3.1.0-beta.4"
+        "semantic-release-npm-workspaces-monorepo": "^3.1.1"
     }
 }

@@ -1,3 +1,4 @@
+import { CookieSerializeOptions } from 'cookie';
 import { BigFileUploadOptions } from './components/form/UploadBigFile/uploadBigFileClient.js';
 import { LoadUploadFilesOptions } from './components/form/UploadBigFile/uploadBigFileServer.js';
 import type {CSRFSettings} from './form-tools/csrf.js';
@@ -14,13 +15,7 @@ export type FormsSettings = {
     }
     session?: {
         cookieName?: string
-        cookieOptions?: {
-            httpOnly?: boolean
-            sameSite?: boolean | 'lax' | 'strict' | 'none'
-            maxAge?: number
-            path?: string 
-            secure?: boolean
-        }
+        cookieOptions?: CookieSerializeOptions
     },
     secret?: string,
     logs?: (type: 'warn' | 'error' | 'log', message: string) => void
