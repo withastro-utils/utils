@@ -14,7 +14,9 @@
         ],
         "perPackageConfig": {
             "examples/**": {
-                "npmRelease": false
+                "release": {
+                    "plugins": []
+                }
             }
         }
     },
