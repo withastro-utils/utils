@@ -1,3 +1,10 @@
+# [3.16.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.3...@astro-utils/forms@3.16.0) (2026-09-08)
+
+
+### Features
+
+* **input-parse:** add support for 'step' for time input and milliseconds time format ([69c8eec](https://github.com/withastro-utils/utils/commit/69c8eeca501e5633034c5821755904d704d65b5c))
+
 ## [3.15.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.2...@astro-utils/forms@3.15.3) (2026-01-31)
 
 
