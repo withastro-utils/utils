@@ -3,7 +3,7 @@ import { getFormValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radio.js';
 import { BindForm } from './form-utils/bind-form.js';
-import { parseCheckbox, parseColor, parseDate, parseEmail, parseEmptyFiles, parseFiles, parseJSON, parseNumber, parseURL } from './form-utils/parse.js';
+import { DEFAULT_DATE_AS_MILLISECONDS, parseCheckbox, parseColor, parseDate, parseEmail, parseEmptyFiles, parseFiles, parseJSON, parseNumber, parseTimeFormat, parseURL } from './form-utils/parse.js';
 import { validateFunc, validateRequire, validateStringPatters } from './form-utils/validate.js';
 import { getProperty } from 'dot-prop';
 import { ZodType } from 'zod';
@@ -55,7 +55,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
 
     // validate filed exits
     if (!OK_INPUT_VALUE_NULL.includes(type) && !validateRequire(aboutInput, required)) {
-        if(type === 'file') {
+        if (type === 'file') {
             parseEmptyFiles(aboutInput, astro);
         }
         aboutInput.setValue();
@@ -82,7 +82,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
 }
 
 async function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind: BindForm<any>) {
-    const { type, min, max, value: originalValue, multiple, readonly } = astro.props;
+    const { type, min, max, value: originalValue, parseTimeFormat: timeFormat, multiple, readonly } = astro.props;
 
     switch (type) {
         case 'checkbox':
@@ -99,6 +99,10 @@ async function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName
         case 'week':
         case 'time':
             parseDate(aboutInput, type, min, max);
+
+            if(type === 'time'){
+                parseTimeFormat(aboutInput, timeFormat);
+            }
             break;
 
         case 'email':
@@ -130,33 +134,22 @@ async function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName
     }
 }
 
-function toDateTimeLocal(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
-
-
-function stringifyCustomValue(date?: Date | string, type?: ExtendedInputTypes) {
-    if (typeof date === 'string' || !date) {
+function stringifyCustomValue(date?: Date | string, dateStep?: string, type?: ExtendedInputTypes) {
+    if (typeof date === 'string' || date == null) {
         return date;
     }
 
     switch (type) {
         case 'date':
-            return toDateTimeLocal(date).slice(0, 10);
-        case 'datetime-local':
-            return toDateTimeLocal(date).slice(0, 16);
-        case 'time':
-            return date.toTimeString().slice(0, 5);
+            return toLocalDate(date);
         case 'month':
-            return toDateTimeLocal(date).slice(0, 7);
+            return toLocalDate(date).slice(0, 7);
         case 'week':
             return formatToDateWeek(date);
+        case 'datetime-local':
+            return `${ toLocalDate(date) }T${ formatTime(date, dateStep) }`;
+        case 'time':
+            return formatTime(date, dateStep)
         case 'json':
             return JSON.stringify(date);
     }
@@ -164,10 +157,60 @@ function stringifyCustomValue(date?: Date | string, type?: ExtendedInputTypes) {
     return date;
 }
 
+function getStepDecimals(step: number) {
+    for (let decimals = 0; decimals <= 3; decimals++) {
+        if (Number.isInteger(step * 10 ** decimals)) return decimals;
+    }
+
+    return 3;
+}
+
+function formatTime(time: Date | number, dateStep: string = '') {
+    const step = parseFloat(dateStep);
+
+    if(typeof time === 'number'){
+        time = new Date(DEFAULT_DATE_AS_MILLISECONDS + time);
+    }
+
+    const hours = String(time.getHours()).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+
+    let formattedTime = `${ hours }:${ minutes }`;
+
+    if (step < 60) {
+        formattedTime += ':' + String(time.getSeconds()).padStart(2, '0');
+
+        if (step < 1) {
+            const decimals = getStepDecimals(step);
+            const milliseconds = String(time.getMilliseconds()).padStart(3, '0');
+
+            formattedTime += '.' + milliseconds.slice(0, decimals);
+        }
+    }
+
+    return formattedTime;
+}
+
+function toLocalDate(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${ year }-${ month }-${ day }`;
+}
+
+function formatToDateWeek(date: Date): string {
+    const year = date.getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysSinceStartOfYear = (date.getTime() - firstDayOfYear.getTime()) / DAY_IN_MS;
+    const weekNumber = Math.ceil((daysSinceStartOfYear + firstDayOfYear.getDay() + 1) / 7);
+    return `${ year }-W${ weekNumber.toString().padStart(2, '0') }`;
+}
+
 export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
-    const value = stringifyCustomValue(getProperty(bind, astro.props.name, astro.props.value), astro.props.type);
-    const min = stringifyCustomValue(astro.props.min, astro.props.type);
-    const max = stringifyCustomValue(astro.props.max, astro.props.type);
+    const value = stringifyCustomValue(getProperty(bind, astro.props.name, astro.props.value), astro.props.step, astro.props.type);
+    const min = stringifyCustomValue(astro.props.min, astro.props.step, astro.props.type);
+    const max = stringifyCustomValue(astro.props.max, astro.props.step, astro.props.type);
 
     switch (astro.props.type as ExtendedInputTypes) {
         case 'checkbox':
@@ -177,14 +220,6 @@ export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
     }
 
     return { value, min, max };
-}
-
-function formatToDateWeek(date: Date): string {
-    const year = date.getFullYear();
-    const firstDayOfYear = new Date(year, 0, 1);
-    const daysSinceStartOfYear = (date.getTime() - firstDayOfYear.getTime()) / DAY_IN_MS;
-    const weekNumber = Math.ceil((daysSinceStartOfYear + firstDayOfYear.getDay() + 1) / 7);
-    return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
 }
 
 

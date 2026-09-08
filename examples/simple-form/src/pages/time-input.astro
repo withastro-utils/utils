@@ -1,0 +1,21 @@
+---
+import { BButton, BOption, BSelect, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+import BInput from '../../../../packages/forms/dist/components/form/BInput.astro';
+
+const bind = Bind();
+function onSubmit() {
+    bind.parseTime += 1000;
+    console.log(bind);
+}
+
+const date = new Date('2021-01-01');
+---
+
+<Layout title='Test time format'>
+    <BindForm bind={bind}>
+        <BInput name='parseTime' type="time" step="0.001" parseTimeFormat='milliseconds' />
+
+        <BButton whenFormOK onClick={onSubmit}>Submit</BButton>
+    </BindForm>
+</Layout>

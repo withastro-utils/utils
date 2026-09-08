@@ -11,6 +11,7 @@ import fsExtra from 'fs-extra/esm';
 
 const HEX_COLOR_REGEX = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i;
 const BIG_FILE_START = 'big-file:';
+export const DEFAULT_DATE_AS_MILLISECONDS = new Date('1970-01-01').getTime();
 
 export function parseCheckbox(about: AboutFormName, originalValue?: string) {
     if (originalValue == null) {
@@ -47,9 +48,9 @@ function parseFormDate(date: Date | string, type?: DateTypes) {
     if (type === 'date' || type === 'datetime-local') {
         date = new Date(date);
     } else if (type === 'time') {
-        date = new Date(`1970-01-01T${date}`);
+        date = new Date(`1970-01-01T${ date }`);
     } else if (type === 'month') {
-        date = new Date(`${date}-01`);
+        date = new Date(`${ date }-01`);
     } else if (type === 'week') {
         const year = parseInt(date.substring(0, 4), 10);
         const week = parseInt(date.substring(6, 8), 10) - 1; // Subtract 1 to convert to 0-indexed
@@ -76,6 +77,12 @@ export function parseDate(about: AboutFormName, type: DateTypes, min?: string | 
 
     about.formValue = parseFormDate(about.formValue, type);
     about.catchParse(date);
+}
+
+export function parseTimeFormat(about: AboutFormName, parseFormat: 'date' | 'milliseconds' = 'date') {
+    if (parseFormat === 'milliseconds') {
+        about.formValue = about.formValue.getTime() - DEFAULT_DATE_AS_MILLISECONDS;
+    }
 }
 
 export function parseJSON(about: AboutFormName) {
@@ -212,7 +219,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
 
 
 export function parseEmptyFiles(about: AboutFormName, astro: AstroGlobal) {
-    if(astro.props.readonly) return;
+    if (astro.props.readonly) return;
 
     if (!about.formValue || about.formValue.size === 0) {
         about.formValue = null;

@@ -18,6 +18,7 @@ interface ModifyInputProps {
     max?: number | string | undefined | null | Date;
     min?: number | string | undefined | null | Date;
     onSubmitClick?: string;
+    parseTimeFormat: 'date' | 'milliseconds';
     [key: `data-${string}`]: any;
 }
 
