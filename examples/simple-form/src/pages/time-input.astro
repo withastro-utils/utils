@@ -3,7 +3,7 @@ import { BButton, BOption, BSelect, Bind, BindForm } from '@astro-utils/forms/fo
 import Layout from '../layouts/Layout.astro';
 import BInput from '../../../../packages/forms/dist/components/form/BInput.astro';
 
-const bind = Bind();
+const bind = Bind({parseTime: 1000});
 function onSubmit() {
     bind.parseTime += 1000;
     console.log(bind);

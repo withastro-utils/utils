@@ -11,7 +11,7 @@ import fsExtra from 'fs-extra/esm';
 
 const HEX_COLOR_REGEX = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i;
 const BIG_FILE_START = 'big-file:';
-export const DEFAULT_DATE_AS_MILLISECONDS = new Date('1970-01-01').getTime();
+export const DEFAULT_DATE_AS_MILLISECONDS = new Date('1970-01-01T00:00').getTime();
 
 export function parseCheckbox(about: AboutFormName, originalValue?: string) {
     if (originalValue == null) {
