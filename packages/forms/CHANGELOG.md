@@ -1,3 +1,10 @@
+## [3.16.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.16.0...@astro-utils/forms@3.16.1) (2026-09-08)
+
+
+### Bug Fixes
+
+* **parse-input:** stringify time milliseconds ([5211538](https://github.com/withastro-utils/utils/commit/521153830f3affda73933661bfdefa09756e725d))
+
 # [3.16.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.15.3...@astro-utils/forms@3.16.0) (2026-09-08)
 
 
