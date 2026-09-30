@@ -1,3 +1,10 @@
+## [2.0.5](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.4...@astro-utils/formidable@2.0.5) (2026-09-30)
+
+
+### Bug Fixes
+
+* spesify engine in `package.json` ([1b9efaa](https://github.com/withastro-utils/utils/commit/1b9efaa4ed9b1a9ff7554be8525880e93fc53d11))
+
 ## [2.0.4](https://github.com/withastro-utils/utils/compare/@astro-utils/formidable@2.0.3...@astro-utils/formidable@2.0.4) (2025-11-01)
 
 
