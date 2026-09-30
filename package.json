@@ -22,6 +22,8 @@
         "create-release": "semantic-release-npm-workspaces-monorepo"
     },
     "devDependencies": {
-        "semantic-release-npm-workspaces-monorepo": "^3.2.0"
+        "@types/node": "^22.12.0",
+        "semantic-release-npm-workspaces-monorepo": "^3.2.0",
+        "typescript": "^5.9.3"
     }
 }

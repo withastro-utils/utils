@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 1254 1254" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Astro Utils</title>
+  <defs>
+    <linearGradient id="background-blue" x1="80" y1="1174" x2="1174" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0078EB"/>
+      <stop offset="1" stop-color="#1AA5FF"/>
+    </linearGradient>
+    <clipPath id="icon-clip">
+      <rect width="1254" height="1254" rx="204"/>
+    </clipPath>
+    <clipPath id="forearm-clip">
+      <path d="M43 1172C119 1114 221 1051 293 1017C305 1011 313 1014 322 1028C337 1051 348 1084 348 1103C348 1112 343 1119 334 1128L225 1254H0V1205Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#icon-clip)">
+    <rect id="background" width="1254" height="1254" rx="204" fill="url(#background-blue)"/>
+    <g id="rocket">
+      <g id="fins" fill="#93DFFF">
+        <path id="left-fin" d="M618 397C521 395 425 466 367 584C361 597 368 608 383 601C434 578 480 564 542 562Z"/>
+        <path id="right-fin" d="M810 546C844 645 791 755 681 827C670 835 659 828 663 814C679 743 678 704 662 656Z"/>
+      </g>
+      <g id="exhaust">
+        <path fill="#FFAA29" d="M523 622C443 642 396 733 384 843C383 851 386 854 394 851C500 813 580 759 598 673Z"/>
+        <path fill="#FFDF78" d="M538 633C490 660 455 711 446 778C513 756 565 720 584 672Z"/>
+        <path fill="#0755BF" d="M535 591C571 614 604 645 631 676L614 689Q607 695 601 687L525 625Q519 620 524 612Z"/>
+      </g>
+      <path id="hull" fill="#FFFFFF" d="M974 161C987 160 991 172 991 192C993 309 940 451 847 541C786 601 717 646 649 678Q639 684 629 677L535 596Q526 589 530 576C562 471 614 380 682 310C768 222 874 167 974 161Z"/>
+      <g id="window">
+        <circle cx="792" cy="390" r="90" fill="#35C5F4"/>
+        <circle cx="792" cy="390" r="74" fill="#084B94"/>
+        <path fill="#3894EC" d="M741 373C753 344 781 328 807 336C819 339 823 345 813 351L750 390C737 398 735 387 741 373Z"/>
+      </g>
+      <g id="utility-accents" stroke-linecap="round">
+        <path d="M920 283L937 251" stroke="#29A7F8" stroke-width="24"/>
+        <path d="M711 585L756 538" stroke="#73C8FC" stroke-width="26"/>
+      </g>
+    </g>
+    <g id="robotic-hand">
+      <g id="rear-finger">
+        <path fill="#FFFFFF" d="M608 969C619 947 632 930 645 923C656 917 666 925 662 936L639 980Z"/>
+        <path fill="#D3EDFF" d="M624 976L662 930L639 980Z"/>
+        <circle cx="619" cy="980" r="16" fill="#084E8F"/>
+        <path fill="#FFFFFF" d="M549 1008L601 975Q611 969 619 978L634 994L580 1030Z"/>
+        <path fill="#D3EDFF" d="M560 1020L625 985L634 994L580 1030Z"/>
+        <circle cx="560" cy="1023" r="21" fill="#084E8F"/>
+      </g>
+      <g id="front-finger">
+        <path fill="#FFFFFF" d="M653 961C667 932 690 905 704 900C718 896 728 906 724 920C718 944 704 970 688 989Z"/>
+        <path fill="#D3EDFF" d="M673 979C692 957 708 932 724 913C723 935 705 970 688 989Z"/>
+        <ellipse cx="666" cy="983" rx="23" ry="21" transform="rotate(-28 666 983)" fill="#084E8F"/>
+        <path fill="#FFFFFF" d="M582 1011C604 994 626 980 644 975C657 971 670 979 677 991C687 1007 653 1045 625 1065C611 1076 599 1075 591 1064L577 1046Z"/>
+        <path fill="#D3EDFF" d="M595 1049C624 1036 653 1014 676 993C682 1009 652 1047 625 1065C611 1076 601 1075 591 1064Z"/>
+      </g>
+      <g id="thumb">
+        <path fill="#FFFFFF" d="M481 917C496 904 518 892 539 889C555 887 565 896 561 909C555 927 532 945 501 955Z"/>
+        <path fill="#D3EDFF" d="M496 941C522 932 543 915 561 905C560 924 534 945 501 955Z"/>
+        <ellipse cx="481" cy="940" rx="21" ry="23" transform="rotate(-22 481 940)" fill="#084E8F"/>
+        <path d="M477 929C489 929 493 944 482 951" stroke="#2ACAF3" stroke-width="6" stroke-linecap="round"/>
+        <path fill="#FFFFFF" d="M349 994C362 962 408 938 449 925C462 921 470 926 477 939C484 952 475 964 461 972C432 970 411 984 395 1011Z"/>
+        <path fill="#D3EDFF" d="M381 1002C407 972 432 965 461 972C432 976 411 990 398 1014Z"/>
+      </g>
+      <g id="knuckle">
+        <ellipse cx="578" cy="1046" rx="33" ry="35" fill="#084E8F"/>
+        <ellipse cx="578" cy="1046" rx="20" ry="22" stroke="#2ACAF3" stroke-width="7"/>
+      </g>
+      <g id="palm">
+        <path fill="#FFFFFF" d="M410 986C422 972 439 974 464 983L538 1008C556 1014 564 1029 567 1047C571 1069 563 1090 548 1094C508 1101 454 1088 419 1077C407 1073 402 1065 404 1051C397 1028 399 1001 410 986Z"/>
+        <path fill="#D3EDFF" d="M405 1042C437 1022 510 1064 567 1052C570 1073 562 1090 548 1094C508 1101 454 1088 419 1077C406 1073 402 1063 405 1042Z"/>
+      </g>
+      <g id="wrist">
+        <path fill="#084E8F" d="M317 1014C329 1003 344 994 357 991C376 987 392 1002 401 1026C411 1053 404 1077 385 1087L361 1094C342 1100 320 1075 313 1051Z"/>
+        <path d="M330 1020C349 1004 368 1016 374 1035C382 1055 365 1073 349 1076" stroke="#2ACAF3" stroke-width="8" stroke-linecap="round"/>
+      </g>
+      <g id="forearm" clip-path="url(#forearm-clip)">
+        <path fill="#FFFFFF" d="M43 1172C119 1114 221 1051 293 1017C305 1011 313 1014 322 1028C337 1051 348 1084 348 1103C348 1112 343 1119 334 1128L225 1254H0V1205Z"/>
+        <path fill="#D3EDFF" d="M92 1254C178 1167 268 1117 348 1066L365 1112L235 1254Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

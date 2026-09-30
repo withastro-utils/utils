@@ -1,9 +1,11 @@
 import {defineConfig} from 'astro/config';
+import node from '@astrojs/node';
 import react from '@astrojs/react';
 import astroFormsDebug from "@astro-utils/forms/dist/integration.js";
 
 // https://astro.build/config
 export default defineConfig({
     output: "server",
+    adapter: node({ mode: 'standalone' }),
     integrations: [react(), astroFormsDebug]
 });
