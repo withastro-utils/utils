@@ -12,6 +12,14 @@
                 "release": "patch"
             }
         ],
+        "branches": [
+            "main",
+            {
+                "name": "beta",
+                "prerelease": true,
+                "range": "4.x"
+            }
+        ],
         "perPackageConfig": {
             "examples/**": {
                 "skip": true
