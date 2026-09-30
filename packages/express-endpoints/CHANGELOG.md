@@ -18,6 +18,26 @@
 * **express-endpoints:** response start sending regardless of if the middleware function exited or not
 * **express-endpoints:** `ExpressRequest` no longer inherits from `EventEmitter`
 
+# [3.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.2...@astro-utils/express-endpoints@3.0.0) (2026-09-30)
+
+
+### Bug Fixes
+
+* add explicit MIT license ([e901957](https://github.com/withastro-utils/utils/commit/e901957b0962a9b927643f03632eb757675ace71))
+
+
+### Features
+
+* **express-endpoints:** http like streaming response & more express like headers methods ([a502b1c](https://github.com/withastro-utils/utils/commit/a502b1c234a508a4f1b2aa93637d167fab8fbc33))
+
+
+### BREAKING CHANGES
+
+* **express-endpoints:** `responseBody` props is no longer available,  use `send` or `write` instead
+* **express-endpoints:** using raw express like http cookies instead of `Astro.cookies`
+* **express-endpoints:** response start sending regardless of if the middleware function exited or not
+* **express-endpoints:** `ExpressRequest` no longer inherits from `EventEmitter`
+
 ## [2.1.2](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.1...@astro-utils/express-endpoints@2.1.2) (2025-10-16)
 
 
