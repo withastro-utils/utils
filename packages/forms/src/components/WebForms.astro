@@ -87,7 +87,13 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
     };
 
     const form = document.querySelector('form') as HTMLFormElement;
+    let isSubmitting = false;
+
     function submitByButton(id: string){
+        if(isSubmitting){
+            return;
+        }
+        
         if(id === 'state'){
             if(form instanceof HTMLFormElement){
                 form.submit();
@@ -100,6 +106,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
         const element = document.getElementById(id);
         if(element instanceof HTMLButtonElement){
             element.click();
+            return;
         }
 
         console.error(`Submitting form event by button: element with id ${id} is not a button`);
@@ -128,6 +135,8 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
     });
 
     form?.addEventListener('submit', event => {
+        isSubmitting = true;
+
         setTimeout(() => {
             form.querySelectorAll('button[type="submit"]').forEach(button => {
                 (button as HTMLButtonElement).disabled = true;
