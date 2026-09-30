@@ -1,8 +1,8 @@
 import type { APIContext, MiddlewareHandler, MiddlewareNext } from 'astro';
+import {randomUUID} from 'node:crypto';
 import { DEFAULT_SETTINGS as DEFAULT_SETTINGS_CSRF, ensureValidationSecret } from './form-tools/csrf.js';
 import { JWTSession } from './jwt-session.js';
 import { FORM_OPTIONS, type FormsSettings } from './settings.js';
-import { v4 as uuid } from 'uuid';
 import objectAssignDeep from 'object-assign-deep';
 import FormsReact from './form-tools/forms-react.js';
 import ThrowOverrideResponse from './throw-action/throwOverrideResponse.js';
@@ -25,7 +25,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
             path: '/'
         }
     },
-    secret: uuid(),
+    secret: randomUUID(),
     logs: (type, message) => {
         console[type](message);
     },
@@ -43,8 +43,9 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
 
         locals.__formsInternalUtils = {
             FORM_OPTIONS: FORM_OPTIONS,
-            bindFormCounter: 0,
-            bindGlobalState: {}
+            bindGlobalState: {},
+            rootContext: {},
+            activeGeneratedIds: new Set()
         };
 
         try {

@@ -1,6 +1,12 @@
-import {v4 as uuid} from 'uuid';
-
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+function randomUUID() {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const value = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    return `${value.slice(0, 8)}-${value.slice(8, 12)}-${value.slice(12, 16)}-${value.slice(16, 20)}-${value.slice(20)}`;
+}
 
 type ProgressCallback = (progress: number, total: number) => void;
 
@@ -58,7 +64,7 @@ async function uploadChunkWithXHR(file: Blob, info: Record<string, any>, progres
     });
 }
 
-async function finishUpload(uploadId: string, options: BigFileUploadOptions) {
+async function finishUpload(uploadId: string, options: Required<BigFileUploadOptions>) {
     let maxError = options.retryChunks;
     while (true) {
         try {
@@ -104,7 +110,7 @@ async function finishUpload(uploadId: string, options: BigFileUploadOptions) {
     }
 }
 
-async function uploadBigFile(fileId: string, file: File, progressCallback: ProgressCallback, options: BigFileUploadOptions) {
+async function uploadBigFile(fileId: string, file: File, progressCallback: ProgressCallback, options: Required<BigFileUploadOptions>) {
     const totalSize = file.size;
     const totalChunks = Math.ceil(totalSize / options.chunkSize);
 
@@ -176,7 +182,7 @@ async function uploadBigFile(fileId: string, file: File, progressCallback: Progr
     await finishUpload(fileId, options);
 }
 
-export async function uploadAllFiles(els: NodeListOf<HTMLInputElement>, options: BigFileUploadOptions = { ...UPLOAD_BIG_FILE_OPTIONS, ...clientWFS.bigFileUploadOptions }) {
+export async function uploadAllFiles(els: NodeListOf<HTMLInputElement>, options: Required<BigFileUploadOptions> = { ...UPLOAD_BIG_FILE_OPTIONS, ...clientWFS.bigFileUploadOptions }) {
     const activeUploads = new Map<string, Promise<any>>();
     const filesToUpload = new Map<HTMLInputElement, string>();
 
@@ -211,7 +217,7 @@ export async function uploadAllFiles(els: NodeListOf<HTMLInputElement>, options:
                 }
             }
 
-            const fileId = uuid();
+            const fileId = randomUUID();
             if (failed) {
                 onUploadFinished(el, file, fileId, true);
                 continue;

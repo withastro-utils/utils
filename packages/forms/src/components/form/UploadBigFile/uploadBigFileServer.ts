@@ -126,7 +126,7 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
     }
 
     const files = await fs.readdir(uploadDir);
-    const missingChunks = [];
+    const missingChunks: number[] = [];
     for (let i = 1; i <= total; i++) {
         if (!files.includes(`${i}-${total}`)) {
             missingChunks.push(i);
@@ -143,7 +143,7 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
             for (let i = 1; i <= total; i++) {
                 const fileFullPath = path.join(uploadDir, `${i}-${total}`);
                 const inputStream = oldFs.createReadStream(fileFullPath);
-                await new Promise((resolve, reject) => {
+                await new Promise<void>((resolve, reject) => {
                     inputStream.on("data", (chunk) => {
                         outputStream.write(chunk);
                     });
@@ -163,7 +163,7 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
     return Response.json({ ok: true, finished: true });
 }
 
-export async function processBigFileUpload(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions) {
+export async function processBigFileUpload(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions ?? {}) {
     const haveFileUpload = await loadUploadFiles(astro, options);
     if (haveFileUpload) {
         throw new ThrowOverrideResponse(haveFileUpload);
@@ -181,7 +181,7 @@ async function deleteOldUploads(tempDirectory: string, maxUploadTime: number) {
                 await fsExtra.remove(fullPath);
             }
         } catch (error) {
-            if (error.code !== "ENOENT") {
+            if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
                 throw error;
             }
         }
@@ -192,7 +192,7 @@ async function totalDirectorySize(directory: string) {
     const files = await fs.readdir(directory);
     let totalSize = 0;
 
-    const promises = [];
+    const promises: Promise<number>[] = [];
     for (const file of files) {
         const fullPath = path.join(directory, file);
         try {
@@ -204,7 +204,7 @@ async function totalDirectorySize(directory: string) {
                 totalSize += stat.size;
             }
         } catch (error) {
-            if (error.code !== "ENOENT") {
+            if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
                 throw error;
             }
         }

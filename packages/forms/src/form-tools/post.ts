@@ -1,4 +1,5 @@
-import {type AstroLinkHTTP, createLock, type ExtendedRequest} from '../utils.js';
+import {withLock} from 'lifecycle-utils';
+import {type AstroLinkHTTP, type ExtendedRequest} from '../utils.js';
 import {validateFrom} from './csrf.js';
 
 
@@ -7,17 +8,12 @@ export function isPost(astro: {request: Request}){
 }
 
 export async function parseFormData(request: ExtendedRequest): Promise<FormData> {
-    const lock = request.formDataLock ??= createLock();
-    await lock.acquireAsync();
-
-    try {
+    return await withLock([request, 'formData'], async () => {
         const formData = await request.formData();
         request.formData = () => Promise.resolve(formData);
 
         return formData;
-    } finally {
-        lock.release();
-    }
+    });
 }
 
 export async function getFormValue(request: ExtendedRequest, key: string): Promise<FormDataEntryValue | null> {

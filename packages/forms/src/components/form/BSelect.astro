@@ -1,41 +1,42 @@
 ---
-import getContext, { asyncContext } from '@astro-utils/context';
+import { asyncFormContext, getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 import { getSelectValueFromBind, validateSelect } from '../../components-control/select.js';
 import { validateFrom } from '../../form-tools/csrf.js';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
+import type { HTMLTag } from 'astro/types';
+import type { Component, ComponentProps } from '../../utils.js';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Omit<astroHTML.JSX.SelectHTMLAttributes, 'value'> {
+export type Props<T extends HTMLTag | Component = 'select'> = Omit<astroHTML.JSX.SelectHTMLAttributes, 'value'> & AstroFormsProps & {
     name: string;
     errorMessage?: string;
     type?: 'string' | 'number' | 'date';
     as?: T;
-    props?: React.ComponentProps<T>;
+    props?: ComponentProps<T>;
     value?: string | number | undefined | null | Date | (Date | number | string | null | undefined)[];
     onSubmitClick?: string;
-}
+};
 
 if (!Astro.props.name) {
     throw new MissingNamePropError('BInput');
 }
 
-const { bind, method, onSubmitClickGlobal, bindId = '' } = getContext(Astro, '@astro-utils/forms');
-
-const { as: asComponent = 'select', value: _, props: componentProps, onSubmitClick = onSubmitClickGlobal, ...props } = Astro.props;
-props.name = bindId + props.name;
-addOnSubmitClickEvent(onSubmitClick, props);
+const { bind, method, onSubmitClickGlobal, bindId: parentBindId = '' } = getFormContext(Astro);
 
 let stringifySelectedOptions = getSelectValueFromBind(bind, Astro);
 
 if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    stringifySelectedOptions = await validateSelect(Astro, bind, bindId);
+    stringifySelectedOptions = await validateSelect(Astro, bind, parentBindId);
 }
+
+const { as: asComponent = 'select', value: _, props: componentProps, onSubmitClick = onSubmitClickGlobal, __astroForms, ...props } = Astro.props;
+addOnSubmitClickEvent(onSubmitClick, props);
 
 const Component = asComponent as any;
 const context = { name: Astro.props.name, stringifySelectedOptions };
-const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'select' });
+const htmlSlot = await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
 ---
 
-<Component {...props} {...componentProps}>
+<Component {...props} name={parentBindId + props.name} {...componentProps}>
     <Fragment set:html={htmlSlot} />
 </Component>

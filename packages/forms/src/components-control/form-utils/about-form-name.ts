@@ -1,4 +1,4 @@
-import {ZodError, type ZodFirstPartySchemaTypes} from 'zod';
+import {ZodError, type ZodType} from 'zod';
 import {BindForm} from './bind-form.js';
 import {setProperty} from 'dot-prop';
 
@@ -31,7 +31,7 @@ export default class AboutFormName {
         });
     }
 
-    catchParse(zObject: ZodFirstPartySchemaTypes, overrideMessage?: string) {
+    catchParse(zObject: ZodType, overrideMessage?: string) {
         try {
             this.formValue = zObject.parse(this.formValue);
             return true;

@@ -1,12 +1,13 @@
 ---
-import getContext from '@astro-utils/context';
+import { getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 import { validateFormInput } from '../../components-control/input-parse.js';
 import { validateFrom } from '../../form-tools/csrf.js';
-import { ModifyDeep } from '../../utils.js';
+import type { Component, ComponentProps, ModifyDeep } from '../../utils.js';
 import { getProperty } from 'dot-prop';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
-import { ZodType } from 'zod';
+import type { ZodType } from 'zod';
+import type { HTMLTag } from 'astro/types';
 
 interface ModifyInputProps {
     minlength?: number;
@@ -14,27 +15,27 @@ interface ModifyInputProps {
     [key: `data-${string}`]: any;
 }
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttributes, ModifyInputProps>> {
+export type Props<T extends HTMLTag | Component = 'textarea'> = Partial<ModifyDeep<astroHTML.JSX.TextareaHTMLAttributes, ModifyInputProps>> & AstroFormsProps & {
     name: string;
     errorMessage?: string;
     validate?: Function | ZodType;
     as?: T;
-    props?: React.ComponentProps<T>;
+    props?: ComponentProps<T>;
     onSubmitClick?: string;
     [key: `data-${string}`]: any;
-}
+};
 
 if (!Astro.props.name) {
-    throw new MissingNamePropError('BInput');
+    throw new MissingNamePropError('BTextarea');
 }
 
-const { bind, method, onSubmitClickGlobal, bindId = '' } = getContext(Astro, '@astro-utils/forms');
+const { bind, method, onSubmitClickGlobal, bindId: parentBindId = ''  } = getFormContext(Astro);
+
 if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    await validateFormInput(Astro, bind, bindId);
+    await validateFormInput(Astro, bind, parentBindId);
 }
 
-const { as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, ...props } = Astro.props;
-props.name = bindId + props.name;
+const { as: asComponent = 'textarea', props: componentProps, value: defaultValue, onSubmitClick = onSubmitClickGlobal, __astroForms, ...props } = Astro.props;
 addOnSubmitClickEvent(onSubmitClick, props);
 
 const value = getProperty(bind, Astro.props.name, (await Astro.slots.render('default')) ?? defaultValue);
@@ -42,4 +43,4 @@ const value = getProperty(bind, Astro.props.name, (await Astro.slots.render('def
 const Component = asComponent as any;
 ---
 
-<Component {...props} {...componentProps}>{value}</Component>
+<Component {...props} name={parentBindId + props.name} {...componentProps}>{value}</Component>

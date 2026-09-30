@@ -1,11 +1,12 @@
 ---
-import { asyncContext } from '@astro-utils/context';
+import { asyncRootFormContext, getAstroFormsMetadata, type AstroFormsProps } from '../form-tools/form-context.js';
 import { createFormToken } from '../form-tools/csrf.js';
 import { getFormOptions } from '../settings.js';
 import fs from 'fs/promises';
 
-export interface Props extends astroHTML.JSX.FormHTMLAttributes {
+export interface Props extends astroHTML.JSX.FormHTMLAttributes, AstroFormsProps {
     loadingClassName?: string;
+    preservePageScroll?: boolean
 }
 
 const context = {
@@ -15,15 +16,19 @@ const context = {
     disposeFiles: [],
 };
 
-const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, { name: '@astro-utils/forms', context, lock: 'webForms' });
+if(!getAstroFormsMetadata(Astro)?.id){
+    throw new Error("Please make sure you enabled the @astro-utils/forms integration correctly.");
+}
 
-const { webFormsSettings, tempValues, disposeFiles, loadingClassName = '', ...props } = context;
+const htmlSlot = await asyncRootFormContext(() => Astro.slots.render('default'), Astro, context);
+
+const { webFormsSettings, tempValues, disposeFiles, loadingClassName = '', preservePageScroll = true, __astroForms, ...props } = context;
 if (webFormsSettings.haveFileUpload) {
     props.enctype = 'multipart/form-data';
 }
 
 if(disposeFiles.length > 0){
-    await Promise.all(disposeFiles.map(file => fs.unlink(file).catch(() => {})));
+    await Promise.all(disposeFiles.map((file: string) => fs.unlink(file).catch(() => {})));
 }
 
 const useSession = getFormOptions(Astro).session?.cookieOptions?.maxAge;
@@ -31,7 +36,7 @@ const formRequestToken = useSession && (await createFormToken(Astro));
 const clientScript = Astro.locals.forms.scriptToRun;
 
 const bigFileClientOptions = Astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileClientOptions;
-const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions, csrf: formRequestToken };
+const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions, csrf: formRequestToken, preservePageScroll };
 ---
 
 <form method='post' {...props}>
@@ -46,6 +51,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
 
 <script>
     import { BigFileUploadOptions, countTotalUploads, finishFormSubmission, uploadAllFiles } from './form/UploadBigFile/uploadBigFileClient.js';
+    import { saveState, restoreState } from  "./scripts/formScroll.js";
 
     declare global {
         interface Window {
@@ -55,6 +61,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
             clientWFS: {
                 loadingClassName: string;
                 bigFileUploadOptions: BigFileUploadOptions;
+                preservePageScroll: boolean;
             };
         }
     }
@@ -98,6 +105,10 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
         console.error(`Submitting form event by button: element with id ${id} is not a button`);
     }
 
+    if(window.clientWFS.preservePageScroll){
+        restoreState();
+    }
+
     form?.querySelectorAll('button[type="submit"]').forEach(button => {
         button.addEventListener('click', () => {
             if (button instanceof HTMLButtonElement === false || (!button.formNoValidate && !form.checkValidity())) return;
@@ -109,6 +120,10 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
             const allBigUploads = document.querySelectorAll('input[name].big-upload') as NodeListOf<HTMLInputElement>;
             const uploads = countTotalUploads(allBigUploads);
             document.dispatchEvent(new CustomEvent('WFSubmitting', { detail: { button, uploads } }));
+
+            if(window.clientWFS.preservePageScroll){
+                saveState();
+            }
         });
     });
 

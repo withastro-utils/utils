@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "watch": "onchange 'src/**/*' -- npm run build",
-    "build": "rm -r dist/*; tsc; mkdir dist/components; mkdir -p dist/integration/render; cp -r src/components/* dist/components/; cp -r src/integration/render/* dist/integration/render/; find dist/components/ -type f -name '*.ts' ! -name '*.d.ts' -delete",
+    "build": "rm -rf dist/* && tsc && mkdir -p dist/components && cp -r src/components/* dist/components/ && find dist/components/ -type f -name '*.ts' ! -name '*.d.ts' -delete",
+    "test": "npm run build && node --test test/*.test.mjs",
     "prepack": "npm run build"
   },
   "keywords": [
@@ -20,6 +21,7 @@
     "on-click",
     "on-submit",
     "server-components",
+    "php",
     "next.js",
     "zod"
   ],
@@ -41,6 +43,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./forms.js": "./forms.js",
+    "./internal.js": "./dist/form-tools/form-context.js",
     "./dist/settings.js": "./dist/settings.js",
     "./dist/integration.js": "./dist/integration.js"
   },
@@ -52,35 +55,37 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "@types/formidable": "^2.0.5",
     "@types/fs-extra": "^11.0.4",
-    "@types/jsonwebtoken": "^9.0.1",
-    "@types/node": "^18.11.10",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.12.0",
     "@types/object-assign-deep": "^0.4.3",
     "@types/promise-timeout": "^1.3.3",
-    "@types/react": "^18.2.45",
-    "@types/uuid": "^9.0.1",
+    "@types/react": "^18.3.31",
     "onchange": "^7.1.0",
     "semantic-release-commit-filter": "^1.0.2",
-    "typescript": "^5.2.2",
-    "vite": "^4.1.2"
+    "typescript": "^5.9.3",
+    "vite": "^4.5.14"
   },
   "dependencies": {
-    "@astro-utils/context": "0.0.1",
-    "await-lock": "^2.2.2",
     "@types/cookie": "^0.5.1",
     "cookie": "^0.5.0",
     "csrf": "^3.1.0",
     "dot-prop": "^8.0.2",
-    "fs-extra": "^11.2.0",
-    "jsonwebtoken": "^9.0.0",
+    "fs-extra": "^11.4.0",
+    "jsonwebtoken": "^9.0.3",
+    "lifecycle-utils": "^4.4.1",
+    "magic-string": "^0.30.21",
     "object-assign-deep": "^0.4.0",
-    "snappy": "^7.2.2",
-    "superjson": "^2.2.1",
-    "uuid": "^9.0.0",
-    "zod": "^3.19.1"
+    "oxc-parser": "^0.148.0",
+    "snappy": "^7.4.2",
+    "superjson": "^2.2.6",
+    "unique-selector": "^0.5.0",
+    "zod": "^4.5.4"
   },
   "peerDependencies": {
-    "astro": "^4.16.19"
+    "astro": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }

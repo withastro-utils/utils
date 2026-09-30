@@ -45,7 +45,7 @@ export async function validateFunc(about: AboutFormName, method: Function) {
         } else if (response.value) {
             about.formValue = response.value;
         }
-    } catch (err) {
+    } catch (err: any) {
         about.pushErrorManually(err.code ?? err.name, err.message);
     }
 }

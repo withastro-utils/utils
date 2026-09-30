@@ -1,6 +1,7 @@
 import Tokens from 'csrf';
+import {withLock} from 'lifecycle-utils';
 import {promisify} from 'node:util';
-import {type AstroLinkHTTP, createLock} from '../utils.js';
+import {type AstroLinkHTTP} from '../utils.js';
 import {getFormValue, isPost} from './post.js';
 import {FORM_OPTIONS, getFormOptions} from '../settings.js';
 
@@ -23,10 +24,7 @@ export async function ensureValidationSecret(astro: AstroLinkHTTP, formOptions =
 }
 
 export async function validateFrom(astro: AstroLinkHTTP) {
-    const lock = astro.request.validateFormLock ??= createLock();
-    await lock.acquireAsync();
-
-    try {
+    return await withLock([astro.request, 'validateForm'], async () => {
         if (!isPost(astro) || typeof astro.request.formData.requestFormValid === 'boolean') {
             return astro.request.formData.requestFormValid;
         }
@@ -38,9 +36,7 @@ export async function validateFrom(astro: AstroLinkHTTP) {
             tokens.verify(validationSecret, validateToken);
 
         return astro.request.formData.requestFormValid = Boolean(requestValid);
-    } finally {
-        lock.release();
-    }
+    });
 }
 
 export async function createFormToken(astro: AstroLinkHTTP) {
