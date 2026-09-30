@@ -1,60 +1,98 @@
-# Astro Context
+<div align="center">
 
-Save context between components
+<img src="https://raw.githubusercontent.com/withastro-utils/utils/main/assets/logo.svg" alt="Astro Utils rocket and toolkit logo" width="112" height="112" />
 
-Allow you to add extra props without the need to manually add them every time
+# Astro Utils Context
 
-## Usage
+**Share values across your Astro component tree.**
 
-`layouts/Layout.astro`
-```astro
----
-import Context from '@astro-utils/context/context.js';
+[![npm version](https://img.shields.io/npm/v/@astro-utils/context?color=0b6ead&style=flat-square)](https://www.npmjs.com/package/@astro-utils/context)
+[![MIT license](https://img.shields.io/badge/license-MIT-82cfff?style=flat-square)](https://github.com/withastro-utils/utils/blob/main/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-explore-0b6ead?style=flat-square)](https://withastro-utils.github.io/docs/)
 
-function consoleIt(){
-    console.log('Hi');
-}
----
-<Context title="Context is cool" consoleIt={consoleIt}>
-    <slot/>
-</Context>
+[Documentation](https://withastro-utils.github.io/docs/) · [Examples](https://withastro-utils.github.io/docs/examples/) · [AI agent guide](https://withastro-utils.github.io/docs/llms.txt)
+
+</div>
+
+Provide values once in a layout and read them in nested components. Context exists during a render; it is not a browser store or persistent session.
+
+**Supports Astro 7 and parallel async rendering.** Context now uses Node's `AsyncLocalStorage` from `node:async_hooks` instead of a shared render stack. Values follow the async execution started inside their provider, including across `await`, while overlapping providers and separate requests keep their own context. The `Context.astro`, `getContext`, and `asyncContext` APIs stay the same.
+
+## Install
+
+```sh
+npm install @astro-utils/context
 ```
 
-`components/LayoutTitle.astro`
+## Provide → read → render
+
+**`src/components/Button.astro`**
+
 ```astro
 ---
-import getContextProps from '@astro-utils';
-
-const {title, consoleIt} = getContextProps(Astro);
-consoleIt();
+import getContext from '@astro-utils/context';
+const { buttonColor } = getContext(Astro, 'buttons');
 ---
-<h2>{title}</h2>
+<button style={{ color: buttonColor }}>
+    </slot>
+</button>
 ```
 
-`pages/index.astro`
+**`src/pages/index.astro`**
 
 ```astro
 ---
 import Layout from '../layouts/Layout.astro';
-import LayoutTitle from '../components/LayoutTitle.astro';
+import PageHeading from '../components/PageHeading.astro';
+import Context from '@astro-utils/context/Context.astro';
+
 ---
-<Layout>
-    <LayoutTitle/>
+<Layout title="Context Demo">
+    <h1>Colorful buttons</h1>
+
+    <Context buttonColor="red">
+        <Button>Click Red</Button>
+        <Button>Red button</Button>
+    </Context>
+
+    <Context buttonColor="blue">
+        <Button>Click Blue</Button>
+        <Button>Blue button</Button>
+    </Context>
 </Layout>
 ```
 
-## Functions
+## Parallel async context
+
+Use `asyncContext` to start work inside a context. Parallel calls inherit their parent's values, and each call can override values without changing its siblings' context:
 
 ```ts
-// remember to change the name if you have multiple contexts
-function getContextProps(astro: AstroGlobal, name = "default"): {[key: string]: any}
+import getContext, { asyncContext } from '@astro-utils/context';
+
+const [firstTitle, secondTitle] = await Promise.all(
+        asyncContext(() => {
+            return Astro.slots.default();
+        }, Astro, { name: 'task', context: { title: "First Title" } }),
+
+        asyncContext(() => {
+            return Astro.slots.default();
+        }, Astro, { name: 'task', context: { title: "Second Title" } })
+);
 ```
 
-Every new context inherits the last one
+Context no longer uses locks: parallel providers keep independent async scopes.
 
+## Know the boundaries
 
-```ts
-async function readerInContext<T>(promise: () => Promise<T>, astro: AstroGlobal, name = "default"): Promise<T>
-```
+- Nested providers with the same name inherit values and can override them.
+- `getContext(Astro, name)` returns `{}` when no provider is active; the default name is `"default"`.
+- `asyncContext` supports manual async rendering with context.
+- The server runtime must support Node's `node:async_hooks` and `AsyncLocalStorage`.
 
-Same as `Context.astro`, help you render astro inside the props context
+[Full walkthrough](https://withastro-utils.github.io/docs/guides/context/) · [API reference](https://withastro-utils.github.io/docs/reference/context/)
+
+## Support Astro Utils
+
+If Astro Utils helps you build, a star on [GitHub](https://github.com/withastro-utils/utils) is appreciated. Bug reports, useful examples, and pull requests help too. Thank you for supporting the project.
+
+[MIT license](https://github.com/withastro-utils/utils/blob/main/LICENSE)

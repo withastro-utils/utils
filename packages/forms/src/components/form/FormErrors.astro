@@ -1,18 +1,18 @@
 ---
-import getContext from '@astro-utils/context';
+import { getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 
-export interface Props extends astroHTML.JSX.HTMLAttributes {
+export interface Props extends astroHTML.JSX.HTMLAttributes, AstroFormsProps {
     title?: string;
 };
 
-const {bind, settings} = getContext(Astro, '@astro-utils/forms');
-const {title, ...props} = Astro.props;
+const {bind, settings} = getFormContext(Astro);
+const {title, __astroForms, ...props} = Astro.props;
 ---
 {bind.errors.length && settings.showValidationErrors &&
 <div {...props}>
     {title && <h4>{title}</h4>}
     <ol>
-        {bind.errors.map(x =>
+        {bind.errors.map((x: { message: string; name: string }) =>
                 <li>{x.message}: "{x.name}"</li>)}
     </ol>
 </div> || ''}

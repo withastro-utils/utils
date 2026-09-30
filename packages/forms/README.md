@@ -1,188 +1,137 @@
 <div align="center">
 
-# Astro Forms Utils
+<img src="https://raw.githubusercontent.com/withastro-utils/utils/main/assets/logo.svg" alt="Astro Utils rocket and toolkit logo" width="112" height="112" />
 
-<img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+# Astro Utils Forms
 
+**Bind inputs. Validate data. Run server actions.**
 
-[![Build](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/build.yml)
-[![License](https://badgen.net/badge/color/MIT/green?label=license)](https://www.npmjs.com/package/@astro-utils/forms)
-[![License](https://badgen.net/badge/color/TypeScript/blue?label=types)](https://www.npmjs.com/package/@astro-utils/forms)
-[![Version](https://badgen.net/npm/v/@astro-utils/forms)](https://www.npmjs.com/package/@astro-utils/forms)
+[![npm version](https://img.shields.io/npm/v/@astro-utils/forms?color=0b6ead&style=flat-square)](https://www.npmjs.com/package/@astro-utils/forms)
+[![MIT license](https://img.shields.io/badge/license-MIT-82cfff?style=flat-square)](https://github.com/withastro-utils/utils/blob/main/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-explore-0b6ead?style=flat-square)](https://withastro-utils.github.io/docs/)
+
+[Documentation](https://withastro-utils.github.io/docs/) · [Examples](https://withastro-utils.github.io/docs/examples/) · [AI agent guide](https://withastro-utils.github.io/docs/llms.txt)
+
 </div>
 
-> Server component for Astro (validation and state management)
+Build interactive forms in `.astro` components with typed binding, browser and server validation, encrypted view state, signed sessions, and chunked uploads.
 
+## Install
 
-# Full feature server components for Astro.js
-
-This package is a framework for Astro.js that allows you to create forms and manage their state without any JavaScript.
-
-It also allows you to validate the form on the client side and server side, and protect against CSRF attacks.
-
-### More features
-- JWT session management
-- Override response at runtime (useful for error handling)
-- Custom server validation with `zod`
-- Multiples app states at the same time
-
-# Show me the code
-```astro
----
-import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
-import Layout from "../layouts/Layout.astro";
-
-const form = Bind();
-let showSubmitText: string;
-
-function formSubmit(){
-    showSubmitText = `You name is ${form.name}, you are ${form.age} years old. `;
-}
----
-<Layout>
-    <BindForm bind={form}>
-        {showSubmitText}
-        
-        <h4>What you name*</h4>
-        <BInput type="text" name="name" maxlength={20} required/>
-    
-        <h4>Enter age*</h4>
-        <BInput type="int" name="age" required/>
-    
-        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
-    </BindForm>
-</Layout>
+```sh
+npm install @astro-utils/forms @astrojs/node
 ```
 
-## Usage
+## Connect Forms to Astro
 
-### Add the middleware to your server
+**`astro.config.mjs`**
 
-```
-npm install @astro-utils/forms
-```
-
-Add the middleware to your server
-
-
-`src/middleware.ts`
-```ts
-import astroForms from "@astro-utils/forms";
-import {sequence} from "astro/middleware";
-
-export const onRequest = sequence(astroForms());
-```
-
-### Add to Layout
-Add the `WebForms` component in the layout
-
-`layouts/Layout.astro`
-```astro
----
-import {WebForms} from '@astro-utils/forms/forms.js';
----
-<WebForms>
-    <slot/>
-</WebForms>
-```
-
-### Code Integration
-This changes astro behavior to allow the form to work, it ensure the components render by the order they are in the file.
-
-`astro.config.mjs`
 ```js
 import { defineConfig } from 'astro/config';
-import astroForms from "@astro-utils/forms/dist/integration.js";
+import node from '@astrojs/node';
+import forms from '@astro-utils/forms/dist/integration.js';
 
 export default defineConfig({
     output: 'server',
-    integrations: [astroForms]
+    adapter: node({ mode: 'standalone' }),
+    integrations: [forms]
 });
 ```
 
-### Complex Form Validation
+**`src/middleware.ts`**
 
-`pages/index.astro`
-```astro
----
-import { Bind, BindForm, FormErrors, BButton, BInput, BOption, BSelect, BTextarea } from "@astro-utils/forms/forms.js";
-import Layout from "../layouts/Layout.astro";
-
-type formType = {
-    name: string,
-    age: number,
-    about?: string
-    favoriteFood?: 'Pizaa' | 'Salad' | 'Lasagna'
-}
-
-const form = Bind<formType>();
-let showSubmitText: string;
-
-function formSubmit(){
-    showSubmitText = `You name is ${form.name}, you are ${form.age} years old. `;
-
-    if(form.about){
-        showSubmitText += `\n\n${form.about}\n\n`;
-    }
-
-    if(form.favoriteFood){
-        showSubmitText += `Your favorite food is ${form.favoriteFood}`;
-    }
-}
----
-<Layout>
-    <BindForm bind={form}>
-        <FormErrors title="Form Errors"/>
-    
-        <h4>What you name*</h4>
-        <BInput type={'text'} name="name" maxlength={20} required/>
-    
-        <h4>Enter age*</h4>
-        <BInput type={'int'} name="age" required/>
-    
-        <h4>Tell about yourself</h4>
-        <BTextarea name="about" maxlength={300}></BTextarea>
-    
-        <h4>What you favorite food?</h4>
-        <BSelect name="favoriteFood" required={false}>
-            <BOption disabled selected>Idk</BOption>
-            <BOption>Pizaa</BOption>
-            <BOption>Salad</BOption>
-            <BOption>Lasagna</BOption>
-        </BSelect>
-    
-        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
-    
-        {showSubmitText && <>
-            <h3>You submitted the form:</h3>
-            <div style="white-space: pre;">{showSubmitText}</div>
-        </>}
-    </BindForm>
-</Layout>
+```ts
+import forms from '@astro-utils/forms';
+export const onRequest = forms();
 ```
 
-### Button Hook
+These defaults are for local development. Configure a stable environment secret before deploying; see [configuration](https://withastro-utils.github.io/docs/reference/forms/configuration/). Use Astro's `sequence()` when combining middleware.
 
-You can also use this as a simple on click hook
+**`src/layouts/Layout.astro`**
 
 ```astro
 ---
-import { BButton } from "@astro-utils/forms/forms.js";
-import { Button } from 'reactstrap';
-
-const { session } = Astro.locals;
-
-function increaseCounter() {
-    session.counter ??= 0
-    session.counter++
-}
+import { WebForms } from '@astro-utils/forms/forms.js';
 ---
-<Layout>
-    <BButton as={Button} props={{color: 'info'}} onClick={increaseCounter}>++</BButton>
-    {session.counter}
-<Layout/>
+
+<WebForms>
+    <slot />
+</WebForms>
 ```
 
-The `session.counter` will show the **last value** and not the **update value**. 
+## First form
 
-This is because the output is **not reactive**. You can use it inside `BindForm` to make it **reactive**.
+```astro
+---
+import { BButton, BInput, BOption, BSelect, BTextarea, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+
+type ProfileForm = {
+    name: string;
+    age: number;
+    about?: string;
+    favoriteFood?: 'Pizza' | 'Salad' | 'Lasagna';
+};
+
+const form = Bind<ProfileForm>();
+let result = '';
+
+function submit() {
+    result = `${form.name} is ${form.age} years old.`;
+}
+---
+
+<BindForm bind={form}>
+    <FormErrors title="Check the form" />
+
+    <label for="name">Name</label>
+    <BInput id="name" name="name" maxlength={20} required />
+
+    <label for="age">Age</label>
+    <BInput id="age" name="age" type="int" min={1} required />
+
+    <label for="about">About you</label>
+    <BTextarea id="about" name="about" maxlength={300} />
+
+    <label for="food">Favorite food</label>
+    <BSelect id="food" name="favoriteFood" required={false}>
+        <BOption disabled selected>Choose a food</BOption>
+        <BOption>Pizza</BOption>
+        <BOption>Salad</BOption>
+        <BOption>Lasagna</BOption>
+    </BSelect>
+
+    <BButton onClick={submit} whenFormOK>Submit</BButton>
+    {result && <p>{result}</p>}
+</BindForm>
+```
+
+`whenFormOK` prevents the callback from running when validation fails. `FormErrors` renders the server validation messages for the active form.
+
+## Lists and reusable components
+
+Generated identities distinguish controls rendered from the same source location. No index parameter is required:
+
+```astro
+<BindForm>
+    {items.map(item => (
+        <BButton onClick={removeItem} extra={item.id}>
+            Remove {item.name}
+        </BButton>
+    ))}
+</BindForm>
+```
+
+## Go further
+
+- [Binding and validation](https://withastro-utils.github.io/docs/guides/forms/data-binding/): typed values, validation, and state.
+- [Lists and reusable components](https://withastro-utils.github.io/docs/guides/forms/loops-and-components/): independent forms and actions in repeated UI.
+- [Large-file uploads](https://withastro-utils.github.io/docs/reference/forms/upload-big-file/): chunks, progress, and failure handling.
+- [Server helpers](https://withastro-utils.github.io/docs/guides/forms/js-helpers/): redirects, response overrides, and parent refreshes.
+
+View state and sessions serve different purposes. Sessions are signed, not encrypted; use application storage for durable data. Keep passwords out of persisted view state.
+
+## Support Astro Utils
+
+If Astro Utils helps you build, a star on [GitHub](https://github.com/withastro-utils/utils) is appreciated. Bug reports, useful examples, and pull requests help too. Thank you for supporting the project.
+
+[MIT license](https://github.com/withastro-utils/utils/blob/main/LICENSE)

@@ -1,20 +1,13 @@
 import type {AstroGlobal} from 'astro';
-import {FormsSettings} from './settings.js';
-import AwaitLockDefault from 'await-lock';
-import FormsReact from './form-tools/forms-react.js';
-import { BindContext } from './components-control/types.js';
+import type { HTMLAttributes, HTMLTag } from 'astro/types';
+import type {FormsSettings} from './settings.js';
+import type FormsReact from './form-tools/forms-react.js';
+import type { BindContext } from './components-control/types.js';
 
-export function createLock(): InstanceType<typeof AwaitLockDefault['default']> {
-    if ('default' in AwaitLockDefault) {
-        return new AwaitLockDefault.default();
-    }
-
-    return new (AwaitLockDefault as any)();
-}
+export type Component = ((props: any) => any) | (new (props: any) => any);
+export type ComponentProps<T extends HTMLTag | Component> = T extends HTMLTag ? HTMLAttributes<T> : T extends (props: infer Props) => any ? Props : T extends new (props: infer Props) => any ? Props : never;
 
 export type ExtendedRequest = AstroGlobal['request'] & {
-    formDataLock?: ReturnType<typeof createLock>
-    validateFormLock?: ReturnType<typeof createLock>
     formData: (Request['formData'] | (() => FormData | Promise<FormData>)) & {
         requestFormValid?: boolean
     }
@@ -34,8 +27,9 @@ declare global {
            */
           __formsInternalUtils: {
               FORM_OPTIONS: FormsSettings;
-              bindFormCounter: number;
               bindGlobalState: Record<string | number, BindContext>;
+              rootContext: Record<string, any>;
+                activeGeneratedIds: Set<string>;
           };
           forms: FormsReact;
           webFormOff?: boolean;

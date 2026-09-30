@@ -3,9 +3,7 @@ import {z} from 'zod';
 
 const router = new ExpressRoute();
 
-router.body('auto', {
-    maxFileSize: 10 * 1024 * 1024 // 10MB
-});
+router.body('auto');
 
 // this validation will only apply to the next route (the PUT route)
 router.validate({
@@ -26,6 +24,6 @@ export const POST = router.route((req, res) => {
     const myFile = req.filesOne.myFile;
 
     res.json({
-        name: myFile?.originalFilename || 'No file',
+        name: myFile?.name || 'No file',
     });
 });

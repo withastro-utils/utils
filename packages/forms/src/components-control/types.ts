@@ -5,7 +5,6 @@ export type BindContext = {
     executeAfter: (() => void | Promise<void>)[]
     method: string
     bind: BindTypes<unknown>
-    tempBindValues: Record<string, any>
     elementsState: Record<string, any>
     buttonIds: [string, string | null, boolean][],
     onSubmitClickGlobal: string

@@ -1,15 +1,18 @@
 ---
-import getContext from '@astro-utils/context';
+import { getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 import { stringifySelectValue, validateSelectOption } from '../../components-control/select.js';
 import { validateFrom } from '../../form-tools/csrf.js';
+import type { HTMLTag } from 'astro/types';
+import type { Component, ComponentProps } from '../../utils.js';
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Omit<astroHTML.JSX.OptionHTMLAttributes, 'value'> {
+export type Props<T extends HTMLTag | Component = 'option'> = Omit<astroHTML.JSX.OptionHTMLAttributes, 'value'> & AstroFormsProps & {
     as?: T;
-    props?: React.ComponentProps<T>;
+    props?: ComponentProps<T>;
     value?: string | number | undefined | null | Date;
-}
+};
 
-const { bind, name, stringifySelectedOptions, method } = getContext(Astro, '@astro-utils/forms');
+const { bind, name, stringifySelectedOptions, method } = getFormContext(Astro);
+const { as: asComponent = 'option', props: componentProps, selected, __astroForms, ...props } = Astro.props;
 
 let htmlSlot = await Astro.slots.render('default');
 const stringifyOptionValue = stringifySelectValue(Astro.props.value ?? htmlSlot);
@@ -19,10 +22,9 @@ if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
 }
 
 if (Astro.props.value != null) {
-    Astro.props.value = stringifyOptionValue;
+    Astro.props.value = stringifyOptionValue.trim();
 }
 
-const { as: asComponent = 'option', props: componentProps, selected, ...props } = Astro.props;
 const Component = asComponent as any;
 ---
 

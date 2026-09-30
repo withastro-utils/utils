@@ -1,11 +1,12 @@
 ---
-import getContext from '@astro-utils/context';
+import { getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 import { caseTypes, inputReturnValueAttr, validateFormInput } from '../../components-control/input-parse.js';
 import { validateFrom } from '../../form-tools/csrf.js';
-import { ModifyDeep } from '../../utils.js';
+import type { Component, ComponentProps, ModifyDeep } from '../../utils.js';
 import { addOnSubmitClickEvent } from '../../form-tools/events.js';
 import { MissingNamePropError } from '../../errors/MissingNamePropError.js';
-import { ZodType } from 'zod';
+import type { ZodType } from 'zod';
+import type { HTMLTag } from 'astro/types';
 
 type inputTypes = astroHTML.JSX.InputHTMLAttributes['type'] | 'int' | 'json';
 
@@ -22,29 +23,30 @@ interface ModifyInputProps {
     [key: `data-${string}`]: any;
 }
 
-export interface Props<T extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> extends Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> {
+export type Props<T extends HTMLTag | Component = 'input'> = Partial<ModifyDeep<astroHTML.JSX.InputHTMLAttributes, ModifyInputProps>> & AstroFormsProps & {
     name: string;
     errorMessage?: string;
     validate?: Function | ZodType;
     as?: T;
-    props?: React.ComponentProps<T>;
-}
+    props?: ComponentProps<T>;
+};
 
 if (!Astro.props.name) {
     throw new MissingNamePropError('BInput');
 }
 
-const { bind, method, webFormsSettings, onSubmitClickGlobal, bindId = '' } = getContext(Astro, '@astro-utils/forms');
+const { bind, method, webFormsSettings, onSubmitClickGlobal, bindId: parentBindId = '' } = getFormContext(Astro);
+const { as: asComponent = 'input', props: componentProps, type = 'text', onSubmitClick = onSubmitClickGlobal, pattern, __astroForms, ...props } = Astro.props;
+
+
 if (!Astro.props.disabled && method === 'POST' && (await validateFrom(Astro))) {
-    await validateFormInput(Astro, bind, bindId);
+    await validateFormInput(Astro, bind, parentBindId);
 }
 
-const { as: asComponent = 'input', props: componentProps, type = 'text', onSubmitClick = onSubmitClickGlobal, pattern, ...props } = Astro.props;
 const castProps = caseTypes(type);
 const inputValue = inputReturnValueAttr(Astro, bind);
 
 const allProps = { ...props, ...inputValue, ...componentProps, pattern: pattern?.toString(), ...castProps };
-allProps.name = bindId + allProps.name;
 addOnSubmitClickEvent(onSubmitClick, allProps);
 
 webFormsSettings.haveFileUpload ||= allProps.type === 'file';
@@ -52,4 +54,4 @@ webFormsSettings.haveFileUpload ||= allProps.type === 'file';
 const Component = asComponent as any;
 ---
 
-<Component {...allProps} />
+<Component {...allProps} name={parentBindId + allProps.name}/>

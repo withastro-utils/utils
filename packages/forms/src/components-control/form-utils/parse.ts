@@ -1,13 +1,14 @@
 import type { AstroGlobal } from 'astro';
-import { ZodIssueCode, z } from 'zod';
+import { z } from 'zod';
 import { getFormMultiValue } from '../../form-tools/post.js';
 import AboutFormName from './about-form-name.js';
 import { FORM_OPTIONS } from '../../settings.js';
 import path from 'path';
 import { BigFile } from '../../components/form/UploadBigFile/BigFile.js';
-import getContext from '@astro-utils/context';
+import { getFormContext } from '../../form-tools/form-context.js';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra/esm';
+import os from "os";
 
 const HEX_COLOR_REGEX = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i;
 const BIG_FILE_START = 'big-file:';
@@ -98,7 +99,7 @@ export function parseJSON(about: AboutFormName) {
                     return value;
                 });
             } catch (e) {
-                ctx.addIssue({ code: ZodIssueCode.custom, message: 'Invalid JSON' });
+                ctx.addIssue({ code: "custom", message: 'Invalid JSON' });
                 return z.NEVER;
             }
         }));
@@ -123,7 +124,7 @@ const zodValidationInfo =
             return JSON.parse(str);
         } catch {
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+                code: "custom",
                 message: "Invalid JSON",
             });
             return z.NEVER;
@@ -140,7 +141,7 @@ async function isBigFile(value: string) {
         return;
     }
 
-    const tempDirectory = FORM_OPTIONS.forms.bigFilesUpload.bigFileServerOptions.tempDirectory;
+    const tempDirectory = FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions?.tempDirectory ?? os.tmpdir();
     const bigFileInfo = value.substring(BIG_FILE_START.length);
 
     const { success, data } = zodValidationInfo.safeParse(bigFileInfo);
@@ -170,7 +171,7 @@ async function isBigFile(value: string) {
 export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multiple: boolean, readonly: boolean) {
     if (readonly) return;
 
-    const { disposeFiles, bindId = '' } = getContext(astro, '@astro-utils/forms');
+    const { disposeFiles, bindId = '' } = getFormContext(astro);
     let values = [about.formValue];
 
     let hasFailed = false;

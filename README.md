@@ -1,101 +1,79 @@
 <div align="center">
 
-# Astro Forms Utils
+<img src="./assets/logo.svg" alt="Astro Utils rocket and toolkit logo" width="112" height="112" />
 
-<img src="./assets/logo.rounded.png" alt="Astro Utils" height="300px"/>
+# Astro Utils
 
+**Your form. Your server. One place.**
 
-[![Build](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/build.yml)
-[![License](https://badgen.net/badge/color/MIT/green?label=license)](https://www.npmjs.com/package/@astro-utils/forms)
-[![License](https://badgen.net/badge/color/TypeScript/blue?label=types)](https://www.npmjs.com/package/@astro-utils/forms)
-[![Version](https://badgen.net/npm/v/@astro-utils/forms)](https://www.npmjs.com/package/@astro-utils/forms)
+[![Release](https://github.com/withastro-utils/utils/actions/workflows/release.yml/badge.svg)](https://github.com/withastro-utils/utils/actions/workflows/release.yml)
+[![MIT license](https://img.shields.io/badge/license-MIT-82cfff?style=flat-square)](https://github.com/withastro-utils/utils/blob/main/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-explore-0b6ead?style=flat-square)](https://withastro-utils.github.io/docs/)
+
+[Documentation](https://withastro-utils.github.io/docs/) · [Examples](https://withastro-utils.github.io/docs/examples/) · [AI agent guide](https://withastro-utils.github.io/docs/llms.txt)
+
 </div>
 
-> Server component for Astro (validation and state management)
+Small, focused utilities for Astro: bind form fields to server actions, share values through a component tree, and build HTTP endpoints with familiar middleware.
 
+## Pick what you need
 
-# Full feature server components for Astro.js
+| Package | What you can build | Start here |
+| --- | --- | --- |
+| [`@astro-utils/forms`](./packages/forms/) | Validated forms, server actions, persistent form state, and uploads | [Forms guide](https://withastro-utils.github.io/docs/guides/forms/getting-started/) |
+| [`@astro-utils/context`](./packages/context/) | Shared request-local values without passing props through every component | [Context guide](https://withastro-utils.github.io/docs/guides/context/) |
+| [`@astro-utils/express-endpoints`](./packages/express-endpoints/) | API routes with middleware, body parsing, and response helpers | [Endpoints guide](https://withastro-utils.github.io/docs/guides/express-endpoints/) |
 
-This package is a framework for Astro.js that allows you to create forms and manage their state without any JavaScript.
+The workspace also contains a supporting [Formidable utility package](./packages/formidable/).
 
-It also allows you to validate the form on the client side and server side, and protect against CSRF attacks.
+## A server action, right in your page
 
-### More features
-- JWT session management
-- Override response at runtime (useful for error handling)
-- Custom server validation with `zod`
-- Multiples app states at the same time
+After the [Forms setup](https://withastro-utils.github.io/docs/guides/forms/getting-started/), save this as **`src/pages/hello.astro`**. The shared layout supplies `WebForms`.
 
-# Show me the code
 ```astro
 ---
-import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
-import Layout from "../layouts/Layout.astro";
+import { Bind, BindForm, BInput, BButton, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
 
-const form = Bind();
-let showSubmitText: string;
+const bind = Bind({ name: '' });
+let message = '';
 
-function formSubmit(){
-    showSubmitText = `You name is ${form.name}, you are ${form.age} years old. `;
+function greet() {
+    message = `Hello, ${bind.name}!`;
 }
 ---
 <Layout>
-    <BindForm bind={form}>
-        {showSubmitText}
-        
-        <h4>What you name*</h4>
-        <BInput type="text" name="name" maxlength={20} required/>
-    
-        <h4>Enter age*</h4>
-        <BInput type="int" name="age" required/>
-    
-        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
+    <BindForm {bind}>
+        <FormErrors />
+
+        <label for="name">Your name</label>
+        <BInput id="name" name="name" maxlength={40} required />
+
+        <BButton onClick={greet} whenFormOK>Say hello</BButton>
+        {message && <p role="status">{message}</p>}
     </BindForm>
 </Layout>
 ```
 
-## Usage
+The field binds to `name`, validation guards the callback, and Astro renders the greeting. Forms supports Astro 7, including nested components and controls rendered in loops.
 
-### Add the middleware to your server
+## Explore a working pattern
 
-```
-npm install @astro-utils/forms
-```
+[Product filtering](https://withastro-utils.github.io/docs/examples/products/) · [Task lists](https://withastro-utils.github.io/docs/examples/todo/) · [File uploads](https://withastro-utils.github.io/docs/examples/upload/)
 
-Add the middleware to your server
+For coding agents: [Markdown index](https://withastro-utils.github.io/docs/llms.txt) · [Complete documentation](https://withastro-utils.github.io/docs/llms-full.txt).
 
+## Local development
 
-`src/middleware.ts`
-```ts
-import astroForms from "@astro-utils/forms";
-import {sequence} from "astro/middleware";
+From the repository root:
 
-export const onRequest = sequence(astroForms());
+```sh
+npm install
+npm --workspace examples/simple-form run build
 ```
 
-### Add to Layout
-Add the `WebForms` component in the layout
+## Support Astro Utils
 
-`layouts/Layout.astro`
-```astro
----
-import {WebForms} from '@astro-utils/forms/forms.js';
----
-<WebForms>
-    <slot/>
-</WebForms>
-```
+If Astro Utils helps you build, a star on [GitHub](https://github.com/withastro-utils/utils) is appreciated. Bug reports, useful examples, and pull requests help too. Thank you for supporting the project.
 
-### Code Integration
-This changes astro behavior to allow the form to work, it ensure the components render by the order they are in the file.
-
-`astro.config.mjs`
-```js
-import { defineConfig } from 'astro/config';
-import astroForms from "@astro-utils/forms/dist/integration.js";
-
-export default defineConfig({
-    output: 'server',
-    integrations: [astroForms]
-});
-```
+[MIT license](https://github.com/withastro-utils/utils/blob/main/LICENSE)

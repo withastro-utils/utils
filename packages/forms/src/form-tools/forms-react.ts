@@ -1,6 +1,8 @@
-import getContext from '@astro-utils/context';
 import type { ValidRedirectStatus } from 'astro';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { AstroLinkHTTP } from 'src/utils.js';
+
+const actionSettings = new AsyncLocalStorage<{ forms: FormsReact; settings: { reloadState: boolean } }>();
 
 export default class FormsReact {
     public scriptToRun = '';
@@ -15,8 +17,16 @@ export default class FormsReact {
      * Call BindForm.on.reloadState() to reload the state of every form relevant to this reload.
      */
     public reloadState() {
-        const { settings } = getContext(this._astro, '@astro-utils/forms');
-        settings.reloadState = true;
+        const scope = actionSettings.getStore();
+        if (scope?.forms !== this || !scope.settings) throw new Error('forms.reloadState() must be called from a form action.');
+        scope.settings.reloadState = true;
+    }
+
+    /**
+     * @internal
+     */
+    public async ___runWithSettings<T>(settings: { reloadState: boolean }, callback: () => Promise<T>) {
+        return actionSettings.run({ forms: this, settings }, callback);
     }
 
     /**
@@ -67,7 +77,7 @@ export default class FormsReact {
                 }
 
                 const searchString = copySearch.toString();
-                let pathWithSearch = url.pathname.split('/').pop();
+                let pathWithSearch = url.pathname.split('/').pop() ?? url.pathname;
                 if (searchString) {
                     pathWithSearch += '?' + searchString;
                 }
