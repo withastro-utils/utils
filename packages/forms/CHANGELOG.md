@@ -1,3 +1,19 @@
+# [4.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.16.1...@astro-utils/forms@4.0.0) (2026-09-30)
+
+
+* refactor(forms): support parallel execution for astro@7 integration, huge performance boost. The core context matching and unique name generator is refactored to support this behaviour. ([4b7f2c7](https://github.com/withastro-utils/utils/commit/4b7f2c79efea7d8d06d2f9ac3de4100b19560d57))
+
+
+### Bug Fixes
+
+* **forms:** prevent re-submmiting edge cases ([2d747df](https://github.com/withastro-utils/utils/commit/2d747df08e3235c81870b4352f7379982a53ae0f))
+
+
+### BREAKING CHANGES
+
+* execution happens in parallel, be aware of that if you relay on global variables
+* bump to `zod`@4
+
 ## [3.16.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.16.0...@astro-utils/forms@3.16.1) (2026-09-08)
 
 
