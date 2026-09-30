@@ -4,10 +4,11 @@ import { asyncContext } from "./dist/index.js";
 export interface Props {
     [key: string]: any
     contextName?: string
+    /** @deprecated Context is isolated by AsyncLocalStorage; this prop is ignored. */
     lock?: string
 }
 
 const {contextName, lock, ...props} = Astro.props;
-const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName, lock, context: props});
+const htmlSolt = await asyncContext(() => Astro.slots.render('default'), Astro, {name: contextName, context: props});
 ---
 <Fragment set:html={htmlSolt} />    

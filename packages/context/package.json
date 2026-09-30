@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "rm -r dist; tsc",
+    "test": "npm run build && node --test test/*.test.mjs",
     "prepack": "npm run build"
   },
   "keywords": [
@@ -42,8 +43,14 @@
     "./Context.astro": "./Context.astro",
     "./context.js": "./context.js"
   },
+  "peerDependencies": {
+    "astro": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
   "devDependencies": {
     "astro": "^4.0.6",
     "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": "^18.17.1 || ^20.3.0 || >=21.0.0"
   }
 }

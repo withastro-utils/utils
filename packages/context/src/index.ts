@@ -1,4 +1,5 @@
-import { AstroGlobal } from 'astro';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import type { AstroGlobal } from 'astro';
 
 declare global {
     export namespace App {
@@ -14,50 +15,30 @@ type ContextAstro = AstroGlobal | {
     props: any;
 };
 
-type ContextHistory = {
-    history: any[],
-    lock: Map<string, Promise<void>>;
-};
+const contextScope = new AsyncLocalStorage<{ locals: ContextAstro['locals'], contexts: Map<string, any> }>();
 
-function getAMContextFromAstro(astro: ContextAstro, name: string): ContextHistory {
-    const amContext = astro.locals.amContext ??= new Map();
-
-    const namedContext = amContext.get(name) ?? {
-        history: [],
-        lock: new Map(),
-    };
-
-    amContext.set(name, namedContext);
-    return namedContext;
+function getContexts(astro: ContextAstro): Map<string, any> | undefined {
+    const scope = contextScope.getStore();
+    return scope?.locals === astro.locals ? scope?.contexts : undefined;
 }
 
 export default function getContext(astro: ContextAstro, name = "default") {
-    const contexts = getAMContextFromAstro(astro, name);
-    return contexts.history.at(-1) ?? {};
+    return getContexts(astro)?.get(name) ?? {};
 }
 
-type AsyncContextOptions = { name?: string, context?: any, lock?: string; };
+type AsyncContextOptions = {
+    name?: string;
+    context?: any;
+    /** @deprecated Context is isolated by AsyncLocalStorage; this option is ignored. */
+    lock?: string;
+};
 
-export async function asyncContext<T>(promise: () => Promise<T>, astro: ContextAstro, { name = "default", context = null, lock }: AsyncContextOptions = {}): Promise<T> {
-    const contextState = getAMContextFromAstro(astro, name);
-
-    while (contextState.lock.get(lock)) {
-        await contextState.lock.get(lock);
-    }
-
-    contextState.history.push({
-        ...contextState.history.at(-1),
+export async function asyncContext<T>(promise: () => Promise<T>, astro: ContextAstro, { name = "default", context = null }: AsyncContextOptions = {}): Promise<T> {
+    const contexts = new Map(getContexts(astro));
+    contexts.set(name, {
+        ...contexts.get(name),
         ...(context ?? astro.props)
     });
 
-    let resolver: () => void | null;
-    if (lock) contextState.lock.set(lock, new Promise<void>(resolve => resolver = resolve));
-
-    try {
-        return await promise();
-    } finally {
-        contextState.history.pop();
-        contextState.lock.delete(lock);
-        resolver?.();
-    }
+    return contextScope.run({ locals: astro.locals, contexts }, promise);
 }
