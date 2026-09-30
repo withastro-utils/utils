@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.15...@astro-utils/context@1.2.0) (2026-09-30)
+
+
+### Features
+
+* **context:** using async_hooks for context tracking ([a154267](https://github.com/withastro-utils/utils/commit/a154267e44f1682c914814c78652b200f22d2b14))
+
 ## [1.1.15](https://github.com/withastro-utils/utils/compare/@astro-utils/context@1.1.14...@astro-utils/context@1.1.15) (2024-07-07)
 
 
