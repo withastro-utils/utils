@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.0...@astro-utils/forms@4.0.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* ensure types does not conflicts between astro versions ([ca0d478](https://github.com/withastro-utils/utils/commit/ca0d47809e82cc6924675d41cdf8424754b221ed))
+
 # [4.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@3.16.1...@astro-utils/forms@4.0.0) (2026-09-30)
 
 
