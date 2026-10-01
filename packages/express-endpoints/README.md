@@ -19,7 +19,7 @@ Compose middleware, read parsed request data, and return JSON, redirects, files,
 ## Install
 
 ```sh
-npm install @astro-utils/express-endpoints zod@^3
+npm install @astro-utils/express-endpoints zod@^4
 ```
 
 ## Validate a JSON request
@@ -50,7 +50,7 @@ export const POST = router.route((req, res) => {
 
 Send a JSON body such as `{"name":"Alex"}` with `Content-Type: application/json` to `/api/greet`. The route returns `{"message":"Hello, Alex!"}`; missing, non-string, or blank names receive a 400 response with validation errors before the handler runs.
 
-`validate()` checks the body without transforming it, so the handler trims the name when using it. This example uses Zod 3, as required by the validation middleware.
+`validate()` checks the body without transforming it, so the handler trims the name when using it. This example uses Zod 4, as required by the validation middleware.
 
 ## A small routing toolbox
 
