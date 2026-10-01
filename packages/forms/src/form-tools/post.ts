@@ -1,9 +1,9 @@
 import {withLock} from 'lifecycle-utils';
-import {type AstroLinkHTTP, type ExtendedRequest} from '../utils.js';
+import {type AstroGlobalLike, type ExtendedRequest} from '../utils.js';
 import {validateFrom} from './csrf.js';
 
 
-export function isPost(astro: {request: Request}){
+export function isPost(astro: AstroGlobalLike){
     return astro.request.method === "POST";
 }
 
@@ -26,6 +26,6 @@ export async function getFormMultiValue(request: ExtendedRequest, key: string): 
     return data.getAll(key);
 }
 
-export async function validateAction(astro: AstroLinkHTTP, formKey: string, value: string){
+export async function validateAction(astro: AstroGlobalLike, formKey: string, value: string){
     return await validateFrom(astro) && await getFormValue(astro.request, formKey) == value;
 }

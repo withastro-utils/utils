@@ -1,4 +1,4 @@
-import type { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../utils.js';
 import { getFormMultiValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import HTMLSelectPlugin from './form-utils/bind-form-plugins/select.js';
@@ -17,7 +17,7 @@ export function stringifySelectValue(value: Date | Number | string) {
     return String(value);
 }
 
-async function getSelectValue(astro: AstroGlobal, bindId: string) {
+async function getSelectValue(astro: AstroGlobalLike, bindId: string) {
     const { value: originalValue, readonly, name } = astro.props;
     if (readonly) {
         return [originalValue].flat().map(stringifySelectValue);
@@ -25,7 +25,7 @@ async function getSelectValue(astro: AstroGlobal, bindId: string) {
     return (await getFormMultiValue(astro.request, bindId + name)).map(String);
 }
 
-export async function validateSelect(astro: AstroGlobal, bind: BindForm<any>, bindId: string) {
+export async function validateSelect(astro: AstroGlobalLike, bind: BindForm<any>, bindId: string) {
     const { type, required, name, multiple, errorMessage } = astro.props;
 
     const parseValue = await getSelectValue(astro, bindId);
@@ -60,7 +60,7 @@ export function validateSelectOption(bind: BindForm<any>, name: string, stringif
 }
 
 
-export function getSelectValueFromBind(bind: BindForm<any>, astro: AstroGlobal) {
+export function getSelectValueFromBind(bind: BindForm<any>, astro: AstroGlobalLike) {
     const newValue = [getProperty(bind, astro.props.name, astro.props.value)].flat();
 
     return newValue.map(stringifySelectValue);

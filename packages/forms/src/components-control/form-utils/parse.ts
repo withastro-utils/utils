@@ -1,4 +1,4 @@
-import type { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../../utils.js';
 import { z } from 'zod';
 import { getFormMultiValue } from '../../form-tools/post.js';
 import AboutFormName from './about-form-name.js';
@@ -168,7 +168,7 @@ async function isBigFile(value: string) {
     } catch { }
 }
 
-export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multiple: boolean, readonly: boolean) {
+export async function parseFiles(about: AboutFormName, astro: AstroGlobalLike, multiple: boolean, readonly: boolean) {
     if (readonly) return;
 
     const { disposeFiles, bindId = '' } = getFormContext(astro);
@@ -219,7 +219,7 @@ export async function parseFiles(about: AboutFormName, astro: AstroGlobal, multi
 }
 
 
-export function parseEmptyFiles(about: AboutFormName, astro: AstroGlobal) {
+export function parseEmptyFiles(about: AboutFormName, astro: AstroGlobalLike) {
     if (astro.props.readonly) return;
 
     if (!about.formValue || about.formValue.size === 0) {

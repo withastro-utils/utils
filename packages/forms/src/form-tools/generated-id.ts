@@ -1,6 +1,6 @@
-import type { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../utils.js';
 
-export function claimGeneratedId(Astro: AstroGlobal, id: string, generated: boolean, componentName: string): () => void {
+export function claimGeneratedId(Astro: AstroGlobalLike, id: string, generated: boolean, componentName: string): () => void {
     if (!generated) return () => {};
 
     const activeIds = Astro.locals.__formsInternalUtils.activeGeneratedIds;

@@ -1,4 +1,4 @@
-import { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../../utils.js';
 import superjson from 'superjson';
 import { parseFormData } from '../../form-tools/post.js';
 import { FormsSettings, getFormOptions } from '../../settings.js';
@@ -37,7 +37,7 @@ export default class ViewStateManager {
         return this.stateProp;
     }
 
-    constructor(_bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobal, private _bindId: string | number) {
+    constructor(_bind: BindForm<any>, private _elementsState: any, private _astro: AstroGlobalLike, private _bindId: string | number) {
         this._bind = _bind;
         this._FORM_OPTIONS = getFormOptions(_astro);
 

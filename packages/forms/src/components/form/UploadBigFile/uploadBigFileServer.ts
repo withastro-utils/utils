@@ -5,7 +5,7 @@ import path from 'path';
 import z from 'zod';
 import os from 'os';
 import {validateFrom} from '../../../form-tools/csrf.js';
-import {AstroGlobal} from 'astro';
+import type {AstroGlobalLike} from '../../../utils.js';
 import {getFormValue} from '../../../form-tools/post.js';
 import ThrowOverrideResponse from '../../../throw-action/throwOverrideResponse.js';
 
@@ -15,7 +15,7 @@ const zodValidationInfo =
             return JSON.parse(str);
         } catch {
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+                code: 'custom',
                 message: "Invalid JSON",
             });
             return z.NEVER;
@@ -36,7 +36,7 @@ export type LoadUploadFilesOptions = {
     tempDirectory: string;
 };
 
-export const DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER: LoadUploadFilesOptions = {
+export const DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER: Required<Omit<LoadUploadFilesOptions, 'allowUpload' | 'onFinished'>> = {
     maxUploadTime: 1000 * 60 * 60 * 1.5, // 1.5 hour
     maxUploadSize: 1024 * 1024 * 1024, // 1GB
     maxDirectorySize: 1024 * 1024 * 1024 * 50, // 50GB
@@ -45,7 +45,7 @@ export const DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER: LoadUploadFilesOptions = {
 
 const ACTIVE_FINISHED_UPLOADS = new Set<string>();
 
-async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = {}) {
+async function loadUploadFiles(astro: AstroGlobalLike, options: Partial<LoadUploadFilesOptions> = {}) {
     const { allowUpload, onFinished, maxUploadTime, maxUploadSize, maxDirectorySize, tempDirectory } = { ...DEFAULT_BIG_FILE_UPLOAD_OPTIONS_SERVER, ...options };
     if (astro.request.method !== "POST" || !await validateFrom(astro)) {
         return false;
@@ -163,7 +163,7 @@ async function loadUploadFiles(astro: AstroGlobal, options: Partial<LoadUploadFi
     return Response.json({ ok: true, finished: true });
 }
 
-export async function processBigFileUpload(astro: AstroGlobal, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions ?? {}) {
+export async function processBigFileUpload(astro: AstroGlobalLike, options: Partial<LoadUploadFilesOptions> = astro.locals.__formsInternalUtils.FORM_OPTIONS.forms?.bigFilesUpload?.bigFileServerOptions ?? {}) {
     const haveFileUpload = await loadUploadFiles(astro, options);
     if (haveFileUpload) {
         throw new ThrowOverrideResponse(haveFileUpload);

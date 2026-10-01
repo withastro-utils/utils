@@ -1,5 +1,4 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import type { AstroGlobal } from 'astro';
 
 declare global {
     export namespace App {
@@ -9,20 +8,19 @@ declare global {
     }
 }
 
-type ContextAstro = AstroGlobal | {
-    request: Request,
-    locals: any,
-    props: any;
+type ContextAstro = {
+    locals: object;
+    props?: object;
 };
 
 const contextScope = new AsyncLocalStorage<{ locals: ContextAstro['locals'], contexts: Map<string, any> }>();
 
-function getContexts(astro: ContextAstro): Map<string, any> | undefined {
+function getContexts(astro: Pick<ContextAstro, 'locals'>): Map<string, any> | undefined {
     const scope = contextScope.getStore();
     return scope?.locals === astro.locals ? scope?.contexts : undefined;
 }
 
-export default function getContext(astro: ContextAstro, name = "default") {
+export default function getContext(astro: Pick<ContextAstro, 'locals'>, name = "default") {
     return getContexts(astro)?.get(name) ?? {};
 }
 

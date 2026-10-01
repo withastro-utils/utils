@@ -1,6 +1,6 @@
 import type { ValidRedirectStatus } from 'astro';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { AstroLinkHTTP } from 'src/utils.js';
+import type { AstroGlobalLike } from '../utils.js';
 
 const actionSettings = new AsyncLocalStorage<{ forms: FormsReact; settings: { reloadState: boolean } }>();
 
@@ -9,7 +9,7 @@ export default class FormsReact {
     public overrideResponse: Response | null = null;
 
 
-    public constructor(private _astro: AstroLinkHTTP & { props: any }) {
+    public constructor(private _astro: AstroGlobalLike) {
     }
 
     /**

@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import type { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../utils.js';
 
 const ID_LENGTH = 12;
-const formScope = new AsyncLocalStorage<{ locals: AstroGlobal['locals']; context: Record<string, any> }>();
+const formScope = new AsyncLocalStorage<{ locals: AstroGlobalLike['locals']; context: Record<string, any> }>();
 
 function createScopedId(parentId: string | undefined, id: string, mapScope: string): string {
     return createHash('sha256').update(`${ parentId ?? '' }:${ id }:${ mapScope }`).digest('hex').slice(0, ID_LENGTH);
@@ -65,19 +65,19 @@ export function withoutAstroFormsMetadata(props: Record<string, any>): Record<st
     return attributes;
 }
 
-export function getAstroFormsMetadata(astro: AstroGlobal): AstroFormsMetadata | undefined {
+export function getAstroFormsMetadata(astro: AstroGlobalLike): AstroFormsMetadata | undefined {
     return astro.props.__astroForms?.();
 }
 
-export function getFormContext(astro: AstroGlobal): Record<string, any> {
+export function getFormContext(astro: AstroGlobalLike): Record<string, any> {
     const scope = formScope.getStore();
     return scope?.locals === astro.locals ? scope.context : astro.locals.__formsInternalUtils.rootContext;
 }
 
-export function asyncRootFormContext<T>(promise: () => Promise<T>, astro: AstroGlobal, context: Record<string, any>): Promise<T> {
+export function asyncRootFormContext<T>(promise: () => Promise<T>, astro: AstroGlobalLike, context: Record<string, any>): Promise<T> {
     return formScope.run({ locals: astro.locals, context }, promise);
 }
 
-export function asyncFormContext<T>(promise: () => Promise<T>, astro: AstroGlobal, context: Record<string, any>): Promise<T> {
+export function asyncFormContext<T>(promise: () => Promise<T>, astro: AstroGlobalLike, context: Record<string, any>): Promise<T> {
     return asyncRootFormContext(promise, astro, { ...getFormContext(astro), ...context });
 }

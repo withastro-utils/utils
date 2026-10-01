@@ -7,16 +7,18 @@ import type { BindContext } from './components-control/types.js';
 export type Component = ((props: any) => any) | (new (props: any) => any);
 export type ComponentProps<T extends HTMLTag | Component> = T extends HTMLTag ? HTMLAttributes<T> : T extends (props: infer Props) => any ? Props : T extends new (props: infer Props) => any ? Props : never;
 
-export type ExtendedRequest = AstroGlobal['request'] & {
+export type ExtendedRequest = Request & {
     formData: (Request['formData'] | (() => FormData | Promise<FormData>)) & {
         requestFormValid?: boolean
     }
 }
 
-export interface AstroLinkHTTP {
+export interface AstroGlobalLike extends Pick<AstroGlobal, 'props'> {
   request: ExtendedRequest;
-  cookies: AstroGlobal['cookies']
-  locals: AstroGlobal['locals'];
+  cookies: {
+    get(key: string): { value: string } | undefined;
+  };
+  locals: App.Locals;
 }
 
 declare global {

@@ -67,20 +67,19 @@
     "vite": "^4.5.14"
   },
   "dependencies": {
-    "@types/cookie": "^0.5.1",
-    "cookie": "^0.5.0",
+    "cookie": "^1.1.1",
     "csrf": "^3.1.0",
     "dot-prop": "^8.0.2",
-    "fs-extra": "^11.4.0",
+    "fs-extra": "^11.4.1",
     "jsonwebtoken": "^9.0.3",
-    "lifecycle-utils": "^4.4.1",
-    "magic-string": "^0.30.21",
+    "lifecycle-utils": "^4.5.1",
+    "magic-string": "^1.4.2",
     "object-assign-deep": "^0.4.0",
     "oxc-parser": "^0.148.0",
-    "snappy": "^7.4.2",
+    "snappy": "^7.4.3",
     "superjson": "^2.2.6",
     "unique-selector": "^0.5.0",
-    "zod": "^4.5.4"
+    "zod": "^4.6.5"
   },
   "peerDependencies": {
     "astro": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"

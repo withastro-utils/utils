@@ -1,4 +1,4 @@
-import type { AstroGlobal } from 'astro';
+import type { AstroGlobalLike } from '../utils.js';
 import { getFormValue } from '../form-tools/post.js';
 import AboutFormName from './form-utils/about-form-name.js';
 import type HTMLInputRadioPlugin from './form-utils/bind-form-plugins/input-radio.js';
@@ -38,7 +38,7 @@ type InputTypes =
 
 type ExtendedInputTypes = InputTypes | 'int' | 'json';
 
-export async function getInputValue(astro: AstroGlobal, bindId: string, bind: BindForm<any>) {
+export async function getInputValue(astro: AstroGlobalLike, bindId: string, bind: BindForm<any>) {
     const { value, name, readonly } = astro.props;
     if (readonly) {
         return getProperty(bind, name, value);
@@ -47,7 +47,7 @@ export async function getInputValue(astro: AstroGlobal, bindId: string, bind: Bi
     return await getFormValue(astro.request, bindId + name);
 }
 
-export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>, bindId: string) {
+export async function validateFormInput(astro: AstroGlobalLike, bind: BindForm<any>, bindId: string) {
     const { type, value: originalValue, minlength, maxlength, pattern, required, name, errorMessage, validate } = astro.props;
 
     const parseValue: any = await getInputValue(astro, bindId, bind);
@@ -81,7 +81,7 @@ export async function validateFormInput(astro: AstroGlobal, bind: BindForm<any>,
     aboutInput.setValue();
 }
 
-async function validateByInputType(astro: AstroGlobal, aboutInput: AboutFormName, bind: BindForm<any>) {
+async function validateByInputType(astro: AstroGlobalLike, aboutInput: AboutFormName, bind: BindForm<any>) {
     const { type, min, max, value: originalValue, parseTimeFormat: timeFormat, multiple, readonly } = astro.props;
 
     switch (type) {
@@ -207,7 +207,7 @@ function formatToDateWeek(date: Date): string {
     return `${ year }-W${ weekNumber.toString().padStart(2, '0') }`;
 }
 
-export function inputReturnValueAttr(astro: AstroGlobal, bind: BindForm<any>) {
+export function inputReturnValueAttr(astro: AstroGlobalLike, bind: BindForm<any>) {
     const value = stringifyCustomValue(getProperty(bind, astro.props.name, astro.props.value), astro.props.step, astro.props.type);
     const min = stringifyCustomValue(astro.props.min, astro.props.step, astro.props.type);
     const max = stringifyCustomValue(astro.props.max, astro.props.step, astro.props.type);

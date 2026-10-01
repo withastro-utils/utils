@@ -1,4 +1,4 @@
-import type { APIContext, MiddlewareHandler, MiddlewareNext } from 'astro';
+import type { AstroGlobalLike } from './utils.js';
 import {randomUUID} from 'node:crypto';
 import { DEFAULT_SETTINGS as DEFAULT_SETTINGS_CSRF, ensureValidationSecret } from './form-tools/csrf.js';
 import { JWTSession } from './jwt-session.js';
@@ -34,7 +34,7 @@ const DEFAULT_FORM_OPTIONS: FormsSettings = {
 export default function astroForms(settings: Partial<FormsSettings> = {}) {
     objectAssignDeep(FORM_OPTIONS, DEFAULT_FORM_OPTIONS, settings);
 
-    return async function onRequest({ locals, request, cookies, props }: APIContext, next: MiddlewareNext) {
+    return async function onRequest({ locals, request, cookies, props }: AstroGlobalLike, next: () => Promise<Response>) {
         const likeAstro = { locals, request, cookies, props };
         const session = new JWTSession(cookies);
         locals.session = session.sessionData;
@@ -78,5 +78,5 @@ export default function astroForms(settings: Partial<FormsSettings> = {}) {
             session.setCookieHeader(newResponse.headers);
             return newResponse;
         }
-    } as MiddlewareHandler;
+    };
 }
