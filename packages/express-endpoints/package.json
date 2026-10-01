@@ -50,9 +50,9 @@
     "@tinyhttp/accepts": "^2.3.1",
     "cookie": "^2.0.1",
     "express-serve-static-core": "0.1.1",
+    "express-zod-safe": "^3.2.1",
     "mime": "^4.1.0",
-    "statuses": "^2.0.2",
-    "zod-express-middleware": "^1.4.0"
+    "statuses": "^2.0.2"
   },
   "peerDependencies": {
     "astro": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"

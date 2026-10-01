@@ -1,7 +1,7 @@
 import ExpressRequest from './http/express-request.js';
 import ExpressResponse from './http/express-response.js';
 import { APIRoute } from 'astro';
-import { RequestValidation, validateRequest } from 'zod-express-middleware';
+import validate, { setGlobalOptions, type CompleteValidationSchema, type ValidationSchema } from 'express-zod-safe';
 import { RequestHandlerParams } from 'express-serve-static-core';
 
 export type ExpressRouteBodyType = 'json' | 'multipart' | 'urlencoded' | 'text' | 'auto' | 'raw' | 'none';
@@ -10,6 +10,11 @@ export type ExpressRouteBodyOptions = {
     type?: ExpressRouteBodyType,
     default?: boolean
 };
+
+setGlobalOptions({
+    defaultSchemaObject: 'lax',
+    missingSchemaBehavior: 'any'
+});
 
 export default class ExpressRoute {
     private _middleware: ExpressRouteCallback[] = [];
@@ -39,10 +44,12 @@ export default class ExpressRoute {
     /**
      * Add validation middleware
      *
-     * Check out [zod-express-middleware](https://www.npmjs.com/package/zod-express-middleware)
+     * Check out [express-zod-safe](https://www.npmjs.com/package/express-zod-safe), globals sets to: 
+     *  - defaultSchemaObject: lax
+     *  - missingSchemaBehavior: any
      */
-    validate<TParams = any, TQuery = any, TBody = any>(schemas: RequestValidation<TParams, TQuery, TBody>) {
-        this._lastValidation.push(validateRequest(schemas) as any);
+    validate<TParams extends ValidationSchema, TQuery extends ValidationSchema, TBody extends ValidationSchema>(schemas: CompleteValidationSchema<TParams, TQuery, TBody>) {
+        this._lastValidation.push(validate(schemas) as any);
         return this;
     }
 
