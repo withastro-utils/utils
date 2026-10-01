@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@3.0.0...@astro-utils/express-endpoints@3.0.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* support zod@4 ([9b76dff](https://github.com/withastro-utils/utils/commit/9b76dff459daff53437bce47654b978bad9c8ea9))
+
 # [3.0.0](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@2.1.2...@astro-utils/express-endpoints@3.0.0) (2026-09-30)
 
 
