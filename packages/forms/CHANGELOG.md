@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.1...@astro-utils/forms@4.0.2) (2026-10-06)
+
+
+### Bug Fixes
+
+* particle parsing race condition ([8f78698](https://github.com/withastro-utils/utils/commit/8f78698cb31715a96ceba397bc0ce36ce2d93467))
+
 ## [4.0.1](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.0...@astro-utils/forms@4.0.1) (2026-10-01)
 
 
