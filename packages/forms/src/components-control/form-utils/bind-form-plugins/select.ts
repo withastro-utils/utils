@@ -21,6 +21,7 @@ export default class HTMLSelectPlugin extends IHTMLFormPlugin {
 
     createOneValidation(name: string, keyData: any): void {
         const {options, multiOptions, value, about, required}: SelectObject = keyData;
+        if (about.hadError) return;
 
         if (multiOptions) {
             const arrayValue = Array.isArray(value) ? value : [value];

@@ -32,7 +32,7 @@ export class BindForm<BindValues> {
     /**
      * @internal
      */
-    _plugins: IHTMLFormPlugin[];
+    _plugins: IHTMLFormPlugin[] = [];
 
     constructor(private _defaults?: BindValues) {
         this.defaults();
@@ -64,7 +64,7 @@ export class BindForm<BindValues> {
      * @internal
      */
     __getState() {
-        const state = { ...this };
+        const state: Record<string, any> = { ...this };
         delete state._defaults;
         delete state._plugins;
         delete state.errors;

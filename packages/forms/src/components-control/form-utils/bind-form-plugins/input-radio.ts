@@ -1,5 +1,6 @@
+import { setProperty } from 'dot-prop';
 import AboutFormName from '../about-form-name.js';
-import {IHTMLFormPlugin} from './iform-plugin.js';
+import { IHTMLFormPlugin } from './iform-plugin.js';
 
 type RadioItem = {
     about: AboutFormName,
@@ -11,14 +12,16 @@ export default class HTMLInputRadioPlugin extends IHTMLFormPlugin {
     storage: RadioValidation = new Map();
 
     createOneValidation(name: string, keyData: any): void {
-        const {options, about}: RadioItem = keyData;
+        const { options, about }: RadioItem = keyData;
+        if (about.hadError) return;
+
 
         if (!options.has(about.formValue)) {
             about.pushErrorManually('radio-invalid-value', 'Radio value invalid');
             return;
         }
 
-        this.form[name] = about.formValue;
+        setProperty(this.form, name, about.formValue);
     }
 
     private createRadioDefault(about: AboutFormName): RadioItem {
@@ -32,7 +35,7 @@ export default class HTMLInputRadioPlugin extends IHTMLFormPlugin {
         if (!this.storage.has(about.originalName)) {
             this.storage.set(about.originalName, this.createRadioDefault(about));
         } else {
-            this.storage.get(about.originalName).options.add(originalValue);
+            this.storage.get(about.originalName)?.options.add(originalValue);
         }
     }
 }

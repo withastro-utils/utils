@@ -49,7 +49,7 @@ export async function validateSelect(astro: AstroGlobalLike, bind: BindForm<any>
             break;
     }
 
-    aboutSelect.setValue();
+    // plugin will set value in the form
 
     return parseValue;
 }
@@ -61,7 +61,7 @@ export function validateSelectOption(bind: BindForm<any>, name: string, stringif
 
 
 export function getSelectValueFromBind(bind: BindForm<any>, astro: AstroGlobalLike) {
-    const newValue = [getProperty(bind, astro.props.name, astro.props.value)].flat();
+    const newValue: any[] = [getProperty(bind, astro.props.name, astro.props.value)].flat();
 
     return newValue.map(stringifySelectValue);
 }

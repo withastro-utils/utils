@@ -69,7 +69,7 @@ export async function validateFormInput(astro: AstroGlobalLike, bind: BindForm<a
     }
 
     // specific validation by type / function
-    await validateByInputType(astro, aboutInput, bind);
+    let setValue = await validateByInputType(astro, aboutInput, bind);
     if (!aboutInput.hadError) {
         if (typeof validate == 'function') {
             await validateFunc(aboutInput, validate);
@@ -78,12 +78,15 @@ export async function validateFormInput(astro: AstroGlobalLike, bind: BindForm<a
         }
     }
 
-    aboutInput.setValue();
+    if(setValue){
+        aboutInput.setValue();
+    }
 }
 
 async function validateByInputType(astro: AstroGlobalLike, aboutInput: AboutFormName, bind: BindForm<any>) {
     const { type, min, max, value: originalValue, parseTimeFormat: timeFormat, multiple, readonly } = astro.props;
 
+    let setValue = true;
     switch (type) {
         case 'checkbox':
             parseCheckbox(aboutInput, originalValue);
@@ -118,6 +121,7 @@ async function validateByInputType(astro: AstroGlobalLike, aboutInput: AboutForm
         case 'radio':
             const plugin = bind.getPlugin('HTMLInputRadioPlugin') as HTMLInputRadioPlugin;
             plugin.addNewValue(aboutInput, originalValue);
+            setValue = false;
             break;
 
         case 'url':
@@ -132,6 +136,8 @@ async function validateByInputType(astro: AstroGlobalLike, aboutInput: AboutForm
             await parseFiles(aboutInput, astro, multiple, readonly);
             break;
     }
+
+    return setValue;
 }
 
 function stringifyCustomValue(date?: Date | string, dateStep?: string, type?: ExtendedInputTypes) {
