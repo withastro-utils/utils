@@ -70,7 +70,7 @@ const clientWFS = { loadingClassName, bigFileUploadOptions: bigFileClientOptions
         const target = event.target as HTMLElement;
         const isMultiLine = target instanceof HTMLTextAreaElement;
 
-        if (((isMultiLine && event.ctrlKey) || !isMultiLine) && event.code === 'Enter') {
+        if (((isMultiLine && event.ctrlKey) || !isMultiLine) && event.key === 'Enter' && !event.isComposing) {
             event.preventDefault();
             submitByButton(target.getAttribute('data-submit')!);
         }
