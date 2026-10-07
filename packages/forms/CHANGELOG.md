@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.2...@astro-utils/forms@4.0.3) (2026-10-07)
+
+
+### Bug Fixes
+
+* update enter key handling in form submission to prevent unintended submissions ([f7a6d24](https://github.com/withastro-utils/utils/commit/f7a6d24173b2c1a55e09cae5493eae4ad31310bd))
+
 ## [4.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.1...@astro-utils/forms@4.0.2) (2026-10-06)
 
 
