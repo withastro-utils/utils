@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.3...@astro-utils/forms@4.0.4) (2026-10-18)
+
+
+### Bug Fixes
+
+* **cookie:** newer stringify ([e3dd947](https://github.com/withastro-utils/utils/commit/e3dd947adb58c7849127c3776856eaee3ee8e684))
+
 ## [4.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.2...@astro-utils/forms@4.0.3) (2026-10-07)
 
 
