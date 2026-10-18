@@ -1,7 +1,7 @@
 import {FORM_OPTIONS} from './settings.js';
 import type {AstroGlobalLike} from './utils.js';
 import jwt from 'jsonwebtoken';
-import {serialize} from 'cookie';
+import {stringifySetCookie} from 'cookie';
 import {deepStrictEqual} from 'assert';
 
 export class JWTSession {
@@ -30,8 +30,12 @@ export class JWTSession {
             const token = jwt.sign({session: this.sessionData}, FORM_OPTIONS.secret!, {
                 expiresIn: FORM_OPTIONS.session?.cookieOptions?.maxAge!
             });
-    
-            this.stringifyCookie = serialize(FORM_OPTIONS?.session?.cookieName!, token, FORM_OPTIONS.session?.cookieOptions);
+
+            this.stringifyCookie = stringifySetCookie({
+                name: FORM_OPTIONS?.session?.cookieName!,
+                ...FORM_OPTIONS.session?.cookieOptions,
+                value: token,
+            });
         }
     }
 
