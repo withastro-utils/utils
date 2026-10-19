@@ -2,11 +2,8 @@ import MagicString from 'magic-string';
 import { parseSync } from 'oxc-parser';
 import { findImportedComponents } from './imports.js';
 import { rewriteFormIds } from './rewrite.js';
-import fsExtra from 'fs-extra/esm';
-import fs from 'fs';
-import path from 'path';
 
-const METADATA_IMPORT = 'import {createAstroFormsProps as $$createAstroFormsProps, withoutAstroFormsMetadata as $$withoutAstroFormsMetadata} from "@astro-utils/forms/internal.js";\n';
+const METADATA_IMPORT = 'import {createAstroFormsProps as $$createAstroFormsProps, withoutAstroFormsMetadata as $$withoutAstroFormsMetadata, renderFormScript as $$renderFormScript} from "@astro-utils/forms/internal.js";\n';
 
 export function formIdTransform(root: string) {
     return {
@@ -27,6 +24,9 @@ export function formIdTransform(root: string) {
             rewriteFormIds(source, code, id, root, imports, parseResult.program);
             if (!source.hasChanged()) return;
             source.prepend(METADATA_IMPORT);
+            if (imports.renderScripts.size) {
+                source.prepend('import {chunkToString as $$stringifyFormScript} from "astro/runtime/server/render/common.js";\n');
+            }
 
             return {
                 code: source.toString(),

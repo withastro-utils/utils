@@ -81,3 +81,5 @@ export function asyncRootFormContext<T>(promise: () => Promise<T>, astro: AstroG
 export function asyncFormContext<T>(promise: () => Promise<T>, astro: AstroGlobalLike, context: Record<string, any>): Promise<T> {
     return asyncRootFormContext(promise, astro, { ...getFormContext(astro), ...context });
 }
+
+export { createFormScriptRenderer, renderFormScript } from './form-script-renderer.js';

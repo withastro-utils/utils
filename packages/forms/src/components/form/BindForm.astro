@@ -1,5 +1,5 @@
 ---
-import { asyncFormContext, getAstroFormsMetadata, getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
+import { createFormScriptRenderer, asyncFormContext, getAstroFormsMetadata, getFormContext, type AstroFormsProps } from '../../form-tools/form-context.js';
 import ViewStateManager from '../../components-control/form-utils/view-state.js';
 import type { BindContext } from '../../components-control/types.js';
 import Bind, { type BindTypes } from '../../components-control/form-utils/bind-form.js';
@@ -40,6 +40,8 @@ const context: BindContext = (Astro.locals.__formsInternalUtils.bindGlobalState[
     reloadForm: false,
 });
 const releaseGeneratedId = claimGeneratedId(Astro, bindId, key == null && Boolean(metadata?.generated), 'BindForm');
+const scripts = createFormScriptRenderer();
+const renderSlot = () => scripts.render(() => asyncFormContext(() => Astro.slots.render('default'), Astro, context));
 let htmlSlot: string;
 try {
 if(reloadForm){
@@ -82,14 +84,14 @@ if (context.viewState) {
 
 // For some reason the first render, in astro appending in the opposite direction, meaning it first return the html and than runs the logic?
 resetContext();
-await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
+await renderSlot();
 
 if (!reloadForm) {
     // Get information about the form
     context.method = context.newState ? 'GET' : Astro.request.method;
 
     resetContext();
-    await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
+    await renderSlot();
     bind.__finishFormValidation();
 
     if (context.method == 'POST') {
@@ -103,7 +105,7 @@ if (!reloadForm) {
 
         context.method = 'GET';
         resetContext();
-        await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
+        await renderSlot();
     }
 
     // Edit form render, add default submit button
@@ -118,19 +120,20 @@ if (!reloadForm) {
 
 resetContext();
 context.renderForm = true;
-htmlSlot = await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
+htmlSlot = await renderSlot();
 if (!reloadForm && context.settings.reloadState) {
     parentSettings.reloadState = true;
 
     if (!parentBindId) {
         context.reloadForm = true;
-        htmlSlot = await asyncFormContext(() => Astro.slots.render('default'), Astro, context);
+        htmlSlot = await renderSlot();
     }
 }
 } finally {
     context.renderForm = false;
     releaseGeneratedId();
 }
+htmlSlot = await scripts.finish(htmlSlot);
 ---
 
 <input type='hidden' name={context.viewState.filedName} value={await context.viewState.createViewState()} />

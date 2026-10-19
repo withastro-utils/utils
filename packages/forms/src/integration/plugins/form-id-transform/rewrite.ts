@@ -99,6 +99,12 @@ export function rewriteFormIds(source: MagicString, code: string, id: string, ro
             }
         }
 
+        if (node.type === 'CallExpression' && imports.renderScripts.has(node.callee.name)) {
+            const renderScript = code.slice(node.callee.start, node.callee.end);
+            source.overwrite(node.callee.start, node.callee.end, '$$renderFormScript');
+            source.prependLeft(node.arguments[0].start, `${renderScript}, $$stringifyFormScript, `);
+        }
+
         const mapCallback = getMapCallback(node);
         if (mapCallback) {
             const mapIndex = getMapIndex(source, code, mapCallback);
