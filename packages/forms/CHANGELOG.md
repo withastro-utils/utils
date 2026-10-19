@@ -1,3 +1,10 @@
+## [4.0.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.4...@astro-utils/forms@4.0.5) (2026-10-19)
+
+
+### Bug Fixes
+
+* **BindForm:** script import ([e22cb6c](https://github.com/withastro-utils/utils/commit/e22cb6c2ed6720d13c4dfb1600f6f51e80c7547b))
+
 ## [4.0.4](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.3...@astro-utils/forms@4.0.4) (2026-10-18)
 
 
