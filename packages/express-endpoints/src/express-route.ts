@@ -83,9 +83,23 @@ export default class ExpressRoute {
                 if (res.writableEnded || res.destroyed) break;
 
                 const { promise, resolve } = Promise.withResolvers<boolean>();
+
                 const fail = (error: unknown) => {
                     console.error(error);
-                    resolve(false);
+ 
+                    try {
+                        if (res.destroyed || res.writableEnded) {
+                            return;
+                        }
+
+                        if (res.headersSent) {
+                            res.destroy();
+                        } else {
+                            res.sendStatus(500);
+                        }
+                    } finally {
+                        resolve(false);
+                    }
                 };
 
                 Promise.resolve().then(() =>
