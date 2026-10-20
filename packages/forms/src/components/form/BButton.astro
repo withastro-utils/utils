@@ -39,6 +39,8 @@ let doNotWriteHTML: any;
 let changedProps: any;
 let Component: any;
 let slotData: string;
+let buttonOrderMarker = '';
+
 try {
 const allProps = {
     ...props,
@@ -55,7 +57,10 @@ const allProps = {
 
 // add this button to list of button for the default submit action
 if (buttonIds && !allProps.disabled) {
-    buttonIds.push([buttonUniqueId, allProps.id, whenFormOK]);
+    const buttonIndex = buttonIds.push([buttonUniqueId, allProps.id, whenFormOK]) - 1;
+    if (!context.renderForm) {
+        buttonOrderMarker = `<!--astro-forms-button:${buttonIndex}-->`;
+    }
 }
 
 async function executeFormAction(callback: Function = onClick) {
@@ -95,6 +100,7 @@ slotData = innerHTML ?? (Astro.slots.has('default') ? await Astro.slots.render('
 }
 ---
 
+<Fragment set:html={buttonOrderMarker} />
 {
     !doNotWriteHTML && (
         <Component type='submit' name='button-callback' value={buttonUniqueId} formNoValidate={!whenFormOK} {...changedProps}>

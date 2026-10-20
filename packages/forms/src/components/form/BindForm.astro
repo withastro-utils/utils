@@ -41,7 +41,7 @@ const context: BindContext = (Astro.locals.__formsInternalUtils.bindGlobalState[
 });
 const releaseGeneratedId = claimGeneratedId(Astro, bindId, key == null && Boolean(metadata?.generated), 'BindForm');
 const scripts = createFormScriptRenderer();
-const renderSlot = () => scripts.render(() => asyncFormContext(() => Astro.slots.render('default'), Astro, context));
+const renderSlot = () => scripts.render(() => asyncFormContext(() => Astro.slots.render('default'), Astro, context)) as Promise<string>;
 let htmlSlot: string;
 try {
 if(reloadForm){
@@ -91,7 +91,7 @@ if (!reloadForm) {
     context.method = context.newState ? 'GET' : Astro.request.method;
 
     resetContext();
-    await renderSlot();
+    let buttonOrderHTML = await renderSlot();
     bind.__finishFormValidation();
 
     if (context.method == 'POST') {
@@ -105,12 +105,15 @@ if (!reloadForm) {
 
         context.method = 'GET';
         resetContext();
-        await renderSlot();
+        buttonOrderHTML = await renderSlot();
     }
 
+    // Parallel execution changes registration order; the rendered markers retain page order.
+    const orderedButtonIds = Array.from(buttonOrderHTML.matchAll(/<!--astro-forms-button:(\d+)-->/g), match => context.buttonIds[Number(match[1])]);
+
     // Edit form render, add default submit button
-    if (context.onSubmitClickGlobal == null && context.buttonIds.length > 0) {
-        const [buttonFormId, HTMLButtonId] = context.buttonIds.findLast(([, , whenFormOk]) => whenFormOk) ?? context.buttonIds.at(-1)!;
+    if (context.onSubmitClickGlobal == null && orderedButtonIds.length > 0) {
+        const [buttonFormId, HTMLButtonId] = orderedButtonIds.findLast(([, , whenFormOk]) => whenFormOk) ?? orderedButtonIds.at(-1)!;
         const state = (context.elementsState[buttonFormId] ??= {});
 
         state.id = HTMLButtonId ?? `_${buttonFormId}`;
