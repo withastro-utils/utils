@@ -1,3 +1,10 @@
+## [4.0.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.5...@astro-utils/forms@4.0.6) (2026-10-20)
+
+
+### Bug Fixes
+
+* **forms:** regression in default submit ([0769682](https://github.com/withastro-utils/utils/commit/076968222e9c83564cb8357dba02b74da6c13e95))
+
 ## [4.0.5](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.4...@astro-utils/forms@4.0.5) (2026-10-19)
 
 
