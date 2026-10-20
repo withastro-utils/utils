@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@3.0.2...@astro-utils/express-endpoints@3.0.3) (2026-10-20)
+
+
+### Bug Fixes
+
+* **express-endpoint:** close response on caught error ([2e2a857](https://github.com/withastro-utils/utils/commit/2e2a8572a715292830b14c908bc6a7fbfb1553a8))
+
 ## [3.0.2](https://github.com/withastro-utils/utils/compare/@astro-utils/express-endpoints@3.0.1...@astro-utils/express-endpoints@3.0.2) (2026-10-01)
 
 
