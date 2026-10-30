@@ -8,8 +8,8 @@ import { validateFunc, validateRequire, validateStringPatters } from './form-uti
 import { getProperty } from 'dot-prop';
 import { ZodType } from 'zod';
 
-const OK_NOT_STRING_VALUE = ['checkbox', 'file'];
-const OK_INPUT_VALUE_NULL = ['checkbox'];
+const OK_NOT_STRING_VALUE = ['checkbox', 'file'] as const;
+const OK_INPUT_VALUE_NULL = ['checkbox'] as const;
 const DAY_IN_MS = 86400000;
 
 type InputTypes =
@@ -63,7 +63,7 @@ export async function validateFormInput(astro: AstroGlobalLike, bind: BindForm<a
     }
 
     // validate string patters
-    const checkStringPatterns = originalValue != null && !OK_NOT_STRING_VALUE.includes(type);
+    const checkStringPatterns = (parseValue !== originalValue) && !OK_NOT_STRING_VALUE.includes(type);
     if (checkStringPatterns && !validateStringPatters(aboutInput, minlength, maxlength, pattern)) {
         return;
     }

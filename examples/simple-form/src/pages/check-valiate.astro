@@ -1,0 +1,25 @@
+---
+import { BButton, Bind, BindForm } from "@astro-utils/forms/forms.js";
+import { Button } from 'reactstrap';
+import Layout from "../layouts/Layout.astro";
+import sleep from "sleep-promise";
+import BTextarea from "../../../../packages/forms/dist/components/form/BTextarea.astro";
+import FormErrors from "../../../../packages/forms/dist/components/form/FormErrors.astro";
+
+const bind = Bind({text: "very long text"});
+
+async function submit() {
+    bind.showText = bind.text;
+}
+
+---
+<Layout title="check-validate">
+    <BindForm {bind}>
+        <p>
+            "{bind.showText}"
+        </p>
+        <FormErrors />
+        <BTextarea name="text" value={bind.text} maxlength={3}/>
+        <BButton as={Button} onClick={submit} whenFormOK>Submit</BButton>
+    </BindForm>
+</Layout>
