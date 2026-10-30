@@ -1,3 +1,10 @@
+## [4.0.7](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.6...@astro-utils/forms@4.0.7) (2026-10-30)
+
+
+### Bug Fixes
+
+* **BTextearea:** default value validation ([6a11707](https://github.com/withastro-utils/utils/commit/6a117077a4c81a2163b79af44e0539cb639ebb13))
+
 ## [4.0.6](https://github.com/withastro-utils/utils/compare/@astro-utils/forms@4.0.5...@astro-utils/forms@4.0.6) (2026-10-20)
 
 
